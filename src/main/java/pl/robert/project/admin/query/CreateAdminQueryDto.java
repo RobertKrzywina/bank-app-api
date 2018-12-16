@@ -2,13 +2,10 @@ package pl.robert.project.admin.query;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter @Setter
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
-public class AdminQueryDto {
+public class CreateAdminQueryDto {
 
     private String login;
     private String password;

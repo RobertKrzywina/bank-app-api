@@ -1,11 +1,12 @@
 package pl.robert.project.admin;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.robert.project.admin.domain.AdminFacade;
 import pl.robert.project.admin.domain.dto.CreateAdminDto;
-import pl.robert.project.admin.domain.exception.AdminException;
-import pl.robert.project.admin.query.AdminQueryDto;
+import pl.robert.project.admin.query.CreateAdminQueryDto;
 
 import javax.validation.Valid;
 
@@ -21,10 +22,18 @@ class AdminRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody @Valid CreateAdminDto dto) throws AdminException {
-        AdminQueryDto newAdmin = facade.add(dto);
+    public ResponseEntity create(@RequestBody @Valid CreateAdminDto dto,
+                                 BindingResult result) {
+        CreateAdminQueryDto newAdmin = facade.add(dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(dto.getErrors());
+        }
 
         return ResponseEntity
-                .ok(newAdmin);
+                .status(HttpStatus.OK)
+                .body(newAdmin);
     }
 }

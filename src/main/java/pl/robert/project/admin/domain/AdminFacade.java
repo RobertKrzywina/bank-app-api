@@ -1,8 +1,9 @@
 package pl.robert.project.admin.domain;
 
 import lombok.AllArgsConstructor;
+import org.springframework.validation.BindingResult;
 import pl.robert.project.admin.domain.dto.CreateAdminDto;
-import pl.robert.project.admin.query.AdminQueryDto;
+import pl.robert.project.admin.query.CreateAdminQueryDto;
 
 @AllArgsConstructor
 public class AdminFacade {
@@ -11,17 +12,25 @@ public class AdminFacade {
     private AdminFactory factory;
     private AdminValidator validator;
 
-    public AdminQueryDto add(CreateAdminDto dto) {
+    private CreateAdminDto createAdminDto;
+
+    public CreateAdminQueryDto add(CreateAdminDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
 
-            AdminQueryDto queryDto = new AdminQueryDto();
+            validator.validate(dto, result);
 
-            queryDto.setRePassword(dto.getRePassword());
-            queryDto.setReSpecialPassword(dto.getReSpecialPassword());
+            if (!result.hasErrors()) {
 
-            Admin admin = repository.saveAndFlush(factory.create(dto));
+                createAdminDto.setLogin(dto.getLogin());
+                createAdminDto.setPassword(dto.getPassword());
+                createAdminDto.setSpecialPassword(dto.getReSpecialPassword());
+                createAdminDto.setRePassword(dto.getRePassword());
+                createAdminDto.setReSpecialPassword(dto.getReSpecialPassword());
 
-            return admin.query(queryDto);
+                repository.saveAndFlush(factory.create(dto));
+
+                return factory.query(createAdminDto);
+            }
         }
 
         return null;

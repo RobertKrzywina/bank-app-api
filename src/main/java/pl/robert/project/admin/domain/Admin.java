@@ -1,9 +1,9 @@
 package pl.robert.project.admin.domain;
 
 import lombok.*;
-import pl.robert.project.admin.query.AdminQueryDto;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 import static pl.robert.project.admin.domain.AdminValidator.*;
 
@@ -19,16 +19,15 @@ class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(length = COL_LENGTH_LOGIN, nullable = false)
+    @Size(min = MIN_LENGTH_LOGIN, max = MAX_LENGTH_LOGIN)
+    @Column(nullable = false)
     private String login;
 
-    @Column(length = COL_LENGTH_PASSWORD, nullable = false)
+    @Size(min = MIN_LENGTH_PASSWORD, max = MAX_LENGTH_PASSWORD)
+    @Column(nullable = false)
     private String password;
 
-    @Column(length = COL_LENGTH_SPECIAL_PASSWORD, nullable = false, name = "special_password")
+    @Size(min = MIN_LENGTH_SPECIAL_PASSWORD, max = MAX_LENGTH_SPECIAL_PASSWORD)
+    @Column(nullable = false, name = "special_password")
     private String specialPassword;
-
-    AdminQueryDto query(AdminQueryDto dto) {
-        return new AdminQueryDto(login, password, specialPassword, dto.getRePassword(), dto.getReSpecialPassword());
-    }
 }
