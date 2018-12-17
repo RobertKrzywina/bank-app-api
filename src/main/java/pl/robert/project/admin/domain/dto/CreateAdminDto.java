@@ -13,9 +13,9 @@ public class CreateAdminDto extends AdminDto {
     private String rePassword;
     private String reSpecialPassword;
 
-    public CreateAdminDto(String login, String password, String specialPassword,
+    public CreateAdminDto(String name, String login, String password, String specialPassword,
                           String rePassword, String reSpecialPassword) {
-        super(login, password, specialPassword);
+        super(name, login, password, specialPassword);
         this.rePassword = rePassword;
         this.reSpecialPassword = reSpecialPassword;
     }

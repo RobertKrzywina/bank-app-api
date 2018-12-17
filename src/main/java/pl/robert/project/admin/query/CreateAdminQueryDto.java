@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CreateAdminQueryDto {
 
+    private String name;
     private String login;
     private String password;
     private String specialPassword;

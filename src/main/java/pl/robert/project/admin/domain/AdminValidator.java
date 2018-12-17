@@ -5,8 +5,12 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import pl.robert.project.admin.domain.dto.*;
+import pl.robert.project.admin.domain.dto.AdminDto;
+import pl.robert.project.admin.domain.dto.CreateAdminDto;
+import pl.robert.project.admin.domain.dto.DeleteAdminDto;
+import pl.robert.project.admin.domain.dto.ReadAdminDto;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -17,7 +21,9 @@ class AdminValidator implements Validator, AdminValidationStrings {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return (clazz.isAssignableFrom(CreateAdminDto.class));
+        return (clazz.isAssignableFrom(CreateAdminDto.class) ||
+               (clazz.isAssignableFrom(ReadAdminDto.class))  ||
+               (clazz.isAssignableFrom(DeleteAdminDto.class)));
     }
 
     @Override
@@ -28,6 +34,15 @@ class AdminValidator implements Validator, AdminValidationStrings {
 
             validateCreateAdmin(dto, errors);
 
+        } else if (obj instanceof ReadAdminDto) {
+            ReadAdminDto dto = (ReadAdminDto) obj;
+
+            validateReadAdmin(dto, errors);
+
+        } else if (obj instanceof DeleteAdminDto) {
+            DeleteAdminDto dto = (DeleteAdminDto) obj;
+
+            validateDeleteAdmin(dto, errors);
         }
 
         ((AdminDto) obj).setErrors(errors.getAllErrors()
@@ -37,6 +52,16 @@ class AdminValidator implements Validator, AdminValidationStrings {
     }
 
     private void validateCreateAdmin(CreateAdminDto dto, Errors errors) {
+
+        if (dto.getName() != null) {
+
+            if (dto.getName().length() < MIN_LENGTH_NAME || dto.getName().length() > MAX_LENGTH_NAME) {
+                errors.reject(NAME_LENGTH, WRONG_NAME_LENGTH);
+            }
+
+        } else {
+            errors.reject(NAME_NULL, NAME_REQUIRED);
+        }
 
         if (dto.getLogin() != null) {
 
@@ -78,6 +103,33 @@ class AdminValidator implements Validator, AdminValidationStrings {
 
         } else {
             errors.reject(SPECIAL_PASSWORD_NULL, SPECIAL_PASSWORD_REQUIRED);
+        }
+    }
+
+    private void validateReadAdmin(ReadAdminDto dto, Errors errors) {
+        if (adminRepo.findById(dto.getId()) == null) {
+            errors.reject(ADMIN_NOT_EXISTS, NO_ADMIN);
+        }
+    }
+
+    private void validateDeleteAdmins(List<Admin> admins, Errors errors) {
+        if (admins == null) {
+            errors.reject(ADMINS_NOT_EXISTS, NO_ADMINS);
+        }
+
+
+    }
+
+    private void validateDeleteAdmin(DeleteAdminDto dto, Errors errors) {
+        Admin admin = adminRepo.findById(dto.getId());
+
+        if (admin == null) {
+            errors.reject(ADMIN_NOT_EXISTS, ADMIN_ID_NOT_EXISTS);
+        } else {
+
+            if (admin.isHeadAdmin()) {
+                errors.reject(HEAD_ADMIN, CANT_DELETE_HEAD_ADMIN);
+            }
         }
     }
 

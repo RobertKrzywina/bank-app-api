@@ -19,6 +19,10 @@ class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Size(min = MIN_LENGTH_NAME, max = MAX_LENGTH_NAME)
+    @Column(nullable = false)
+    private String name;
+
     @Size(min = MIN_LENGTH_LOGIN, max = MAX_LENGTH_LOGIN)
     @Column(nullable = false)
     private String login;
@@ -30,4 +34,7 @@ class Admin {
     @Size(min = MIN_LENGTH_SPECIAL_PASSWORD, max = MAX_LENGTH_SPECIAL_PASSWORD)
     @Column(nullable = false, name = "special_password")
     private String specialPassword;
+
+    @Column(nullable = false, name = "is_head_admin")
+    private boolean isHeadAdmin = false;
 }
