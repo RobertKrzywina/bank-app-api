@@ -12,10 +12,9 @@ interface AdminRepository extends JpaRepository<Admin, Long> {
     Admin findByLogin(String login);
     Admin findById(long id);
 
-    // query for delete admins, except head admin
     @Modifying
     @Transactional
-    @Query("DELETE FROM Admin WHERE id NOT IN (1)")
+    @Query("DELETE FROM Admin WHERE isHeadAdmin NOT IN (true)")
     void deleteAdminsExceptHeadAdmin();
 
     @Modifying
@@ -23,4 +22,13 @@ interface AdminRepository extends JpaRepository<Admin, Long> {
     @Query("UPDATE Admin a SET a.id = :newId WHERE a.id = :oldId")
     void updateAdminId(@Param("newId") Long newId, @Param("oldId") Long oldId);
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE Admin a SET a.password = :newPassword WHERE a.id = :targetId")
+    void updateAdminPassword(@Param("newPassword") String newPassword, @Param("targetId") long id);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Admin a SET a.specialPassword = :newSpecialPassword WHERE a.id = :targetId")
+    void updateAdminSpecialPassword(@Param("newSpecialPassword") String newSpecialPassword, @Param("targetId") long id);
 }

@@ -2,9 +2,7 @@ package pl.robert.project.admin.query;
 
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.robert.project.admin.domain.dto.CreateAdminDto;
-import pl.robert.project.admin.domain.dto.DeleteAdminDto;
-import pl.robert.project.admin.domain.dto.ReadAdminDto;
+import pl.robert.project.admin.domain.dto.*;
 
 @Component
 @NoArgsConstructor
@@ -33,6 +31,20 @@ public class BaseQuery {
 
         return new DeleteAdminQueryDto(
                 dto.getMessage()
+        );
+    }
+
+    public ChangeAdminPasswordQueryDto query(ChangeAdminPasswordDto dto) {
+
+        return new ChangeAdminPasswordQueryDto(
+                dto.getNewPassword()
+        );
+    }
+
+    public ChangeAdminSpecialPasswordQueryDto query(ChangeAdminSpecialPasswordDto dto) {
+
+        return new ChangeAdminSpecialPasswordQueryDto(
+                dto.getNewSpecialPassword()
         );
     }
 }

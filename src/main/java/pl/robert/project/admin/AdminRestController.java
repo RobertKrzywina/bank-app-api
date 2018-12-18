@@ -5,12 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.robert.project.admin.domain.AdminFacade;
-import pl.robert.project.admin.domain.dto.CreateAdminDto;
-import pl.robert.project.admin.domain.dto.DeleteAdminDto;
-import pl.robert.project.admin.domain.dto.ReadAdminDto;
-import pl.robert.project.admin.query.CreateAdminQueryDto;
-import pl.robert.project.admin.query.DeleteAdminQueryDto;
-import pl.robert.project.admin.query.ReadAdminQueryDto;
+import pl.robert.project.admin.domain.dto.*;
+import pl.robert.project.admin.query.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -27,8 +23,7 @@ class AdminRestController {
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody @Valid CreateAdminDto dto,
-                                 BindingResult result) {
+    public ResponseEntity create(@RequestBody @Valid CreateAdminDto dto, BindingResult result) {
         CreateAdminQueryDto newAdminDto = facade.add(dto, result);
 
         if (!dto.getErrors().isEmpty()) {
@@ -52,8 +47,7 @@ class AdminRestController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity readById(@PathVariable("id") String id, ReadAdminDto dto,
-                                   BindingResult result) {
+    public ResponseEntity readById(@PathVariable("id") String id, ReadAdminDto dto, BindingResult result) {
         ReadAdminQueryDto adminDto = facade.getAdminById(dto, Long.parseLong(id), result);
 
         if (!dto.getErrors().isEmpty()) {
@@ -77,8 +71,7 @@ class AdminRestController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity deleteById(@PathVariable("id") String id, DeleteAdminDto dto,
-                                     BindingResult result) {
+    public ResponseEntity deleteById(@PathVariable("id") String id, DeleteAdminDto dto, BindingResult result) {
         DeleteAdminQueryDto dtoMsg = facade.deleteById(dto, Long.parseLong(id), result);
 
         if (!dto.getErrors().isEmpty()) {
@@ -90,5 +83,36 @@ class AdminRestController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(dtoMsg);
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity changeAdminPassword(@RequestBody @Valid ChangeAdminPasswordDto dto, BindingResult result) {
+        ChangeAdminPasswordQueryDto dtoNewPassword = facade.changePassword(dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(dto.getErrors());
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(dtoNewPassword);
+    }
+
+    @PutMapping("/change-special-password")
+    public ResponseEntity changeAdminSpecialPassword(@RequestBody @Valid ChangeAdminSpecialPasswordDto dto,
+                                                     BindingResult result) {
+        ChangeAdminSpecialPasswordQueryDto dtoNewSpecialPassword = facade.changeSpecialPassword(dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(dto.getErrors());
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(dtoNewSpecialPassword);
     }
 }

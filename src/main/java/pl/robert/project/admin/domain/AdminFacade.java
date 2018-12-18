@@ -2,13 +2,8 @@ package pl.robert.project.admin.domain;
 
 import lombok.AllArgsConstructor;
 import org.springframework.validation.BindingResult;
-import pl.robert.project.admin.domain.dto.CreateAdminDto;
-import pl.robert.project.admin.domain.dto.DeleteAdminDto;
-import pl.robert.project.admin.domain.dto.ReadAdminDto;
-import pl.robert.project.admin.query.BaseQuery;
-import pl.robert.project.admin.query.CreateAdminQueryDto;
-import pl.robert.project.admin.query.DeleteAdminQueryDto;
-import pl.robert.project.admin.query.ReadAdminQueryDto;
+import pl.robert.project.admin.domain.dto.*;
+import pl.robert.project.admin.query.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +19,9 @@ public class AdminFacade implements AdminValidationStrings {
     private CreateAdminDto createAdminDto;
     private ReadAdminDto readAdminDto;
     private DeleteAdminDto deleteAdminDto;
+
+    private ChangeAdminPasswordDto changePasswordDto;
+    private ChangeAdminSpecialPasswordDto changeSpecialPasswordDto;
 
     public CreateAdminQueryDto add(CreateAdminDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
@@ -87,9 +85,10 @@ public class AdminFacade implements AdminValidationStrings {
 
         if (admins != null) {
              repository.deleteAdminsExceptHeadAdmin();
-             deleteAdminDto.setMessage(DELETED_ALL_ADMINS);
+             updateAdminsId();
+             deleteAdminDto.setMessage(M_DELETED_ALL_ADMINS);
         } else {
-            deleteAdminDto.setMessage(NO_ADMINS);
+            deleteAdminDto.setMessage(M_NO_ADMINS);
         }
 
         return baseQuery.query(deleteAdminDto);
@@ -103,9 +102,44 @@ public class AdminFacade implements AdminValidationStrings {
             if (!result.hasErrors()) {
                 repository.deleteById(id);
                 updateAdminsId();
-                deleteAdminDto.setMessage(ADMIN_DELETED);
+                deleteAdminDto.setMessage(M_ADMIN_DELETED);
 
                 return baseQuery.query(deleteAdminDto);
+            }
+        }
+
+        return null;
+    }
+
+    public ChangeAdminPasswordQueryDto changePassword(ChangeAdminPasswordDto dto, BindingResult result) {
+        if (validator.supports(dto.getClass())) {
+
+            validator.validate(dto, result);
+
+            if (!result.hasErrors()) {
+                repository.updateAdminPassword(dto.getNewPassword(), dto.getId());
+
+                changePasswordDto.setNewPassword(dto.getNewPassword());
+
+                return baseQuery.query(changePasswordDto);
+            }
+        }
+
+        return null;
+    }
+
+    public ChangeAdminSpecialPasswordQueryDto changeSpecialPassword(ChangeAdminSpecialPasswordDto dto,
+                                                                    BindingResult result) {
+        if (validator.supports(dto.getClass())) {
+
+            validator.validate(dto, result);
+
+            if (!result.hasErrors()) {
+                repository.updateAdminSpecialPassword(dto.getNewSpecialPassword(), dto.getId());
+
+                changeSpecialPasswordDto.setNewSpecialPassword(dto.getNewSpecialPassword());
+
+                return baseQuery.query(changeSpecialPasswordDto);
             }
         }
 
