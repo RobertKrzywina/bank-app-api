@@ -15,13 +15,4 @@ public class ChangeAdminPasswordDto extends AdminDto {
     private String reOldPassword;
     private String newPassword;
     private String reNewPassword;
-
-    public ChangeAdminPasswordDto(long id, String oldPassword, String reOldPassword,
-                                  String newPassword, String reNewPassword) {
-        this.id = id;
-        this.oldPassword = oldPassword;
-        this.reOldPassword = reOldPassword;
-        this.newPassword = newPassword;
-        this.reNewPassword = reNewPassword;
-    }
 }

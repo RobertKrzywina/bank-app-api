@@ -34,17 +34,21 @@ public class BaseQuery {
         );
     }
 
-    public ChangeAdminPasswordQueryDto query(ChangeAdminPasswordDto dto) {
+    public ChangeAdminPasswordQueryDto query(Object obj) {
 
-        return new ChangeAdminPasswordQueryDto(
-                dto.getNewPassword()
-        );
-    }
+        if (obj instanceof ChangeAdminPasswordDto) {
+            ChangeAdminPasswordDto dto = (ChangeAdminPasswordDto) obj;
 
-    public ChangeAdminSpecialPasswordQueryDto query(ChangeAdminSpecialPasswordDto dto) {
+            return new ChangeAdminPasswordQueryDto(
+                    dto.getNewPassword()
+            );
 
-        return new ChangeAdminSpecialPasswordQueryDto(
-                dto.getNewSpecialPassword()
-        );
+        } else {
+            ChangeAdminSpecialPasswordDto dto = (ChangeAdminSpecialPasswordDto) obj;
+
+            return new ChangeAdminPasswordQueryDto(
+                    dto.getNewSpecialPassword()
+            );
+        }
     }
 }

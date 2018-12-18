@@ -84,9 +84,9 @@ public class AdminFacade implements AdminValidationStrings {
         List<Admin> admins = repository.findAll();
 
         if (admins != null) {
-             repository.deleteAdminsExceptHeadAdmin();
-             updateAdminsId();
-             deleteAdminDto.setMessage(M_DELETED_ALL_ADMINS);
+            repository.deleteAdminsExceptHeadAdmin();
+            updateAdminsId();
+            deleteAdminDto.setMessage(M_DELETED_ALL_ADMINS);
         } else {
             deleteAdminDto.setMessage(M_NO_ADMINS);
         }
@@ -111,36 +111,30 @@ public class AdminFacade implements AdminValidationStrings {
         return null;
     }
 
-    public ChangeAdminPasswordQueryDto changePassword(ChangeAdminPasswordDto dto, BindingResult result) {
-        if (validator.supports(dto.getClass())) {
+    public ChangeAdminPasswordQueryDto changePassword(Object obj, BindingResult result) {
+        if (validator.supports(obj.getClass())) {
+            if (obj instanceof ChangeAdminPasswordDto) {
+                ChangeAdminPasswordDto dto = (ChangeAdminPasswordDto) obj;
 
-            validator.validate(dto, result);
+                validator.validate(dto, result);
 
-            if (!result.hasErrors()) {
-                repository.updateAdminPassword(dto.getNewPassword(), dto.getId());
+                if (!result.hasErrors()) {
+                    repository.updateAdminPassword(dto.getNewPassword(), dto.getId());
+                    changePasswordDto.setNewPassword(dto.getNewPassword());
+                }
 
-                changePasswordDto.setNewPassword(dto.getNewPassword());
+            } else {
+                ChangeAdminSpecialPasswordDto dto = (ChangeAdminSpecialPasswordDto) obj;
 
-                return baseQuery.query(changePasswordDto);
+                validator.validate(dto, result);
+
+                if (!result.hasErrors()) {
+                    repository.updateAdminPassword(dto.getNewSpecialPassword(), dto.getId());
+                    changeSpecialPasswordDto.setNewSpecialPassword(dto.getNewSpecialPassword());
+                }
             }
-        }
 
-        return null;
-    }
-
-    public ChangeAdminSpecialPasswordQueryDto changeSpecialPassword(ChangeAdminSpecialPasswordDto dto,
-                                                                    BindingResult result) {
-        if (validator.supports(dto.getClass())) {
-
-            validator.validate(dto, result);
-
-            if (!result.hasErrors()) {
-                repository.updateAdminSpecialPassword(dto.getNewSpecialPassword(), dto.getId());
-
-                changeSpecialPasswordDto.setNewSpecialPassword(dto.getNewSpecialPassword());
-
-                return baseQuery.query(changeSpecialPasswordDto);
-            }
+            return baseQuery.query(obj);
         }
 
         return null;

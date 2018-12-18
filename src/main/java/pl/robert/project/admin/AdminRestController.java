@@ -103,7 +103,7 @@ class AdminRestController {
     @PutMapping("/change-special-password")
     public ResponseEntity changeAdminSpecialPassword(@RequestBody @Valid ChangeAdminSpecialPasswordDto dto,
                                                      BindingResult result) {
-        ChangeAdminSpecialPasswordQueryDto dtoNewSpecialPassword = facade.changeSpecialPassword(dto, result);
+        ChangeAdminPasswordQueryDto dtoNewSpecialPassword = facade.changePassword(dto, result);
 
         if (!dto.getErrors().isEmpty()) {
             return ResponseEntity

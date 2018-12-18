@@ -11,8 +11,4 @@ import org.springframework.stereotype.Component;
 public class DeleteAdminDto extends AdminDto {
 
     private String message;
-
-    public DeleteAdminDto(String message) {
-        this.message = message;
-    }
 }

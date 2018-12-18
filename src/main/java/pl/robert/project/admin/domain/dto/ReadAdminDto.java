@@ -8,9 +8,4 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter @Setter
 @NoArgsConstructor
-public class ReadAdminDto extends AdminDto {
-
-    public ReadAdminDto(long id, String name) {
-        super(id, name);
-    }
-}
+public class ReadAdminDto extends AdminDto {}
