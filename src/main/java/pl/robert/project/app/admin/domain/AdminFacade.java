@@ -1,9 +1,9 @@
-package pl.robert.project.admin.domain;
+package pl.robert.project.app.admin.domain;
 
 import lombok.AllArgsConstructor;
 import org.springframework.validation.BindingResult;
-import pl.robert.project.admin.domain.dto.*;
-import pl.robert.project.admin.query.*;
+import pl.robert.project.app.admin.domain.dto.*;
+import pl.robert.project.app.admin.query.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,7 +129,7 @@ public class AdminFacade implements AdminValidationStrings {
                 validator.validate(dto, result);
 
                 if (!result.hasErrors()) {
-                    repository.updateAdminPassword(dto.getNewSpecialPassword(), dto.getId());
+                    repository.updateAdminSpecialPassword(dto.getNewSpecialPassword(), dto.getId());
                     changeSpecialPasswordDto.setNewSpecialPassword(dto.getNewSpecialPassword());
                 }
             }

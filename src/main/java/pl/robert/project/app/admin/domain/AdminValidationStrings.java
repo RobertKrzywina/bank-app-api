@@ -1,4 +1,4 @@
-package pl.robert.project.admin.domain;
+package pl.robert.project.app.admin.domain;
 
 interface AdminValidationStrings {
 

@@ -1,4 +1,4 @@
-package pl.robert.project.admin.query;
+package pl.robert.project.app.admin.query;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

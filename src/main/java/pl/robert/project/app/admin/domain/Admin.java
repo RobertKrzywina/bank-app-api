@@ -1,11 +1,11 @@
-package pl.robert.project.admin.domain;
+package pl.robert.project.app.admin.domain;
 
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
-import static pl.robert.project.admin.domain.AdminValidator.*;
+import static pl.robert.project.app.admin.domain.AdminValidator.*;
 
 @Entity
 @Table(name = "admins")
@@ -17,6 +17,7 @@ class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "admin_id")
     private long id;
 
     @Size(min = MIN_LENGTH_NAME, max = MAX_LENGTH_NAME)

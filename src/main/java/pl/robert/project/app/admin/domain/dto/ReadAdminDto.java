@@ -1,4 +1,4 @@
-package pl.robert.project.admin.domain.dto;
+package pl.robert.project.app.admin.domain.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,4 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter @Setter
 @NoArgsConstructor
-public class DeleteAdminDto extends AdminDto {
-
-    private String message;
-}
+public class ReadAdminDto extends AdminDto {}

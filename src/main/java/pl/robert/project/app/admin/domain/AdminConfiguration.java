@@ -1,9 +1,9 @@
-package pl.robert.project.admin.domain;
+package pl.robert.project.app.admin.domain;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.robert.project.admin.domain.dto.*;
-import pl.robert.project.admin.query.BaseQuery;
+import pl.robert.project.app.admin.domain.dto.*;
+import pl.robert.project.app.admin.query.BaseQuery;
 
 @Configuration
 class AdminConfiguration {

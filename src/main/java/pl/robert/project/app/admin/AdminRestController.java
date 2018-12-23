@@ -1,18 +1,20 @@
-package pl.robert.project.admin;
+package pl.robert.project.app.admin;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pl.robert.project.admin.domain.AdminFacade;
-import pl.robert.project.admin.domain.dto.*;
-import pl.robert.project.admin.query.*;
+import pl.robert.project.app.admin.domain.AdminFacade;
+import pl.robert.project.app.admin.domain.dto.*;
+import pl.robert.project.app.admin.query.ChangeAdminPasswordQueryDto;
+import pl.robert.project.app.admin.query.CreateAdminQueryDto;
+import pl.robert.project.app.admin.query.DeleteAdminQueryDto;
+import pl.robert.project.app.admin.query.ReadAdminQueryDto;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api/admin-panel")
 @CrossOrigin("http://localhost:4200")
 class AdminRestController {
 
@@ -27,23 +29,17 @@ class AdminRestController {
         CreateAdminQueryDto newAdminDto = facade.add(dto, result);
 
         if (!dto.getErrors().isEmpty()) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(dto.getErrors());
+            return ResponseEntity.status(400).body(dto.getErrors());
         }
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(newAdminDto);
+        return ResponseEntity.status(200).body(newAdminDto);
     }
 
     @GetMapping
     public ResponseEntity read() {
         List<ReadAdminQueryDto> adminsDto = facade.getAll();
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(adminsDto);
+        return ResponseEntity.status(200).body(adminsDto);
     }
 
     @GetMapping("{id}")
@@ -51,23 +47,17 @@ class AdminRestController {
         ReadAdminQueryDto adminDto = facade.getAdminById(dto, Long.parseLong(id), result);
 
         if (!dto.getErrors().isEmpty()) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(dto.getErrors());
+            return ResponseEntity.status(400).body(dto.getErrors());
         }
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(adminDto);
+        return ResponseEntity.status(200).body(adminDto);
     }
 
     @DeleteMapping
     public ResponseEntity delete() {
         DeleteAdminQueryDto dtoMsg = facade.delete();
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(dtoMsg);
+        return ResponseEntity.status(200).body(dtoMsg);
     }
 
     @DeleteMapping("{id}")
@@ -75,14 +65,10 @@ class AdminRestController {
         DeleteAdminQueryDto dtoMsg = facade.deleteById(dto, Long.parseLong(id), result);
 
         if (!dto.getErrors().isEmpty()) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(dto.getErrors());
+            return ResponseEntity.status(400).body(dto.getErrors());
         }
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(dtoMsg);
+        return ResponseEntity.status(200).body(dtoMsg);
     }
 
     @PutMapping("/change-password")
@@ -90,14 +76,10 @@ class AdminRestController {
         ChangeAdminPasswordQueryDto dtoNewPassword = facade.changePassword(dto, result);
 
         if (!dto.getErrors().isEmpty()) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(dto.getErrors());
+            return ResponseEntity.status(400).body(dto.getErrors());
         }
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(dtoNewPassword);
+        return ResponseEntity.status(200).body(dtoNewPassword);
     }
 
     @PutMapping("/change-special-password")
@@ -106,13 +88,9 @@ class AdminRestController {
         ChangeAdminPasswordQueryDto dtoNewSpecialPassword = facade.changePassword(dto, result);
 
         if (!dto.getErrors().isEmpty()) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(dto.getErrors());
+            return ResponseEntity.status(400).body(dto.getErrors());
         }
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(dtoNewSpecialPassword);
+        return ResponseEntity.status(200).body(dtoNewSpecialPassword);
     }
 }

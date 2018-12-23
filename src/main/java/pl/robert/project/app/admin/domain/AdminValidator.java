@@ -1,11 +1,11 @@
-package pl.robert.project.admin.domain;
+package pl.robert.project.app.admin.domain;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import pl.robert.project.admin.domain.dto.*;
+import pl.robert.project.app.admin.domain.dto.*;
 
 import java.util.stream.Collectors;
 

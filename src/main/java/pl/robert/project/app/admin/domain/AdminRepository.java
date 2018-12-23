@@ -1,4 +1,4 @@
-package pl.robert.project.admin.domain;
+package pl.robert.project.app.admin.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

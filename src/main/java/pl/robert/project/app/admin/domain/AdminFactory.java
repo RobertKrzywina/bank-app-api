@@ -1,7 +1,7 @@
-package pl.robert.project.admin.domain;
+package pl.robert.project.app.admin.domain;
 
 import org.springframework.stereotype.Component;
-import pl.robert.project.admin.domain.dto.CreateAdminDto;
+import pl.robert.project.app.admin.domain.dto.CreateAdminDto;
 
 @Component
 class AdminFactory {

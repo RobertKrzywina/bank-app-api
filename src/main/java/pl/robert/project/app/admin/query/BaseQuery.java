@@ -1,8 +1,8 @@
-package pl.robert.project.admin.query;
+package pl.robert.project.app.admin.query;
 
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.robert.project.admin.domain.dto.*;
+import pl.robert.project.app.admin.domain.dto.*;
 
 @Component
 @NoArgsConstructor
