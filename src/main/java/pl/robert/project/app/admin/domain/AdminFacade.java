@@ -15,7 +15,7 @@ public class AdminFacade implements AdminValidationStrings {
     private AdminRepository repository;
     private AdminFactory factory;
     private AdminValidator validator;
-    private BaseQuery baseQuery;
+    private BaseAdminQuery baseQuery;
     private CreateAdminDto createAdminDto;
     private ReadAdminDto readAdminDto;
     private DeleteAdminDto deleteAdminDto;

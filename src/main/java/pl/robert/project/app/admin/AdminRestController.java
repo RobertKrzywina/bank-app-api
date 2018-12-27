@@ -24,7 +24,7 @@ class AdminRestController {
         this.facade = facade;
     }
 
-    @PostMapping
+    @PostMapping("/admin")
     public ResponseEntity create(@RequestBody @Valid CreateAdminDto dto, BindingResult result) {
         CreateAdminQueryDto newAdminDto = facade.add(dto, result);
 
@@ -32,17 +32,17 @@ class AdminRestController {
             return ResponseEntity.status(400).body(dto.getErrors());
         }
 
-        return ResponseEntity.status(200).body(newAdminDto);
+        return ResponseEntity.status(201).body(newAdminDto);
     }
 
-    @GetMapping
+    @GetMapping("/admins")
     public ResponseEntity read() {
         List<ReadAdminQueryDto> adminsDto = facade.getAll();
 
         return ResponseEntity.status(200).body(adminsDto);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/admins/{id}")
     public ResponseEntity readById(@PathVariable("id") String id, ReadAdminDto dto, BindingResult result) {
         ReadAdminQueryDto adminDto = facade.getAdminById(dto, Long.parseLong(id), result);
 
@@ -53,14 +53,14 @@ class AdminRestController {
         return ResponseEntity.status(200).body(adminDto);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/admin")
     public ResponseEntity delete() {
         DeleteAdminQueryDto dtoMsg = facade.delete();
 
         return ResponseEntity.status(200).body(dtoMsg);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/admins/{id}")
     public ResponseEntity deleteById(@PathVariable("id") String id, DeleteAdminDto dto, BindingResult result) {
         DeleteAdminQueryDto dtoMsg = facade.deleteById(dto, Long.parseLong(id), result);
 
@@ -71,7 +71,7 @@ class AdminRestController {
         return ResponseEntity.status(200).body(dtoMsg);
     }
 
-    @PutMapping("/change-password")
+    @PutMapping("/admin/change-password")
     public ResponseEntity changeAdminPassword(@RequestBody @Valid ChangeAdminPasswordDto dto, BindingResult result) {
         ChangeAdminPasswordQueryDto dtoNewPassword = facade.changePassword(dto, result);
 
@@ -82,7 +82,7 @@ class AdminRestController {
         return ResponseEntity.status(200).body(dtoNewPassword);
     }
 
-    @PutMapping("/change-special-password")
+    @PutMapping("/admin/change-special-password")
     public ResponseEntity changeAdminSpecialPassword(@RequestBody @Valid ChangeAdminSpecialPasswordDto dto,
                                                      BindingResult result) {
         ChangeAdminPasswordQueryDto dtoNewSpecialPassword = facade.changePassword(dto, result);

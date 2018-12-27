@@ -1,4 +1,4 @@
-package pl.robert.project.app.admin.query;
+package pl.robert.project.app.user.query;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,12 +9,12 @@ import java.util.Set;
 
 @Getter
 @AllArgsConstructor
-public class CreateAdminQueryDto {
+public class CreateUserQueryDto {
 
-    private String name;
-    private String login;
+    private String PESEL;
+    private String firstName;
+    private String lastName;
     private String password;
-    private String specialPassword;
 
     private Set<Role> roles = new HashSet<>();
 }

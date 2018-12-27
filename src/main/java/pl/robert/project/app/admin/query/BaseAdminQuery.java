@@ -6,7 +6,7 @@ import pl.robert.project.app.admin.domain.dto.*;
 
 @Component
 @NoArgsConstructor
-public class BaseQuery {
+public class BaseAdminQuery {
 
     public CreateAdminQueryDto query(CreateAdminDto dto) {
         return new CreateAdminQueryDto(
@@ -14,9 +14,6 @@ public class BaseQuery {
                 dto.getLogin(),
                 dto.getPassword(),
                 dto.getSpecialPassword(),
-                dto.getRePassword(),
-                dto.getReSpecialPassword(),
-                dto.getRoleName(),
                 dto.getRoles()
         );
     }
