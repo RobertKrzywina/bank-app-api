@@ -14,6 +14,8 @@ class AdminFactory {
                 .login(dto.getLogin())
                 .password(dto.getPassword())
                 .specialPassword(dto.getSpecialPassword())
+                .roleName(dto.getRoleName())
+                .roles(dto.getRoles())
                 .build();
     }
 }

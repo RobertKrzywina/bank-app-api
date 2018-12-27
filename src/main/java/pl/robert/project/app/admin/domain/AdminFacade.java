@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.validation.BindingResult;
 import pl.robert.project.app.admin.domain.dto.*;
 import pl.robert.project.app.admin.query.*;
+import pl.robert.project.app.role.Role;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +16,9 @@ public class AdminFacade implements AdminValidationStrings {
     private AdminFactory factory;
     private AdminValidator validator;
     private BaseQuery baseQuery;
-
     private CreateAdminDto createAdminDto;
     private ReadAdminDto readAdminDto;
     private DeleteAdminDto deleteAdminDto;
-
     private ChangeAdminPasswordDto changePasswordDto;
     private ChangeAdminSpecialPasswordDto changeSpecialPasswordDto;
 
@@ -37,14 +36,48 @@ public class AdminFacade implements AdminValidationStrings {
                 createAdminDto.setRePassword(dto.getRePassword());
                 createAdminDto.setReSpecialPassword(dto.getReSpecialPassword());
 
+                Role role = verifyRole(dto.getRoleName());
+                dto.getRoles().add(role);
+
+                createAdminDto.setRoleName(dto.getRoleName());
+                createAdminDto.setRoles(dto.getRoles());
+
                 repository.saveAndFlush(factory.create(dto));
-                updateAdminsId();
+
+                //updateAdminsId();
 
                 return baseQuery.query(createAdminDto);
             }
         }
 
         return null;
+    }
+
+    private Role verifyRole(String roleToVerify) {
+        Role role = new Role();
+
+        final String roleHeadAdmin = "ROLE_HEAD-ADMIN";
+        final String roleAdmin = "ROLE_ADMIN";
+        final String roleUser = "ROLE_USER";
+
+        switch (roleToVerify) {
+            case roleHeadAdmin:
+                role.setRoleId(1L);
+                role.setRoleName(roleHeadAdmin);
+                break;
+
+            case roleAdmin:
+                role.setRoleId(2L);
+                role.setRoleName(roleAdmin);
+                break;
+
+            case roleUser:
+                role.setRoleId(3L);
+                role.setRoleName(roleUser);
+                break;
+        }
+
+        return role;
     }
 
     public List<ReadAdminQueryDto> getAll() {
@@ -54,7 +87,8 @@ public class AdminFacade implements AdminValidationStrings {
         for (Admin admin : admins) {
             adminsDto.add(new ReadAdminQueryDto(
                     admin.getId(),
-                    admin.getName()
+                    admin.getName(),
+                    admin.getRoles()
             ));
         }
 
@@ -72,6 +106,7 @@ public class AdminFacade implements AdminValidationStrings {
 
                 readAdminDto.setId(admin.getId());
                 readAdminDto.setName(admin.getName());
+                readAdminDto.setRoles(admin.getRoles());
 
                 return baseQuery.query(readAdminDto);
             }
@@ -85,7 +120,7 @@ public class AdminFacade implements AdminValidationStrings {
 
         if (admins != null) {
             repository.deleteAdminsExceptHeadAdmin();
-            updateAdminsId();
+            //updateAdminsId();
             deleteAdminDto.setMessage(M_DELETED_ALL_ADMINS);
         } else {
             deleteAdminDto.setMessage(M_NO_ADMINS);
@@ -101,7 +136,7 @@ public class AdminFacade implements AdminValidationStrings {
 
             if (!result.hasErrors()) {
                 repository.deleteById(id);
-                updateAdminsId();
+                //updateAdminsId();
                 deleteAdminDto.setMessage(M_ADMIN_DELETED);
 
                 return baseQuery.query(deleteAdminDto);

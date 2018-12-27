@@ -11,6 +11,13 @@ interface AdminValidationStrings {
     int MIN_LENGTH_SPECIAL_PASSWORD = 6;
     int MAX_LENGTH_SPECIAL_PASSWORD = 36;
 
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
+    String ROLE_HEAD_ADMIN = "ROLE_HEAD-ADMIN";
+    String ROLE_ADMIN = "ROLE_ADMIN";
+    String ROLE_USER = "ROLE_USER";
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
 
     String C_NAME_NULL = "name.null";
     String C_LOGIN_NULL = "login.null";
@@ -24,6 +31,7 @@ interface AdminValidationStrings {
     String C_RE_OLD_SPECIAL_PASSWORD_NULL = "re_old_special_password.null";
     String C_NEW_SPECIAL_PASSWORD_NULL = "new_special_password.null";
     String C_RE_NEW_SPECIAL_PASSWORD_NULL = "re_new_special_password.null";
+    String C_ROLE_NAME_NULL = "role_name.null";
 
     String C_OLD_PASSWORD_NOT_MATCH = "old_password.not_match";
     String C_RE_PASSWORD_NOT_MATCH = "password.not_match";
@@ -41,8 +49,10 @@ interface AdminValidationStrings {
 
     String C_ADMIN_NOT_EXISTS = "admin.by_id_not_exists";
     String C_ADMIN_LOGIN_EXISTS = "admin.exists";
-    String C_HEAD_ADMIN = "cant.delete.head_admin";
+    String C_CANT_DELETE_HEAD_ADMIN = "cant.delete.head_admin";
+    String C_INCORRECT_ROLE_NAME = "incorrect.role_name";
 
+    ////////////////////////////////////////////////////////////////////////////////////////////
 
     String M_NAME_NULL = "Enter your name";
     String M_LOGIN_NULL = "Enter your login";
@@ -56,6 +66,7 @@ interface AdminValidationStrings {
     String M_RE_OLD_SPECIAL_PASSWORD_NULL = "Re enter your old special password";
     String M_NEW_SPECIAL_PASSWORD_NULL = "Enter your new special password";
     String M_RE_NEW_SPECIAL_PASSWORD_NULL = "Re enter your new special password";
+    String M_ROLE_NAME_NULL = "Enter your role name";
 
     String M_NAME_LENGTH = "Name should have from 2 to 20 characters";
     String M_LOGIN_LENGTH = "Login should contain from 3 to 18 characters";
@@ -78,4 +89,5 @@ interface AdminValidationStrings {
     String M_NO_ADMINS = "No admins here";
     String M_CANT_DELETE_HEAD_ADMIN = "You can't delete head admin";
     String M_ADMIN_DELETED = "Admin deleted";
+    String M_INCORRECT_ROLE_NAME = "Incorrect role name";
 }

@@ -15,7 +15,9 @@ public class BaseQuery {
                 dto.getPassword(),
                 dto.getSpecialPassword(),
                 dto.getRePassword(),
-                dto.getReSpecialPassword()
+                dto.getReSpecialPassword(),
+                dto.getRoleName(),
+                dto.getRoles()
         );
     }
 
@@ -23,7 +25,8 @@ public class BaseQuery {
 
         return new ReadAdminQueryDto(
                 dto.getId(),
-                dto.getName()
+                dto.getName(),
+                dto.getRoles()
         );
     }
 

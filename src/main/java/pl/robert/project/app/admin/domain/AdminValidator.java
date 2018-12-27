@@ -116,6 +116,20 @@ class AdminValidator implements Validator, AdminValidationStrings {
         } else {
             errors.reject(C_SPECIAL_PASSWORD_NULL, M_SPECIAL_PASSWORD_NULL);
         }
+
+        if (dto.getRoleName() != null) {
+            if (!isRoleCorrect(dto.getRoleName())) {
+                errors.reject(C_INCORRECT_ROLE_NAME, M_INCORRECT_ROLE_NAME);
+            }
+        } else {
+            errors.reject(C_ROLE_NAME_NULL, M_ROLE_NAME_NULL);
+        }
+    }
+
+    private boolean isRoleCorrect(String roleName) {
+        return roleName.equals(ROLE_HEAD_ADMIN) ||
+               roleName.equals(ROLE_ADMIN) ||
+               roleName.equals(ROLE_USER);
     }
 
     private void validateReadAdmin(ReadAdminDto dto, Errors errors) {
@@ -129,10 +143,8 @@ class AdminValidator implements Validator, AdminValidationStrings {
 
         if (admin == null) {
             errors.reject(C_ADMIN_NOT_EXISTS, M_ADMIN_ID_NOT_EXISTS);
-        } else {
-            if (admin.isHeadAdmin()) {
-                errors.reject(C_HEAD_ADMIN, M_CANT_DELETE_HEAD_ADMIN);
-            }
+        } else if (admin.getRoleName().equals(ROLE_HEAD_ADMIN)) {
+            errors.reject(C_CANT_DELETE_HEAD_ADMIN, M_CANT_DELETE_HEAD_ADMIN);
         }
     }
 

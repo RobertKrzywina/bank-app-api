@@ -1,9 +1,12 @@
 package pl.robert.project.app.admin.domain;
 
 import lombok.*;
+import pl.robert.project.app.role.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 import static pl.robert.project.app.admin.domain.AdminValidator.*;
 
@@ -25,7 +28,7 @@ class Admin {
     private String name;
 
     @Size(min = MIN_LENGTH_LOGIN, max = MAX_LENGTH_LOGIN)
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String login;
 
     @Size(min = MIN_LENGTH_PASSWORD, max = MAX_LENGTH_PASSWORD)
@@ -36,6 +39,9 @@ class Admin {
     @Column(nullable = false, name = "special_password")
     private String specialPassword;
 
-    @Column(nullable = false, name = "is_head_admin")
-    private boolean isHeadAdmin = false;
+    @Column(nullable = false, name = "role_name")
+    private String roleName;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles = new HashSet<>();
 }

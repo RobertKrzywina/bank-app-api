@@ -14,7 +14,7 @@ interface AdminRepository extends JpaRepository<Admin, Long> {
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM Admin WHERE isHeadAdmin NOT IN (true)")
+    @Query("DELETE FROM Admin WHERE roleName <> 'ROLE_HEAD-ADMIN'")
     void deleteAdminsExceptHeadAdmin();
 
     @Modifying
