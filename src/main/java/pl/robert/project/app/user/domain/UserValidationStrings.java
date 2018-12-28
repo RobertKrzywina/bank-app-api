@@ -21,6 +21,7 @@ interface UserValidationStrings {
     String C_PASSWORD_LENGTH ="password.length";
 
     String C_USER_PESEL_EXISTS = "user.exists";
+    String C_USER_NOT_EXISTS = "user.by_pesel_not_exists";
 
     String C_RE_PASSWORD_NOT_MATCH_PASSWORD = "password.not_match";
 
@@ -37,6 +38,11 @@ interface UserValidationStrings {
     String M_PASSWORD_LENGTH ="Password should contain from 6 to 36 characters";
 
     String M_USER_PESEL_EXISTS = "Pesel already exists";
+    String M_USER_NOT_EXISTS = "User pesel not exists";
 
     String M_RE_PASSWORD_NOT_MATCH_PASSWORD = "Passwords are not identical";
+
+    String M_DELETED_ALL_USERS = "All users deleted successfully";
+    String M_NO_USERS = "No users here";
+    String M_USER_DELETED = "User deleted";
 }

@@ -18,3 +18,17 @@ VALUES (1, 1),
        (4, 2),
        (5, 2),
        (6, 1);
+
+INSERT INTO users (pesel, first_name, last_name, password, role_name)
+VALUES ('80022136394', 'Justin', 'Roiland', 'RickAndMorty2013', 'ROLE_USER'),
+       ('83100949123', 'Spencer', 'Grammer', 'summerSmith123', 'ROLE_USER'),
+       ('76082787162', 'Sarah', 'Chalke', 'bethSmith123', 'ROLE_USER'),
+       ('67020584817', 'Chris', 'Parnell', 'jerrySmith123', 'ROLE_USER'),
+       ('77071382883', 'Kari', 'Wahlgren', 'jessica1111', 'ROLE_USER');
+
+INSERT INTO users_roles (user_pesel, roles_role_id)
+VALUES ('80022136394', 3),
+       ('83100949123', 3),
+       ('76082787162', 3),
+       ('67020584817', 3),
+       ('77071382883', 3);

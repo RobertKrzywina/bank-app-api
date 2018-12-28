@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
+import pl.robert.project.app.user.domain.dto.DeleteUserDto;
+import pl.robert.project.app.user.domain.dto.ReadUserDto;
 import pl.robert.project.app.user.domain.dto.UserDto;
 
 import java.util.stream.Collectors;
@@ -18,7 +20,9 @@ class UserValidator implements Validator, UserValidationStrings {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.isAssignableFrom(CreateUserDto.class);
+        return (clazz.isAssignableFrom(CreateUserDto.class) ||
+                clazz.isAssignableFrom(ReadUserDto.class) ||
+                clazz.isAssignableFrom(DeleteUserDto.class));
     }
 
     @Override
@@ -28,6 +32,14 @@ class UserValidator implements Validator, UserValidationStrings {
             CreateUserDto dto = (CreateUserDto) obj;
 
             validateCreateUser(dto, errors);
+        } else if (obj instanceof ReadUserDto) {
+            ReadUserDto dto = (ReadUserDto) obj;
+
+            validateReadUser(dto, errors);
+        } else if (obj instanceof DeleteUserDto) {
+            DeleteUserDto dto = (DeleteUserDto) obj;
+
+            validateDeleteUser(dto, errors);
         }
 
         ((UserDto) obj).setErrors(errors.getAllErrors()
@@ -84,6 +96,18 @@ class UserValidator implements Validator, UserValidationStrings {
 
         } else {
             errors.reject(C_PASSWORD_NULL, M_PASSWORD_NULL);
+        }
+    }
+
+    private void validateReadUser(ReadUserDto dto, Errors errors) {
+        if (userRepo.findByPesel(dto.getPesel()) == null) {
+            errors.reject(C_USER_NOT_EXISTS, M_USER_NOT_EXISTS);
+        }
+    }
+
+    private void validateDeleteUser(DeleteUserDto dto, Errors errors) {
+        if (userRepo.findByPesel(dto.getPesel()) == null) {
+            errors.reject(C_USER_NOT_EXISTS, M_USER_NOT_EXISTS);
         }
     }
 
