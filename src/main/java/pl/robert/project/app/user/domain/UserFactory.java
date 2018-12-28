@@ -10,7 +10,7 @@ class UserFactory {
 
         return User
                 .builder()
-                .PESEL(dto.getPESEL())
+                .pesel(dto.getPesel())
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .password(dto.getPassword())

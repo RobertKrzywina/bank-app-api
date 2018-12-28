@@ -12,11 +12,11 @@ import java.util.Set;
 @Getter @Setter
 public abstract class UserDto {
 
-    protected String PESEL;
+    protected String pesel;
     protected String firstName;
     protected String lastName;
     protected String password;
-    protected String roleName;
+    protected String roleName = "ROLE_USER";
 
     protected List<String> errors = new ArrayList<>();
     protected Set<Role> roles = new HashSet<>();

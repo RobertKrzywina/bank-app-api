@@ -20,8 +20,8 @@ class User {
 
     @Id
     @Size(min = LENGTH_PESEL, max = LENGTH_PESEL)
-    @Column(name = "user_pesel", nullable = false, unique = true)
-    private String PESEL;
+    @Column(nullable = false, unique = true)
+    private String pesel;
 
     @Size(min = MIN_LENGTH_NAME, max = MAX_LENGTH_NAME)
     @Column(name = "first_name", nullable = false)
@@ -36,7 +36,7 @@ class User {
     private String password;
 
     @Column(nullable = false, name = "role_name")
-    private String roleName;
+    private String roleName = "ROLE_USER";
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();

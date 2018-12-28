@@ -10,11 +10,10 @@ public class BaseUserQuery {
 
     public CreateUserQueryDto query(CreateUserDto dto) {
         return new CreateUserQueryDto(
-                dto.getPESEL(),
+                dto.getPesel(),
                 dto.getFirstName(),
                 dto.getLastName(),
-                dto.getPassword(),
-                dto.getRoles()
+                dto.getPassword()
         );
     }
 }

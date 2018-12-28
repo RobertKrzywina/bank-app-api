@@ -4,10 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
-import pl.robert.project.app.role.Role;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Component
 @Getter @Setter
@@ -15,7 +11,4 @@ import java.util.Set;
 public class CreateUserDto extends UserDto {
 
     private String rePassword;
-    private String roleName;
-
-    private Set<Role> roles = new HashSet<>();
 }
