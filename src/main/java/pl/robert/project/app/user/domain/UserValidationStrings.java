@@ -6,7 +6,7 @@ interface UserValidationStrings {
     int MIN_LENGTH_NAME = 2;
     int MAX_LENGTH_NAME = 20;
     int MIN_LENGTH_PASSWORD = 6;
-    int MAX_LENGTH_PASSWORD = 36;
+    int MAX_LENGTH_PASSWORD = 61;
 
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -35,7 +35,7 @@ interface UserValidationStrings {
     String M_PESEL_LENGTH = "Pesel should have 11 numbers";
     String M_FIRST_NAME_LENGTH = "First name should have from 2 to 20 characters";
     String M_LAST_NAME_LENGTH = "Last name should have from 2 to 20 characters";
-    String M_PASSWORD_LENGTH ="Password should contain from 6 to 36 characters";
+    String M_PASSWORD_LENGTH ="Password should contain from 6 to 61 characters";
 
     String M_USER_PESEL_EXISTS = "Pesel already exists";
     String M_USER_NOT_EXISTS = "User pesel not exists";

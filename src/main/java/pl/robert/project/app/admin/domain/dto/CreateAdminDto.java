@@ -11,5 +11,4 @@ import org.springframework.stereotype.Component;
 public class CreateAdminDto extends AdminDto {
 
     private String rePassword;
-    private String reSpecialPassword;
 }

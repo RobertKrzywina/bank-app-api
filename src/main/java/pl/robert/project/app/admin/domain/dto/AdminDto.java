@@ -16,7 +16,6 @@ public abstract class AdminDto {
     protected String name;
     protected String login;
     protected String password;
-    protected String specialPassword;
     protected String roleName;
 
     protected List<String> errors = new ArrayList<>();

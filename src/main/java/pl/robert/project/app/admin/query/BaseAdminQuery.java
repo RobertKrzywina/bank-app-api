@@ -2,7 +2,10 @@ package pl.robert.project.app.admin.query;
 
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.robert.project.app.admin.domain.dto.*;
+import pl.robert.project.app.admin.domain.dto.ChangeAdminPasswordDto;
+import pl.robert.project.app.admin.domain.dto.CreateAdminDto;
+import pl.robert.project.app.admin.domain.dto.DeleteAdminDto;
+import pl.robert.project.app.admin.domain.dto.ReadAdminDto;
 
 @Component
 @NoArgsConstructor
@@ -13,7 +16,6 @@ public class BaseAdminQuery {
                 dto.getName(),
                 dto.getLogin(),
                 dto.getPassword(),
-                dto.getSpecialPassword(),
                 dto.getRoles()
         );
     }
@@ -34,21 +36,10 @@ public class BaseAdminQuery {
         );
     }
 
-    public ChangeAdminPasswordQueryDto query(Object obj) {
-
-        if (obj instanceof ChangeAdminPasswordDto) {
-            ChangeAdminPasswordDto dto = (ChangeAdminPasswordDto) obj;
+    public ChangeAdminPasswordQueryDto query(ChangeAdminPasswordDto dto) {
 
             return new ChangeAdminPasswordQueryDto(
                     dto.getNewPassword()
             );
-
-        } else {
-            ChangeAdminSpecialPasswordDto dto = (ChangeAdminSpecialPasswordDto) obj;
-
-            return new ChangeAdminPasswordQueryDto(
-                    dto.getNewSpecialPassword()
-            );
-        }
     }
 }

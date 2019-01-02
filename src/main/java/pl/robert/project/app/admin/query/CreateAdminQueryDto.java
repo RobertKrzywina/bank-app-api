@@ -14,7 +14,6 @@ public class CreateAdminQueryDto {
     private String name;
     private String login;
     private String password;
-    private String specialPassword;
 
     private Set<Role> roles = new HashSet<>();
 }

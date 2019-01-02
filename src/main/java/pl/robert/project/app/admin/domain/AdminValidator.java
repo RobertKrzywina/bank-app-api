@@ -17,11 +17,10 @@ class AdminValidator implements Validator, AdminValidationStrings {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return (clazz.isAssignableFrom(CreateAdminDto.class) ||
-                (clazz.isAssignableFrom(ReadAdminDto.class)) ||
-                (clazz.isAssignableFrom(DeleteAdminDto.class)) ||
-                (clazz.isAssignableFrom(ChangeAdminPasswordDto.class)) ||
-                (clazz.isAssignableFrom(ChangeAdminSpecialPasswordDto.class)));
+        return (clazz.isAssignableFrom(CreateAdminDto.class)  ||
+               (clazz.isAssignableFrom(ReadAdminDto.class))   ||
+               (clazz.isAssignableFrom(DeleteAdminDto.class)) ||
+               (clazz.isAssignableFrom(ChangeAdminPasswordDto.class)));
     }
 
     @Override
@@ -46,11 +45,6 @@ class AdminValidator implements Validator, AdminValidationStrings {
             ChangeAdminPasswordDto dto = (ChangeAdminPasswordDto) obj;
 
             validateChangeAdminPassword(dto, errors);
-
-        } else if (obj instanceof ChangeAdminSpecialPasswordDto) {
-            ChangeAdminSpecialPasswordDto dto = (ChangeAdminSpecialPasswordDto) obj;
-
-            validateChangeAdminSpecialPassword(dto, errors);
         }
 
         ((AdminDto) obj).setErrors(errors.getAllErrors()
@@ -97,24 +91,6 @@ class AdminValidator implements Validator, AdminValidationStrings {
             }
         } else {
             errors.reject(C_PASSWORD_NULL, M_PASSWORD_NULL);
-        }
-
-        if (dto.getSpecialPassword() != null) {
-            if (isFieldLengthCorrect(dto.getSpecialPassword(), MIN_LENGTH_SPECIAL_PASSWORD, MAX_LENGTH_SPECIAL_PASSWORD)) {
-                errors.reject(C_SPECIAL_PASSWORD_LENGTH, M_SPECIAL_PASSWORD_LENGTH);
-            }
-
-            if (!dto.getSpecialPassword().equals(dto.getReSpecialPassword())) {
-                errors.reject(C_RE_SPECIAL_PASSWORD_NOT_MATCH, M_RE_SPECIAL_PASSWORD_NOT_MATCH_PASSWORD);
-            } else {
-
-                if (hasAnyWhiteSpaces(dto.getSpecialPassword())) {
-                    dto.setSpecialPassword(convertAllWhiteSpacesToHash(dto.getSpecialPassword()));
-                }
-
-            }
-        } else {
-            errors.reject(C_SPECIAL_PASSWORD_NULL, M_SPECIAL_PASSWORD_NULL);
         }
 
         if (dto.getRoleName() != null) {
@@ -185,50 +161,6 @@ class AdminValidator implements Validator, AdminValidationStrings {
             }
         } else {
             errors.reject(C_RE_NEW_PASSWORD_NULL, M_RE_NEW_PASSWORD_NULL);
-        }
-    }
-
-    private void validateChangeAdminSpecialPassword(ChangeAdminSpecialPasswordDto dto, Errors errors) {
-        if (dto.getOldSpecialPassword() != null) {
-            if (!dto.getOldSpecialPassword().equals(adminRepo.findById(dto.getId()).getSpecialPassword())) {
-                errors.reject(C_OLD_SPECIAL_PASSWORD_NOT_MATCH, M_OLD_SPECIAL_PASSWORD_NOT_MATCH);
-            }
-        } else {
-            errors.reject(C_OLD_SPECIAL_PASSWORD_NULL, M_OLD_SPECIAL_PASSWORD_NULL);
-        }
-
-        if (dto.getReOldSpecialPassword() != null) {
-            if (!dto.getOldSpecialPassword().equals(dto.getReOldSpecialPassword())) {
-                errors.reject(C_RE_OLD_SPECIAL_PASSWORD_NOT_MATCH, M_RE_OLD_SPECIAL_PASSWORD_NOT_MATCH);
-            }
-        } else {
-            errors.reject(C_RE_OLD_SPECIAL_PASSWORD_NULL, M_RE_OLD_SPECIAL_PASSWORD_NULL);
-        }
-
-        if (dto.getNewSpecialPassword() != null) {
-            if (isFieldLengthCorrect(dto.getNewSpecialPassword(), MIN_LENGTH_PASSWORD, MAX_LENGTH_PASSWORD)) {
-                errors.reject(C_SPECIAL_PASSWORD_LENGTH, M_SPECIAL_PASSWORD_LENGTH);
-            }
-        } else {
-            errors.reject(C_NEW_SPECIAL_PASSWORD_NULL, M_NEW_SPECIAL_PASSWORD_NULL);
-        }
-
-        if (dto.getReNewSpecialPassword() != null) {
-            if (!dto.getNewSpecialPassword().equals(dto.getReNewSpecialPassword())) {
-                errors.reject(C_RE_NEW_SPECIAL_PASSWORD_NOT_MATCH, M_RE_NEW_SPECIAL_PASSWORD_NOT_MATCH);
-            } else {
-
-                if (hasAnyWhiteSpaces(dto.getNewSpecialPassword())) {
-                    dto.setNewSpecialPassword(convertAllWhiteSpacesToHash(dto.getNewSpecialPassword()));
-                }
-
-            }
-        } else {
-            errors.reject(C_RE_NEW_SPECIAL_PASSWORD_NULL, M_RE_NEW_SPECIAL_PASSWORD_NULL);
-        }
-
-        if (hasAnyWhiteSpaces(dto.getNewSpecialPassword())) {
-            dto.setNewSpecialPassword(convertAllWhiteSpacesToHash(dto.getNewSpecialPassword()));
         }
     }
 

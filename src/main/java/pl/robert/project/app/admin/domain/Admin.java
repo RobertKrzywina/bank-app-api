@@ -16,7 +16,7 @@ import static pl.robert.project.app.admin.domain.AdminValidator.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-class Admin {
+public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,10 +34,6 @@ class Admin {
     @Size(min = MIN_LENGTH_PASSWORD, max = MAX_LENGTH_PASSWORD)
     @Column(nullable = false)
     private String password;
-
-    @Size(min = MIN_LENGTH_SPECIAL_PASSWORD, max = MAX_LENGTH_SPECIAL_PASSWORD)
-    @Column(nullable = false, name = "special_password")
-    private String specialPassword;
 
     @Column(nullable = false, name = "role_name")
     private String roleName;

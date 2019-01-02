@@ -9,13 +9,14 @@ import javax.persistence.*;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id")
-    private Long roleId;
+    private Long id;
 
     @Column(name = "role_name")
-    private String roleName;
+    private String role;
 }

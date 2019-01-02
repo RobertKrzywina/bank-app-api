@@ -1,14 +1,21 @@
 package pl.robert.project.app.admin.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
-import pl.robert.project.app.admin.domain.dto.*;
+import pl.robert.project.app.admin.domain.dto.ChangeAdminPasswordDto;
+import pl.robert.project.app.admin.domain.dto.CreateAdminDto;
+import pl.robert.project.app.admin.domain.dto.DeleteAdminDto;
+import pl.robert.project.app.admin.domain.dto.ReadAdminDto;
 import pl.robert.project.app.admin.query.*;
 import pl.robert.project.app.role.Role;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
+@NoArgsConstructor
 @AllArgsConstructor
 public class AdminFacade implements AdminValidationStrings {
 
@@ -20,7 +27,6 @@ public class AdminFacade implements AdminValidationStrings {
     private ReadAdminDto readAdminDto;
     private DeleteAdminDto deleteAdminDto;
     private ChangeAdminPasswordDto changePasswordDto;
-    private ChangeAdminSpecialPasswordDto changeSpecialPasswordDto;
 
     public CreateAdminQueryDto add(CreateAdminDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
@@ -32,9 +38,7 @@ public class AdminFacade implements AdminValidationStrings {
                 createAdminDto.setName(dto.getName());
                 createAdminDto.setLogin(dto.getLogin());
                 createAdminDto.setPassword(dto.getPassword());
-                createAdminDto.setSpecialPassword(dto.getReSpecialPassword());
                 createAdminDto.setRePassword(dto.getRePassword());
-                createAdminDto.setReSpecialPassword(dto.getReSpecialPassword());
 
                 Role role = verifyRole(dto.getRoleName());
                 dto.getRoles().add(role);
@@ -62,18 +66,18 @@ public class AdminFacade implements AdminValidationStrings {
 
         switch (roleToVerify) {
             case roleHeadAdmin:
-                role.setRoleId(1L);
-                role.setRoleName(roleHeadAdmin);
+                role.setId(1L);
+                role.setRole(roleHeadAdmin);
                 break;
 
             case roleAdmin:
-                role.setRoleId(2L);
-                role.setRoleName(roleAdmin);
+                role.setId(2L);
+                role.setRole(roleAdmin);
                 break;
 
             case roleUser:
-                role.setRoleId(3L);
-                role.setRoleName(roleUser);
+                role.setId(3L);
+                role.setRole(roleUser);
                 break;
         }
 
@@ -146,10 +150,8 @@ public class AdminFacade implements AdminValidationStrings {
         return null;
     }
 
-    public ChangeAdminPasswordQueryDto changePassword(Object obj, BindingResult result) {
-        if (validator.supports(obj.getClass())) {
-            if (obj instanceof ChangeAdminPasswordDto) {
-                ChangeAdminPasswordDto dto = (ChangeAdminPasswordDto) obj;
+    public ChangeAdminPasswordQueryDto changePassword(ChangeAdminPasswordDto dto, BindingResult result) {
+        if (validator.supports(dto.getClass())) {
 
                 validator.validate(dto, result);
 
@@ -158,18 +160,7 @@ public class AdminFacade implements AdminValidationStrings {
                     changePasswordDto.setNewPassword(dto.getNewPassword());
                 }
 
-            } else {
-                ChangeAdminSpecialPasswordDto dto = (ChangeAdminSpecialPasswordDto) obj;
-
-                validator.validate(dto, result);
-
-                if (!result.hasErrors()) {
-                    repository.updateAdminSpecialPassword(dto.getNewSpecialPassword(), dto.getId());
-                    changeSpecialPasswordDto.setNewSpecialPassword(dto.getNewSpecialPassword());
-                }
-            }
-
-            return baseQuery.query(obj);
+            return baseQuery.query(changePasswordDto);
         }
 
         return null;
