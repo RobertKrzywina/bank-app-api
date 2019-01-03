@@ -9,6 +9,7 @@ import pl.robert.project.app.admin.domain.dto.DeleteAdminDto;
 import pl.robert.project.app.admin.domain.dto.ReadAdminDto;
 import pl.robert.project.app.admin.query.*;
 import pl.robert.project.app.role.Role;
+import pl.robert.project.core.security.dto.AppUserDto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -175,6 +176,20 @@ public class AdminFacade implements AdminValidationStrings {
         map.put("CLASS", authentication.getClass());
 
         return map;
+    }
+
+    public AppUserDto getAppUser(String login) {
+        Admin admin = repository.findByLogin(login);
+
+        if (admin != null) {
+            return new AppUserDto(
+                    admin.getLogin(),
+                    admin.getPassword(),
+                    admin.getRoles()
+            );
+        }
+
+        return null;
     }
 
     private void updateAdminsId() {

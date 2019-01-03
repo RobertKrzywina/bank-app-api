@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
 
-public interface AdminRepository extends JpaRepository<Admin, Long> {
+interface AdminRepository extends JpaRepository<Admin, Long> {
 
     Admin findByLogin(String login);
     Admin findById(long id);

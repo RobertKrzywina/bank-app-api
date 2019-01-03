@@ -16,7 +16,7 @@ import static pl.robert.project.app.admin.domain.AdminValidator.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Admin {
+class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -8,9 +8,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import pl.robert.project.app.admin.domain.Admin;
-import pl.robert.project.app.admin.domain.AdminRepository;
+import pl.robert.project.app.admin.domain.AdminFacade;
 import pl.robert.project.app.role.Role;
+import pl.robert.project.app.user.domain.UserFacade;
+import pl.robert.project.core.security.dto.AppUserDto;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,22 +21,30 @@ import java.util.Set;
 @Getter
 public class UserDetailsServiceImp implements UserDetailsService {
 
-    private AdminRepository adminRepository;
+    private AdminFacade adminFacade;
+    private UserFacade userFacade;
+    private AppUserDto dto;
 
     private Set<GrantedAuthority> authorities = new HashSet<>();
 
+    private static final int PESEL_LENGTH = 11;
+
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        Admin appUser = adminRepository.findByLogin(login);
+        if (login.length() == PESEL_LENGTH) {
+            dto = userFacade.getAppUser(login);
+        } else {
+            dto = adminFacade.getAppUser(login);
+        }
 
-        if (appUser == null) {
+        if (dto == null) {
             throw new UsernameNotFoundException("User not found");
         }
 
         return new org.springframework.security.core.userdetails.User(
-                        appUser.getLogin(),
-                        appUser.getPassword(),
-                        convertAuthorities(appUser.getRoles()));
+                dto.getLogin(),
+                dto.getPassword(),
+                convertAuthorities(dto.getRoles()));
     }
 
     private Set<GrantedAuthority> convertAuthorities(Set<Role> userRoles) {

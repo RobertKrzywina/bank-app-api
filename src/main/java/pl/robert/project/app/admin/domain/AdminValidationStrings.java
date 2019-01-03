@@ -5,7 +5,7 @@ interface AdminValidationStrings {
     int MIN_LENGTH_NAME = 2;
     int MAX_LENGTH_NAME = 20;
     int MIN_LENGTH_LOGIN = 3;
-    int MAX_LENGTH_LOGIN = 18;
+    int MAX_LENGTH_LOGIN = 10;
     int MIN_LENGTH_PASSWORD = 6;
     int MAX_LENGTH_PASSWORD = 61;
 
@@ -52,7 +52,7 @@ interface AdminValidationStrings {
     String M_ROLE_NAME_NULL = "Enter your role name";
 
     String M_NAME_LENGTH = "Name should have from 2 to 20 characters";
-    String M_LOGIN_LENGTH = "Login should contain from 3 to 18 characters";
+    String M_LOGIN_LENGTH = "Login should contain from 3 to 10 characters";
     String M_PASSWORD_LENGTH = "Password should contain from 6 to 61 characters";
 
     String M_ADMIN_LOGIN_EXISTS = "Login already exists";

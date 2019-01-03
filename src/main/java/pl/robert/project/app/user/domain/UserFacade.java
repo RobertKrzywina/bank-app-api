@@ -1,6 +1,9 @@
 package pl.robert.project.app.user.domain;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import pl.robert.project.app.role.Role;
@@ -11,8 +14,10 @@ import pl.robert.project.app.user.query.BaseUserQuery;
 import pl.robert.project.app.user.query.CreateUserQueryDto;
 import pl.robert.project.app.user.query.DeleteUserQueryDto;
 import pl.robert.project.app.user.query.ReadUserQueryDto;
+import pl.robert.project.core.security.dto.AppUserDto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -34,10 +39,14 @@ public class UserFacade implements UserValidationStrings {
 
             if (!result.hasErrors()) {
 
+                PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
                 createUserDto.setPesel(dto.getPesel());
                 createUserDto.setFirstName(dto.getFirstName());
                 createUserDto.setLastName(dto.getLastName());
                 createUserDto.setPassword(dto.getPassword());
+
+                dto.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
 
                 dto.getRoles().add(new Role(3L, "ROLE_USER"));
                 createUserDto.setRoles(dto.getRoles());
@@ -112,6 +121,33 @@ public class UserFacade implements UserValidationStrings {
 
                 return baseQuery.query(deleteUserDto);
             }
+        }
+
+        return null;
+    }
+
+    public HashMap<String, Object> aboutMe(Authentication authentication) {
+        HashMap<String, Object> map = new HashMap<>();
+
+        map.put("NAME", authentication.getName());
+        map.put("AUTHORITIES", authentication.getAuthorities());
+        map.put("CREDENTIALS", authentication.getCredentials());
+        map.put("DETIALS", authentication.getDetails());
+        map.put("PRINCIPAL", authentication.getPrincipal());
+        map.put("CLASS", authentication.getClass());
+
+        return map;
+    }
+
+    public AppUserDto getAppUser(String login) {
+        User user = repository.findByPesel(login);
+
+        if (user != null) {
+            return new AppUserDto(
+                    user.getPesel(),
+                    user.getPassword(),
+                    user.getRoles()
+            );
         }
 
         return null;

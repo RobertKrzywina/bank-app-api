@@ -1,18 +1,19 @@
 package pl.robert.project.app.user;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pl.robert.project.app.user.domain.UserFacade;
-import pl.robert.project.app.user.domain.dto.CreateUserDto;
-import pl.robert.project.app.user.query.CreateUserQueryDto;
 
-import javax.validation.Valid;
+import java.util.HashMap;
 
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping("/api")
+@RequestMapping("/api/user-panel")
 @CrossOrigin("http://localhost:4200")
 class UserRestController {
 
@@ -22,19 +23,12 @@ class UserRestController {
         this.facade = facade;
     }
 
-    @GetMapping("/user-panel")
-    public ResponseEntity adminWontSeeThat() {
-        return ResponseEntity.status(200).body("Admin won't see that!");
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity registerUser(@RequestBody @Valid CreateUserDto dto, BindingResult result) {
-        CreateUserQueryDto newUserDto = facade.add(dto, result);
-
-        if (!dto.getErrors().isEmpty()) {
-            return ResponseEntity.status(400).body(dto.getErrors());
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public HashMap<String, Object> aboutMe(Authentication auth) {
+        if (auth != null) {
+            return facade.aboutMe(auth);
         }
 
-        return ResponseEntity.status(201).body(newUserDto);
+        return null;
     }
 }
