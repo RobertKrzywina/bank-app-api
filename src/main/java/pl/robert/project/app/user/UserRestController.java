@@ -19,7 +19,7 @@ class UserRestController {
 
     private UserFacade facade;
 
-    public UserRestController(UserFacade facade) {
+    UserRestController(UserFacade facade) {
         this.facade = facade;
     }
 

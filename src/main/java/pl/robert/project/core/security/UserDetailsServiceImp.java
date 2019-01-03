@@ -1,7 +1,6 @@
 package pl.robert.project.core.security;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +17,7 @@ import java.util.Set;
 
 @Component
 @AllArgsConstructor
-@Getter
-public class UserDetailsServiceImp implements UserDetailsService {
+class UserDetailsServiceImp implements UserDetailsService {
 
     private AdminFacade adminFacade;
     private UserFacade userFacade;
@@ -28,6 +26,10 @@ public class UserDetailsServiceImp implements UserDetailsService {
     private Set<GrantedAuthority> authorities = new HashSet<>();
 
     private static final int PESEL_LENGTH = 11;
+
+    Set<GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {

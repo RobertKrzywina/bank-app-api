@@ -3,6 +3,7 @@ package pl.robert.project.core.security;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,12 +18,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @AllArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserDetailsServiceImp userDetailsServiceImp;
 
     @Bean
-    public UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken() {
+    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken() {
         return new UsernamePasswordAuthenticationToken(userDetailsServiceImp, passwordEncoder(),
                 userDetailsServiceImp.getAuthorities());
     }
@@ -33,7 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
+    DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsServiceImp);
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -48,25 +49,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/", "/api/register", "/register")
+        http.authorizeRequests()
+                .antMatchers("/", "/api/register")
                 .permitAll()
                 .anyRequest().authenticated()
             .and()
                 .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .usernameParameter("user")
-                .passwordParameter("pass")
             .and()
                 .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/logout-success")
-                .deleteCookies("XSRF-TOKEN", "JSESSIONID")
-                .permitAll()
-            .and()
-                .csrf()
-                .disable();
+                .logoutSuccessHandler(new LogoutSuccessHandler(HttpStatus.OK))
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
+                .permitAll();
     }
 }

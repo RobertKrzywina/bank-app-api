@@ -35,12 +35,12 @@ class AdminRestController {
     private AdminFacade adminFacade;
     private UserFacade userFacade;
 
-    public AdminRestController(AdminFacade facade) {
+    AdminRestController(AdminFacade facade) {
         this.adminFacade = facade;
     }
 
     @Autowired
-    public void setUserFacade(UserFacade userFacade) {
+    void setUserFacade(UserFacade userFacade) {
         this.userFacade = userFacade;
     }
 

@@ -2,6 +2,8 @@ package pl.robert.project.app.admin.domain;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import pl.robert.project.app.admin.domain.dto.ChangeAdminPasswordDto;
 import pl.robert.project.app.admin.domain.dto.CreateAdminDto;
@@ -34,10 +36,14 @@ public class AdminFacade implements AdminValidationStrings {
 
             if (!result.hasErrors()) {
 
+                PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
                 createAdminDto.setName(dto.getName());
                 createAdminDto.setLogin(dto.getLogin());
                 createAdminDto.setPassword(dto.getPassword());
-                createAdminDto.setRePassword(dto.getRePassword());
+                createAdminDto.setDecodedBCryptPassword(dto.getPassword());
+
+                dto.setPassword(passwordEncoder.encode(createAdminDto.getPassword()));
 
                 Role role = verifyRole(dto.getRoleName());
                 dto.getRoles().add(role);

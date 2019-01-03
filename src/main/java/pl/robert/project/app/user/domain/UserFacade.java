@@ -45,6 +45,7 @@ public class UserFacade implements UserValidationStrings {
                 createUserDto.setFirstName(dto.getFirstName());
                 createUserDto.setLastName(dto.getLastName());
                 createUserDto.setPassword(dto.getPassword());
+                createUserDto.setDecodedBCryptPassword(dto.getPassword());
 
                 dto.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
 
@@ -69,7 +70,8 @@ public class UserFacade implements UserValidationStrings {
                     user.getPesel(),
                     user.getFirstName(),
                     user.getLastName(),
-                    user.getPassword()
+                    user.getPassword(),
+                    user.getDecodedBCryptPassword()
             ));
         }
 
@@ -89,6 +91,7 @@ public class UserFacade implements UserValidationStrings {
                 readUserDto.setFirstName(user.getFirstName());
                 readUserDto.setLastName(user.getLastName());
                 readUserDto.setPassword(user.getPassword());
+                readUserDto.setDecodedBCryptPassword(user.getDecodedBCryptPassword());
 
                 return baseQuery.query(readUserDto);
             }

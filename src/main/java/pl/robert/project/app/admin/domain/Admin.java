@@ -35,6 +35,9 @@ class Admin {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "decoded_BCrypt_password", nullable = false)
+    private String decodedBCryptPassword;
+
     @Column(nullable = false, name = "role_name")
     private String roleName;
 

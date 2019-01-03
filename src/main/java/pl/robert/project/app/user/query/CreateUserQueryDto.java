@@ -10,5 +10,5 @@ public class CreateUserQueryDto {
     private String PESEL;
     private String firstName;
     private String lastName;
-    private String password;
+    private String decodedBCryptPassword;
 }

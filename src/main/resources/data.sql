@@ -1,22 +1,15 @@
-INSERT INTO admins (name, login, password, role_name)
-VALUES ('JoeH-A', 'a', '$2a$04$hSnmEKSm.JsHM8Ob1P5dE.ITNT0JXebLxoKunKPig527avuNI.zlq', 'ROLE_HEAD-ADMIN'),
-       ('Mia', 'b', '$2a$04$sPaqvVQLuWIgOby0eNBaTO5QKKMcYye.bm.4IgDch37loQK9FyYce', 'ROLE_ADMIN'),
-       ('Tom', 'c', '$2a$04$e4wCIpvmmIB5nPq32oTYBONeN6k4B4dgs9nKikL9EtIIXlhigWC6a', 'ROLE_ADMIN'),
-       ('Tim', 'd', '$2a$04$U3GNJhVaBCAFdkfX7.znN.ahk.hH3nwbe.hu58v3SBeAB.iNatW8i', 'ROLE_ADMIN'),
-       ('Rob', 'e', '$2a$04$XW.9LfiE5W5c/JmHQV3YbeKgSIjFc4GDbyLo08armLXtMOnKh1SjG', 'ROLE_ADMIN'),
-       ('Jack', 'Jacky', '$2a$04$YuvANOF2Zcca7fI18MOvae0Oakw5FMufdb80wl3DVydVlSwmJCu4O', 'ROLE_HEAD-ADMIN');
-
--- ('a', 'a')
--- ('b', 'b')
--- ('c', 'c')
--- ('d', 'd')
--- ('e', 'e')
--- ('Jacky', 'a2')
-
 INSERT INTO roles (role_name)
 VALUES ('ROLE_HEAD-ADMIN'),
        ('ROLE_ADMIN'),
        ('ROLE_USER');
+
+INSERT INTO admins (decoded_bcrypt_password, login, name, password, role_name)
+VALUES (' a', 'a', 'JoeH-A', '$2a$04$hSnmEKSm.JsHM8Ob1P5dE.ITNT0JXebLxoKunKPig527avuNI.zlq', 'ROLE_HEAD-ADMIN'),
+       ('b', 'b', 'Mia', '$2a$04$sPaqvVQLuWIgOby0eNBaTO5QKKMcYye.bm.4IgDch37loQK9FyYce', 'ROLE_ADMIN'),
+       ('c', 'c', 'Tom', '$2a$04$e4wCIpvmmIB5nPq32oTYBONeN6k4B4dgs9nKikL9EtIIXlhigWC6a', 'ROLE_ADMIN'),
+       ('d', 'd', 'Tim', '$2a$04$U3GNJhVaBCAFdkfX7.znN.ahk.hH3nwbe.hu58v3SBeAB.iNatW8i', 'ROLE_ADMIN'),
+       ('e', 'e', 'Rob', '$2a$04$XW.9LfiE5W5c/JmHQV3YbeKgSIjFc4GDbyLo08armLXtMOnKh1SjG', 'ROLE_ADMIN'),
+       ('a2', 'Jacky', 'Jack', '$2a$04$YuvANOF2Zcca7fI18MOvae0Oakw5FMufdb80wl3DVydVlSwmJCu4O', 'ROLE_HEAD-ADMIN');
 
 INSERT INTO admins_roles (admin_admin_id, roles_role_id)
 VALUES (1, 1),
@@ -26,18 +19,12 @@ VALUES (1, 1),
        (5, 2),
        (6, 1);
 
-INSERT INTO users (pesel, first_name, last_name, password, role_name)
-VALUES ('80022136394', 'Justin', 'Roiland', '$2a$04$Yn4i7ManBgwyvsucKhRmcOw1y0cAUwuYULwdgW/F/eVubirWpkFTC', 'ROLE_USER'),
-       ('83100949123', 'Spencer', 'Grammer', '$2a$04$und0GjvFBHt1bukm2p8aGuijU1gCbERfbbui88keDClvaHAzle8o6', 'ROLE_USER'),
-       ('76082787162', 'Sarah', 'Chalke', '$2a$04$oRXzfn1Rzks1RFB3Ub5SyOL4t61rt3jHzNWGsLKacVUR4pddY/UCu', 'ROLE_USER'),
-       ('67020584817', 'Chris', 'Parnell', '$2a$04$0bB.u1tt6ax92gWedd.SeuZY1cwBwOCew.D0/OOvFlWYDKMv/KgNi', 'ROLE_USER'),
-       ('77071382883', 'Kari', 'Wahlgren', '$2a$04$jM0DyGEEGS/p/SN7SUHp3.M30azeTe3zr5eiU7Bi7xPBm7lajkcsi', 'ROLE_USER');
-
--- ('80022136394', 'RickAndMorty2013')
--- ('83100949123', 'summerSmith123')
--- ('76082787162', 'bethSmith123')
--- ('67020584817', 'jerrySmith123')
--- ('77071382883', 'jessica1111')
+INSERT INTO users (pesel, decoded_bcrypt_password, first_name, last_name, password, role_name)
+VALUES ('80022136394', 'RickAndMorty2013', 'Justin', 'Roiland', '$2a$04$Yn4i7ManBgwyvsucKhRmcOw1y0cAUwuYULwdgW/F/eVubirWpkFTC', 'ROLE_USER'),
+       ('83100949123', 'summerSmith123',  'Spencer', 'Grammer', '$2a$04$und0GjvFBHt1bukm2p8aGuijU1gCbERfbbui88keDClvaHAzle8o6', 'ROLE_USER'),
+       ('76082787162', 'bethSmith123',  'Sarah', 'Chalke', '$2a$04$oRXzfn1Rzks1RFB3Ub5SyOL4t61rt3jHzNWGsLKacVUR4pddY/UCu', 'ROLE_USER'),
+       ('67020584817', 'jerrySmith123',  'Chris', 'Parnell', '$2a$04$0bB.u1tt6ax92gWedd.SeuZY1cwBwOCew.D0/OOvFlWYDKMv/KgNi', 'ROLE_USER'),
+       ('77071382883', 'jessica1111',  'Kari', 'Wahlgren', '$2a$04$jM0DyGEEGS/p/SN7SUHp3.M30azeTe3zr5eiU7Bi7xPBm7lajkcsi', 'ROLE_USER');
 
 INSERT INTO users_roles (user_pesel, roles_role_id)
 VALUES ('80022136394', 3),

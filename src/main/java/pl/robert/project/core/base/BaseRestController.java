@@ -16,7 +16,7 @@ class BaseRestController {
 
     private UserFacade userFacade;
 
-    public BaseRestController(UserFacade userFacade) {
+    BaseRestController(UserFacade userFacade) {
         this.userFacade = userFacade;
     }
 

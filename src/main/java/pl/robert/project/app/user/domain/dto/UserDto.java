@@ -16,6 +16,7 @@ public abstract class UserDto {
     protected String firstName;
     protected String lastName;
     protected String password;
+    protected String decodedBCryptPassword;
     protected String roleName = "ROLE_USER";
 
     protected List<String> errors = new ArrayList<>();

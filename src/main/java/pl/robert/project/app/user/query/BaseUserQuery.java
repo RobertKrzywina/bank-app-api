@@ -15,7 +15,7 @@ public class BaseUserQuery {
                 dto.getPesel(),
                 dto.getFirstName(),
                 dto.getLastName(),
-                dto.getPassword()
+                dto.getDecodedBCryptPassword()
         );
     }
 
@@ -25,7 +25,8 @@ public class BaseUserQuery {
                 dto.getPesel(),
                 dto.getFirstName(),
                 dto.getLastName(),
-                dto.getPassword()
+                dto.getPassword(),
+                dto.getDecodedBCryptPassword()
         );
     }
 
