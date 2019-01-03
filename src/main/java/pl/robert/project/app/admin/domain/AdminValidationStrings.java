@@ -11,9 +11,9 @@ interface AdminValidationStrings {
 
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    String ROLE_HEAD_ADMIN = "HEAD-ADMIN";
-    String ROLE_ADMIN = "ADMIN";
-    String ROLE_USER = "USER";
+    String ROLE_HEAD_ADMIN = "ROLE_HEAD-ADMIN";
+    String ROLE_ADMIN = "ROLE_ADMIN";
+    String ROLE_USER = "ROLE_USER";
 
     ////////////////////////////////////////////////////////////////////////////////////////////
 

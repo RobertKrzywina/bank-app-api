@@ -1,5 +1,5 @@
 INSERT INTO admins (name, login, password, role_name)
-VALUES ('JoeTheHeadROLE_ADMIN', 'a', '$2a$04$hSnmEKSm.JsHM8Ob1P5dE.ITNT0JXebLxoKunKPig527avuNI.zlq', 'ROLE_HEAD-ADMIN'),
+VALUES ('JoeH-A', 'a', '$2a$04$hSnmEKSm.JsHM8Ob1P5dE.ITNT0JXebLxoKunKPig527avuNI.zlq', 'ROLE_HEAD-ADMIN'),
        ('Mia', 'b', '$2a$04$sPaqvVQLuWIgOby0eNBaTO5QKKMcYye.bm.4IgDch37loQK9FyYce', 'ROLE_ADMIN'),
        ('Tom', 'c', '$2a$04$e4wCIpvmmIB5nPq32oTYBONeN6k4B4dgs9nKikL9EtIIXlhigWC6a', 'ROLE_ADMIN'),
        ('Tim', 'd', '$2a$04$U3GNJhVaBCAFdkfX7.znN.ahk.hH3nwbe.hu58v3SBeAB.iNatW8i', 'ROLE_ADMIN'),

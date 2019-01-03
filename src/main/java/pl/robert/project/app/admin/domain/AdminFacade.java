@@ -1,8 +1,7 @@
 package pl.robert.project.app.admin.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import pl.robert.project.app.admin.domain.dto.ChangeAdminPasswordDto;
 import pl.robert.project.app.admin.domain.dto.CreateAdminDto;
@@ -12,10 +11,9 @@ import pl.robert.project.app.admin.query.*;
 import pl.robert.project.app.role.Role;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-@Component
-@NoArgsConstructor
 @AllArgsConstructor
 public class AdminFacade implements AdminValidationStrings {
 
@@ -164,6 +162,19 @@ public class AdminFacade implements AdminValidationStrings {
         }
 
         return null;
+    }
+
+    public HashMap<String, Object> aboutMe(Authentication authentication) {
+        HashMap<String, Object> map = new HashMap<>();
+
+        map.put("NAME", authentication.getName());
+        map.put("AUTHORITIES", authentication.getAuthorities());
+        map.put("CREDENTIALS", authentication.getCredentials());
+        map.put("DETIALS", authentication.getDetails());
+        map.put("PRINCIPAL", authentication.getPrincipal());
+        map.put("CLASS", authentication.getClass());
+
+        return map;
     }
 
     private void updateAdminsId() {

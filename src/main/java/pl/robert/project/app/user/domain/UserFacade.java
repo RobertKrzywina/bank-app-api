@@ -1,6 +1,7 @@
 package pl.robert.project.app.user.domain;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import pl.robert.project.app.role.Role;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
@@ -14,6 +15,7 @@ import pl.robert.project.app.user.query.ReadUserQueryDto;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 @AllArgsConstructor
 public class UserFacade implements UserValidationStrings {
 
