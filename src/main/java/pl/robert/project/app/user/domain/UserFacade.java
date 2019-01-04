@@ -14,6 +14,8 @@ import pl.robert.project.app.user.query.BaseUserQuery;
 import pl.robert.project.app.user.query.CreateUserQueryDto;
 import pl.robert.project.app.user.query.DeleteUserQueryDto;
 import pl.robert.project.app.user.query.ReadUserQueryDto;
+import pl.robert.project.app.user_address.UserAddress;
+import pl.robert.project.app.user_address.UserAddressFacade;
 import pl.robert.project.app.user_contact.UserContact;
 import pl.robert.project.app.user_contact.UserContactFacade;
 import pl.robert.project.core.security.dto.AppUserDto;
@@ -34,17 +36,27 @@ public class UserFacade implements UserValidationStrings {
     private ReadUserDto readUserDto;
     private DeleteUserDto deleteUserDto;
     private UserContactFacade userContactFacade;
+    private UserAddressFacade userAddressFacade;
 
     public CreateUserQueryDto add(CreateUserDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
 
             UserContact contact = new UserContact();
+            UserAddress address = new UserAddress();
 
             contact.setPesel(dto.getPesel());
             contact.setEmail(dto.getContact().getEmail());
             contact.setPhoneNumber(dto.getContact().getPhoneNumber());
 
+            address.setPesel(dto.getPesel());
+            address.setProvince(dto.getAddress().getProvince());
+            address.setCity(dto.getAddress().getCity());
+            address.setZipCode(dto.getAddress().getZipCode());
+            address.setStreet(dto.getAddress().getStreet());
+            address.setHouseNumber(dto.getAddress().getHouseNumber());
+
             userContactFacade.validate(contact, result);
+            userAddressFacade.validate(address, result);
             validator.validate(dto, result);
 
             if (!result.hasErrors()) {
@@ -66,7 +78,11 @@ public class UserFacade implements UserValidationStrings {
                 createUserDto.setContact(contact);
                 dto.setContact(createUserDto.getContact());
 
+                createUserDto.setAddress(address);
+                dto.setAddress(createUserDto.getAddress());
+
                 userContactFacade.saveUserContact(contact);
+                userAddressFacade.saveUserAddress(address);
                 repository.saveAndFlush(factory.create(dto));
 
                 return baseQuery.query(createUserDto);
@@ -86,9 +102,13 @@ public class UserFacade implements UserValidationStrings {
                     user.getFirstName(),
                     user.getLastName(),
                     user.getPassword(),
-                    user.getDecodedBCryptPassword(),
                     user.getContact().getEmail(),
-                    user.getContact().getPhoneNumber()
+                    user.getContact().getPhoneNumber(),
+                    user.getAddress().getProvince(),
+                    user.getAddress().getCity(),
+                    user.getAddress().getZipCode(),
+                    user.getAddress().getStreet(),
+                    user.getAddress().getHouseNumber()
             ));
         }
 

@@ -11,7 +11,11 @@ public class ReadUserQueryDto {
     private String firstName;
     private String lastName;
     private String password;
-    private String decodedBCryptPassword;
     private String email;
     private String phoneNumber;
+    private String province;
+    private String city;
+    private String zipCode;
+    private String street;
+    private String houseNumber;
 }

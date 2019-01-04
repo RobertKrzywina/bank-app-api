@@ -1,0 +1,89 @@
+package pl.robert.project.app.user_address;
+
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+@Component
+class UserAddressValidator implements Validator, UserAddressValidationStrings {
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return clazz.isAssignableFrom(UserAddress.class);
+    }
+
+    @Override
+    public void validate(Object obj, Errors errors) {
+        UserAddress address = (UserAddress) obj;
+
+        validateAddress(address, errors);
+
+        ((UserAddress) obj).setErrors(errors.getAllErrors()
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList()));
+    }
+
+    private void validateAddress(UserAddress address, Errors errors) {
+
+        if (address.getProvince() == null) {
+            errors.reject(C_PROVINCE_NULL, M_PROVINCE_NULL);
+        }
+
+        if (address.getCity() != null) {
+
+            if (isFieldLengthCorrect(address.getCity(), MIN_LENGTH_CITY, MAX_LENGTH_CITY)) {
+                errors.reject(C_CITY_LENGTH, M_CITY_LENGTH);
+            }
+
+        } else {
+            errors.reject(C_CITY_NULL, M_CITY_NULL);
+        }
+
+        if (address.getZipCode() != null) {
+
+            if (!isZipCodeValid(address.getZipCode())) {
+                errors.reject(C_ZIP_CODE_INVALID, M_ZIP_CODE_INVALID);
+            }
+
+        } else {
+            errors.reject(C_ZIP_CODE_NULL, M_ZIP_CODE_NULL);
+        }
+
+        if (address.getStreet() != null) {
+
+            if (isFieldLengthCorrect(address.getCity(), MIN_LENGTH_STREET, MAX_LENGTH_STREET)) {
+                errors.reject(C_STREET_LENGTH, M_STREET_LENGTH);
+            }
+
+        } else {
+            errors.reject(C_STREET_NULL, M_STREET_NULL);
+        }
+
+        if (address.getHouseNumber() != null) {
+
+            if (!isHouseNumberValid(address.getHouseNumber())) {
+                errors.reject(C_HOUSE_NUMBER_INVALID, M_HOUSE_NUMBER_INVALID);
+            }
+
+        } else {
+            errors.reject(C_HOUSE_NUMBER_NULL, M_HOUSE_NUMBER_NULL);
+        }
+    }
+
+    private boolean isFieldLengthCorrect(String fieldToCheck, int minLength, int maxLength) {
+        return fieldToCheck.length() < minLength || fieldToCheck.length() > maxLength;
+    }
+
+    private boolean isZipCodeValid(String zipCode) {
+        return Pattern.matches(ZIP_CODE_REGEX, zipCode);
+    }
+
+    private boolean isHouseNumberValid(String houseNumber) {
+        return Pattern.matches(HOUSE_NUMBER_REGEX, houseNumber);
+    }
+}

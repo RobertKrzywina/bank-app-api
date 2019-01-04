@@ -15,7 +15,14 @@ public class BaseUserQuery {
                 dto.getPesel(),
                 dto.getFirstName(),
                 dto.getLastName(),
-                dto.getDecodedBCryptPassword()
+                dto.getDecodedBCryptPassword(),
+                dto.getContact().getEmail(),
+                dto.getContact().getPhoneNumber(),
+                dto.getAddress().getProvince(),
+                dto.getAddress().getCity(),
+                dto.getAddress().getZipCode(),
+                dto.getAddress().getStreet(),
+                dto.getAddress().getHouseNumber()
         );
     }
 
@@ -26,9 +33,13 @@ public class BaseUserQuery {
                 dto.getFirstName(),
                 dto.getLastName(),
                 dto.getPassword(),
-                dto.getDecodedBCryptPassword(),
                 dto.getContact().getEmail(),
-                dto.getContact().getPhoneNumber()
+                dto.getContact().getPhoneNumber(),
+                dto.getAddress().getProvince(),
+                dto.getAddress().getCity(),
+                dto.getAddress().getZipCode(),
+                dto.getAddress().getStreet(),
+                dto.getAddress().getHouseNumber()
         );
     }
 

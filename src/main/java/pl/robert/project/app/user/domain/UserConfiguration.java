@@ -8,6 +8,7 @@ import pl.robert.project.app.user.domain.dto.CreateUserDto;
 import pl.robert.project.app.user.domain.dto.DeleteUserDto;
 import pl.robert.project.app.user.domain.dto.ReadUserDto;
 import pl.robert.project.app.user.query.BaseUserQuery;
+import pl.robert.project.app.user_address.UserAddressFacade;
 import pl.robert.project.app.user_contact.UserContactFacade;
 
 @Configuration
@@ -22,9 +23,10 @@ class UserConfiguration {
                       CreateUserDto createDto,
                       ReadUserDto readDto,
                       DeleteUserDto deleteDto,
-                      UserContactFacade userContactFacade) {
+                      UserContactFacade userContactFacade,
+                      UserAddressFacade userAddressFacade) {
         return new UserFacade(repository, factory, validator, query,
                               createDto, readDto, deleteDto,
-                              userContactFacade);
+                              userContactFacade, userAddressFacade);
     }
 }

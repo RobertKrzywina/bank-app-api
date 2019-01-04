@@ -18,6 +18,7 @@ class UserFactory {
                 .roleName(dto.getRoleName())
                 .roles(dto.getRoles())
                 .contact(dto.getContact())
+                .address(dto.getAddress())
                 .build();
     }
 }
