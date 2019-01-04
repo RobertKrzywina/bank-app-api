@@ -14,8 +14,10 @@ class UserFactory {
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .password(dto.getPassword())
+                .decodedBCryptPassword(dto.getDecodedBCryptPassword())
                 .roleName(dto.getRoleName())
                 .roles(dto.getRoles())
+                .contact(dto.getContact())
                 .build();
     }
 }

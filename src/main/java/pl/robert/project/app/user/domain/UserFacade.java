@@ -14,6 +14,8 @@ import pl.robert.project.app.user.query.BaseUserQuery;
 import pl.robert.project.app.user.query.CreateUserQueryDto;
 import pl.robert.project.app.user.query.DeleteUserQueryDto;
 import pl.robert.project.app.user.query.ReadUserQueryDto;
+import pl.robert.project.app.user_contact.UserContact;
+import pl.robert.project.app.user_contact.UserContactFacade;
 import pl.robert.project.core.security.dto.AppUserDto;
 
 import java.util.ArrayList;
@@ -31,10 +33,18 @@ public class UserFacade implements UserValidationStrings {
     private CreateUserDto createUserDto;
     private ReadUserDto readUserDto;
     private DeleteUserDto deleteUserDto;
+    private UserContactFacade userContactFacade;
 
     public CreateUserQueryDto add(CreateUserDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
 
+            UserContact contact = new UserContact();
+
+            contact.setPesel(dto.getPesel());
+            contact.setEmail(dto.getContact().getEmail());
+            contact.setPhoneNumber(dto.getContact().getPhoneNumber());
+
+            userContactFacade.validate(contact, result);
             validator.validate(dto, result);
 
             if (!result.hasErrors()) {
@@ -48,10 +58,15 @@ public class UserFacade implements UserValidationStrings {
                 createUserDto.setDecodedBCryptPassword(dto.getPassword());
 
                 dto.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
+                dto.setDecodedBCryptPassword(createUserDto.getDecodedBCryptPassword());
 
                 dto.getRoles().add(new Role(3L, "ROLE_USER"));
                 createUserDto.setRoles(dto.getRoles());
 
+                createUserDto.setContact(contact);
+                dto.setContact(createUserDto.getContact());
+
+                userContactFacade.saveUserContact(contact);
                 repository.saveAndFlush(factory.create(dto));
 
                 return baseQuery.query(createUserDto);
@@ -71,7 +86,9 @@ public class UserFacade implements UserValidationStrings {
                     user.getFirstName(),
                     user.getLastName(),
                     user.getPassword(),
-                    user.getDecodedBCryptPassword()
+                    user.getDecodedBCryptPassword(),
+                    user.getContact().getEmail(),
+                    user.getContact().getPhoneNumber()
             ));
         }
 

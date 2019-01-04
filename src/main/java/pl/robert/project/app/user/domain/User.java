@@ -2,6 +2,7 @@ package pl.robert.project.app.user.domain;
 
 import lombok.*;
 import pl.robert.project.app.role.Role;
+import pl.robert.project.app.user_contact.UserContact;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -35,7 +36,7 @@ class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "decoded_BCrypt_password", nullable = false)
+    @Column(name = "decoded_BCrypt_password")
     private String decodedBCryptPassword;
 
     @Column(nullable = false, name = "role_name")
@@ -43,4 +44,8 @@ class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_contact_pesel")
+    private UserContact contact;
 }

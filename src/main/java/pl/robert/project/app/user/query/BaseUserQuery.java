@@ -26,7 +26,9 @@ public class BaseUserQuery {
                 dto.getFirstName(),
                 dto.getLastName(),
                 dto.getPassword(),
-                dto.getDecodedBCryptPassword()
+                dto.getDecodedBCryptPassword(),
+                dto.getContact().getEmail(),
+                dto.getContact().getPhoneNumber()
         );
     }
 

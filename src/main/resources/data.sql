@@ -19,12 +19,19 @@ VALUES (1, 1),
        (5, 2),
        (6, 1);
 
-INSERT INTO users (pesel, decoded_bcrypt_password, first_name, last_name, password, role_name)
-VALUES ('80022136394', 'RickAndMorty2013', 'Justin', 'Roiland', '$2a$04$Yn4i7ManBgwyvsucKhRmcOw1y0cAUwuYULwdgW/F/eVubirWpkFTC', 'ROLE_USER'),
-       ('83100949123', 'summerSmith123',  'Spencer', 'Grammer', '$2a$04$und0GjvFBHt1bukm2p8aGuijU1gCbERfbbui88keDClvaHAzle8o6', 'ROLE_USER'),
-       ('76082787162', 'bethSmith123',  'Sarah', 'Chalke', '$2a$04$oRXzfn1Rzks1RFB3Ub5SyOL4t61rt3jHzNWGsLKacVUR4pddY/UCu', 'ROLE_USER'),
-       ('67020584817', 'jerrySmith123',  'Chris', 'Parnell', '$2a$04$0bB.u1tt6ax92gWedd.SeuZY1cwBwOCew.D0/OOvFlWYDKMv/KgNi', 'ROLE_USER'),
-       ('77071382883', 'jessica1111',  'Kari', 'Wahlgren', '$2a$04$jM0DyGEEGS/p/SN7SUHp3.M30azeTe3zr5eiU7Bi7xPBm7lajkcsi', 'ROLE_USER');
+INSERT INTO user_contact (user_contact_pesel, email, phone_number)
+VALUES ('80022136394', 'justin@email.com', '534149781'),
+       ('83100949123', 'spencer@gmail.com', '534149782'),
+       ('76082787162', 'sarah@iCloud.com', '534149783'),
+       ('67020584817', 'iliketoCODE@zombiedev.com', '404404404'),
+       ('77071382883', 'kari@emaaail.com', '534149784');
+
+INSERT INTO users (pesel, decoded_bcrypt_password, first_name, last_name, password, role_name, user_contact_pesel)
+VALUES ('80022136394', 'RickAndMorty2013', 'Justin', 'Roiland', '$2a$04$Yn4i7ManBgwyvsucKhRmcOw1y0cAUwuYULwdgW/F/eVubirWpkFTC', 'ROLE_USER', '80022136394'),
+       ('83100949123', 'summerSmith123',  'Spencer', 'Grammer', '$2a$04$und0GjvFBHt1bukm2p8aGuijU1gCbERfbbui88keDClvaHAzle8o6', 'ROLE_USER', '83100949123'),
+       ('76082787162', 'bethSmith123',  'Sarah', 'Chalke', '$2a$04$oRXzfn1Rzks1RFB3Ub5SyOL4t61rt3jHzNWGsLKacVUR4pddY/UCu', 'ROLE_USER', '76082787162'),
+       ('67020584817', 'jerrySmith123',  'Chris', 'Parnell', '$2a$04$0bB.u1tt6ax92gWedd.SeuZY1cwBwOCew.D0/OOvFlWYDKMv/KgNi', 'ROLE_USER', '67020584817'),
+       ('77071382883', 'jessica1111',  'Kari', 'Wahlgren', '$2a$04$jM0DyGEEGS/p/SN7SUHp3.M30azeTe3zr5eiU7Bi7xPBm7lajkcsi', 'ROLE_USER', '77071382883');
 
 INSERT INTO users_roles (user_pesel, roles_role_id)
 VALUES ('80022136394', 3),
