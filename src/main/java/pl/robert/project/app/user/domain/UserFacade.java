@@ -42,11 +42,12 @@ public class UserFacade implements UserValidationStrings {
         if (validator.supports(dto.getClass())) {
 
             UserContact contact = new UserContact();
-            UserAddress address = new UserAddress();
 
             contact.setPesel(dto.getPesel());
             contact.setEmail(dto.getContact().getEmail());
             contact.setPhoneNumber(dto.getContact().getPhoneNumber());
+
+            UserAddress address = new UserAddress();
 
             address.setPesel(dto.getPesel());
             address.setProvince(dto.getAddress().getProvince());
@@ -102,13 +103,9 @@ public class UserFacade implements UserValidationStrings {
                     user.getFirstName(),
                     user.getLastName(),
                     user.getPassword(),
-                    user.getContact().getEmail(),
-                    user.getContact().getPhoneNumber(),
-                    user.getAddress().getProvince(),
-                    user.getAddress().getCity(),
-                    user.getAddress().getZipCode(),
-                    user.getAddress().getStreet(),
-                    user.getAddress().getHouseNumber()
+                    user.getDecodedBCryptPassword(),
+                    user.getContact(),
+                    user.getAddress()
             ));
         }
 
@@ -129,6 +126,12 @@ public class UserFacade implements UserValidationStrings {
                 readUserDto.setLastName(user.getLastName());
                 readUserDto.setPassword(user.getPassword());
                 readUserDto.setDecodedBCryptPassword(user.getDecodedBCryptPassword());
+
+                UserContact contact = userContactFacade.findByPesel(pesel);
+                readUserDto.setContact(contact);
+
+                UserAddress address = userAddressFacade.findByPesel(pesel);
+                readUserDto.setAddress(address);
 
                 return baseQuery.query(readUserDto);
             }

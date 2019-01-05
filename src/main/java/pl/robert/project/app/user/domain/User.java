@@ -22,7 +22,7 @@ class User {
 
     @Id
     @Size(min = LENGTH_PESEL, max = LENGTH_PESEL)
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String pesel;
 
     @Size(min = MIN_LENGTH_NAME, max = MAX_LENGTH_NAME)
@@ -46,11 +46,11 @@ class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "user_contact_pesel")
     private UserContact contact;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "user_address_pesel")
     private UserAddress address;
 }

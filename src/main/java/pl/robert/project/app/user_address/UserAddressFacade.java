@@ -18,4 +18,8 @@ public class UserAddressFacade {
     public void saveUserAddress(UserAddress address) {
         repository.saveAndFlush(address);
     }
+
+    public UserAddress findByPesel(String pesel) {
+        return repository.findByPesel(pesel);
+    }
 }

@@ -44,6 +44,7 @@ public class AdminFacade implements AdminValidationStrings {
                 createAdminDto.setDecodedBCryptPassword(dto.getPassword());
 
                 dto.setPassword(passwordEncoder.encode(createAdminDto.getPassword()));
+                dto.setDecodedBCryptPassword(createAdminDto.getDecodedBCryptPassword());
 
                 Role role = verifyRole(dto.getRoleName());
                 dto.getRoles().add(role);
@@ -67,23 +68,13 @@ public class AdminFacade implements AdminValidationStrings {
 
         final String roleHeadAdmin = "ROLE_HEAD-ADMIN";
         final String roleAdmin = "ROLE_ADMIN";
-        final String roleUser = "ROLE_USER";
 
-        switch (roleToVerify) {
-            case roleHeadAdmin:
-                role.setId(1L);
-                role.setRole(roleHeadAdmin);
-                break;
-
-            case roleAdmin:
-                role.setId(2L);
-                role.setRole(roleAdmin);
-                break;
-
-            case roleUser:
-                role.setId(3L);
-                role.setRole(roleUser);
-                break;
+        if (roleToVerify.equals(roleHeadAdmin)) {
+            role.setId(1L);
+            role.setRole(roleHeadAdmin);
+        } else {
+            role.setId(2L);
+            role.setRole(roleAdmin);
         }
 
         return role;
@@ -158,12 +149,12 @@ public class AdminFacade implements AdminValidationStrings {
     public ChangeAdminPasswordQueryDto changePassword(ChangeAdminPasswordDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
 
-                validator.validate(dto, result);
+            validator.validate(dto, result);
 
-                if (!result.hasErrors()) {
-                    repository.updateAdminPassword(dto.getNewPassword(), dto.getId());
-                    changePasswordDto.setNewPassword(dto.getNewPassword());
-                }
+            if (!result.hasErrors()) {
+                repository.updateAdminPassword(dto.getNewPassword(), dto.getId());
+                changePasswordDto.setNewPassword(dto.getNewPassword());
+            }
 
             return baseQuery.query(changePasswordDto);
         }

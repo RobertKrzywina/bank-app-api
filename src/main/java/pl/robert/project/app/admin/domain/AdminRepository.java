@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 interface AdminRepository extends JpaRepository<Admin, Long> {
 
     Admin findByLogin(String login);
+
     Admin findById(long id);
 
     @Modifying

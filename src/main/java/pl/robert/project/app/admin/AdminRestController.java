@@ -100,14 +100,14 @@ class AdminRestController {
         return ResponseEntity.status(200).body(userDto);
     }
 
-    @DeleteMapping("/admin-panel/users")
+    @DeleteMapping("/users")
     public ResponseEntity deleteUsers() {
         DeleteUserQueryDto dtoMsg = userFacade.delete();
 
         return ResponseEntity.status(200).body(dtoMsg);
     }
 
-    @DeleteMapping("/admin-panel/users/{pesel}")
+    @DeleteMapping("/users/{pesel}")
     public ResponseEntity deleteUserByPesel(@PathVariable("pesel") String pesel, DeleteUserDto dto, BindingResult result) {
         DeleteUserQueryDto dtoMsg = userFacade.deleteUserByPesel(pesel, dto, result);
 
@@ -119,7 +119,7 @@ class AdminRestController {
     }
 
     @PreAuthorize("hasRole('HEAD-ADMIN')")
-    @DeleteMapping("/admin")
+    @DeleteMapping("/admins")
     public ResponseEntity deleteAdmins() {
         DeleteAdminQueryDto dtoMsg = adminFacade.delete();
 

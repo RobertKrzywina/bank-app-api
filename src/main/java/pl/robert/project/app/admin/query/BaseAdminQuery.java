@@ -16,6 +16,7 @@ public class BaseAdminQuery {
                 dto.getName(),
                 dto.getLogin(),
                 dto.getPassword(),
+                dto.getDecodedBCryptPassword(),
                 dto.getRoles()
         );
     }
@@ -38,8 +39,8 @@ public class BaseAdminQuery {
 
     public ChangeAdminPasswordQueryDto query(ChangeAdminPasswordDto dto) {
 
-            return new ChangeAdminPasswordQueryDto(
-                    dto.getNewPassword()
-            );
+        return new ChangeAdminPasswordQueryDto(
+                dto.getNewPassword()
+        );
     }
 }

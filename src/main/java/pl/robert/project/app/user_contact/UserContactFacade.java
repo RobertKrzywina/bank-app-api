@@ -18,4 +18,8 @@ public class UserContactFacade {
     public void saveUserContact(UserContact contact) {
         repository.saveAndFlush(contact);
     }
+
+    public UserContact findByPesel(String pesel) {
+        return repository.findByPesel(pesel);
+    }
 }

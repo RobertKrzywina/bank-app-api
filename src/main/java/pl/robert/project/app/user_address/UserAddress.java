@@ -1,5 +1,6 @@
 package pl.robert.project.app.user_address;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ import static pl.robert.project.app.user_address.UserAddressValidationStrings.*;
 public class UserAddress {
 
     @Id
+    @JsonIgnore
     @Column(name = "user_address_pesel")
     private String pesel;
 
@@ -42,5 +44,6 @@ public class UserAddress {
     private String houseNumber;
 
     @Transient
+    @JsonIgnore
     private List<String> errors = new ArrayList<>();
 }

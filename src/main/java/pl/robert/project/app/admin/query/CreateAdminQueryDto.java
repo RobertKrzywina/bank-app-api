@@ -14,6 +14,7 @@ public class CreateAdminQueryDto {
     private String name;
     private String login;
     private String password;
+    private String decodedBCryptPassword;
 
     private Set<Role> roles = new HashSet<>();
 }

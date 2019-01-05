@@ -60,6 +60,10 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(new LogoutSuccessHandler(HttpStatus.OK))
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true)
-                .permitAll();
+                .permitAll()
+            .and()
+                .httpBasic()
+            .and()
+                .csrf().disable();
     }
 }

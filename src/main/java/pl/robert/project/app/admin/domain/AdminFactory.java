@@ -13,6 +13,7 @@ class AdminFactory {
                 .name(dto.getName())
                 .login(dto.getLogin())
                 .password(dto.getPassword())
+                .decodedBCryptPassword(dto.getDecodedBCryptPassword())
                 .roleName(dto.getRoleName())
                 .roles(dto.getRoles())
                 .build();
