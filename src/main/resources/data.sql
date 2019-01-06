@@ -33,18 +33,30 @@ VALUES ('80022136394', 'Warszawa', '44', 'Mazowieckie', 'Krakowskie Przedmieści
        ('67020584817', 'Poznan', '99', 'Wielkopolskie', '11 Listopada', '60-106'),
        ('77071382883', 'Szczecin', '59', 'Zachodniopomorskie', 'Akacjowa', '70-004');
 
+INSERT INTO user_bank_account (user_bank_account_pesel, account_number, balance)
+VALUES ('80022136394', 'PL38 6304 4308 4918 4834 9838', 4810.01),
+       ('83100949123', 'PL62 8058 5353 1332 3091 4284', 8263.63),
+       ('76082787162', 'PL46 3539 4580 4736 5776 8890', 2389.09),
+       ('67020584817', 'PL91 3018 4529 8669 0250 7367', 5857.27),
+       ('77071382883', 'PL85 7529 0532 0943 1086 2148', 3827.22);
+
 INSERT INTO users (pesel, decoded_bcrypt_password, first_name, last_name, password, role_name, user_address_pesel,
-                   user_contact_pesel)
+                   user_bank_account_pesel, user_contact_pesel)
 VALUES ('80022136394', 'RickAndMorty2013', 'Justin', 'Roiland',
-        '$2a$04$Yn4i7ManBgwyvsucKhRmcOw1y0cAUwuYULwdgW/F/eVubirWpkFTC', 'ROLE_USER', '80022136394', '80022136394'),
+        '$2a$04$Yn4i7ManBgwyvsucKhRmcOw1y0cAUwuYULwdgW/F/eVubirWpkFTC', 'ROLE_USER', '80022136394', '80022136394',
+        '80022136394'),
        ('83100949123', 'summerSmith123', 'Spencer', 'Grammer',
-        '$2a$04$und0GjvFBHt1bukm2p8aGuijU1gCbERfbbui88keDClvaHAzle8o6', 'ROLE_USER', '83100949123', '83100949123'),
+        '$2a$04$und0GjvFBHt1bukm2p8aGuijU1gCbERfbbui88keDClvaHAzle8o6', 'ROLE_USER', '83100949123', '83100949123',
+        '83100949123'),
        ('76082787162', 'bethSmith123', 'Sarah', 'Chalke',
-        '$2a$04$oRXzfn1Rzks1RFB3Ub5SyOL4t61rt3jHzNWGsLKacVUR4pddY/UCu', 'ROLE_USER', '76082787162', '76082787162'),
+        '$2a$04$oRXzfn1Rzks1RFB3Ub5SyOL4t61rt3jHzNWGsLKacVUR4pddY/UCu', 'ROLE_USER', '76082787162', '76082787162',
+        '76082787162'),
        ('67020584817', 'jerrySmith123', 'Chris', 'Parnell',
-        '$2a$04$0bB.u1tt6ax92gWedd.SeuZY1cwBwOCew.D0/OOvFlWYDKMv/KgNi', 'ROLE_USER', '67020584817', '67020584817'),
+        '$2a$04$0bB.u1tt6ax92gWedd.SeuZY1cwBwOCew.D0/OOvFlWYDKMv/KgNi', 'ROLE_USER', '67020584817', '67020584817',
+        '67020584817'),
        ('77071382883', 'jessica1111', 'Kari', 'Wahlgren',
-        '$2a$04$jM0DyGEEGS/p/SN7SUHp3.M30azeTe3zr5eiU7Bi7xPBm7lajkcsi', 'ROLE_USER', '77071382883', '77071382883');
+        '$2a$04$jM0DyGEEGS/p/SN7SUHp3.M30azeTe3zr5eiU7Bi7xPBm7lajkcsi', 'ROLE_USER', '77071382883', '77071382883',
+        '77071382883');
 
 INSERT INTO users_roles (user_pesel, roles_role_id)
 VALUES ('80022136394', 3),

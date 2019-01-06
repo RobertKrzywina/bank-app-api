@@ -19,6 +19,7 @@ class UserFactory {
                 .roles(dto.getRoles())
                 .contact(dto.getContact())
                 .address(dto.getAddress())
+                .bankAccount(dto.getBankAccount())
                 .build();
     }
 }

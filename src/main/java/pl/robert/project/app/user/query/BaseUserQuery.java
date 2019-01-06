@@ -17,7 +17,8 @@ public class BaseUserQuery {
                 dto.getLastName(),
                 dto.getDecodedBCryptPassword(),
                 dto.getContact(),
-                dto.getAddress()
+                dto.getAddress(),
+                dto.getBankAccount()
         );
     }
 
@@ -30,7 +31,8 @@ public class BaseUserQuery {
                 dto.getPassword(),
                 dto.getDecodedBCryptPassword(),
                 dto.getContact(),
-                dto.getAddress()
+                dto.getAddress(),
+                dto.getBankAccount()
         );
     }
 

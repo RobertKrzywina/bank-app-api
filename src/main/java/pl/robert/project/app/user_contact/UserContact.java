@@ -19,7 +19,7 @@ public class UserContact {
 
     @Id
     @JsonIgnore
-    @Column(name = "user_contact_pesel")
+    @Column(name = "user_contact_pesel", unique = true, nullable = false)
     private String pesel;
 
     @Column(unique = true, nullable = false)

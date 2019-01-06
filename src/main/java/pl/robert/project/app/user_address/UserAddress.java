@@ -22,7 +22,7 @@ public class UserAddress {
 
     @Id
     @JsonIgnore
-    @Column(name = "user_address_pesel")
+    @Column(name = "user_address_pesel", unique = true, nullable = false)
     private String pesel;
 
     @Column(nullable = false)

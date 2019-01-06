@@ -3,6 +3,7 @@ package pl.robert.project.app.user.domain;
 import lombok.*;
 import pl.robert.project.app.role.Role;
 import pl.robert.project.app.user_address.UserAddress;
+import pl.robert.project.app.user_bank_account.UserBankAccount;
 import pl.robert.project.app.user_contact.UserContact;
 
 import javax.persistence.*;
@@ -53,4 +54,8 @@ class User {
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "user_address_pesel")
     private UserAddress address;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "user_bank_account_pesel")
+    private UserBankAccount bankAccount;
 }

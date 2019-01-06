@@ -16,6 +16,8 @@ import pl.robert.project.app.user.query.DeleteUserQueryDto;
 import pl.robert.project.app.user.query.ReadUserQueryDto;
 import pl.robert.project.app.user_address.UserAddress;
 import pl.robert.project.app.user_address.UserAddressFacade;
+import pl.robert.project.app.user_bank_account.UserBankAccount;
+import pl.robert.project.app.user_bank_account.UserBankAccountFacade;
 import pl.robert.project.app.user_contact.UserContact;
 import pl.robert.project.app.user_contact.UserContactFacade;
 import pl.robert.project.core.security.dto.AppUserDto;
@@ -23,6 +25,7 @@ import pl.robert.project.core.security.dto.AppUserDto;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 @Component
 @AllArgsConstructor
@@ -37,6 +40,7 @@ public class UserFacade implements UserValidationStrings {
     private DeleteUserDto deleteUserDto;
     private UserContactFacade userContactFacade;
     private UserAddressFacade userAddressFacade;
+    private UserBankAccountFacade userBankAccountFacade;
 
     public CreateUserQueryDto add(CreateUserDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
@@ -55,6 +59,12 @@ public class UserFacade implements UserValidationStrings {
             address.setZipCode(dto.getAddress().getZipCode());
             address.setStreet(dto.getAddress().getStreet());
             address.setHouseNumber(dto.getAddress().getHouseNumber());
+
+            UserBankAccount bankAccount = new UserBankAccount();
+
+            bankAccount.setPesel(dto.getPesel());
+            bankAccount.setAccountNumber(bankAccountNumberGenerator());
+            bankAccount.setBalance(0.0);
 
             userContactFacade.validate(contact, result);
             userAddressFacade.validate(address, result);
@@ -82,8 +92,12 @@ public class UserFacade implements UserValidationStrings {
                 createUserDto.setAddress(address);
                 dto.setAddress(createUserDto.getAddress());
 
+                createUserDto.setBankAccount(bankAccount);
+                dto.setBankAccount(createUserDto.getBankAccount());
+
                 userContactFacade.saveUserContact(contact);
                 userAddressFacade.saveUserAddress(address);
+                userBankAccountFacade.saveUserBankAccount(bankAccount);
                 repository.saveAndFlush(factory.create(dto));
 
                 return baseQuery.query(createUserDto);
@@ -91,6 +105,27 @@ public class UserFacade implements UserValidationStrings {
         }
 
         return null;
+    }
+
+    private String bankAccountNumberGenerator() {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        sb.append("PL");
+        do {
+            for (int i = 3; i < 30; i++) {
+                if (i % 5 == 0) {
+                    sb.append(" ");
+                } else {
+                    int num = random.nextInt(10);
+                    sb.append(num);
+                }
+            }
+        } while (isAccountNumberExists(sb.toString()));
+        return sb.toString();
+    }
+
+    private boolean isAccountNumberExists(String accountNumber) {
+        return userBankAccountFacade.findByAccountNumber(accountNumber) != null;
     }
 
     public List<ReadUserQueryDto> getAll() {
@@ -105,7 +140,8 @@ public class UserFacade implements UserValidationStrings {
                     user.getPassword(),
                     user.getDecodedBCryptPassword(),
                     user.getContact(),
-                    user.getAddress()
+                    user.getAddress(),
+                    user.getBankAccount()
             ));
         }
 
@@ -132,6 +168,9 @@ public class UserFacade implements UserValidationStrings {
 
                 UserAddress address = userAddressFacade.findByPesel(pesel);
                 readUserDto.setAddress(address);
+
+                UserBankAccount bankAccount = userBankAccountFacade.findByPesel(pesel);
+                readUserDto.setBankAccount(bankAccount);
 
                 return baseQuery.query(readUserDto);
             }
