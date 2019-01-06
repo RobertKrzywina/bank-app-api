@@ -11,7 +11,7 @@ import pl.robert.project.app.admin.domain.dto.DeleteAdminDto;
 import pl.robert.project.app.admin.domain.dto.ReadAdminDto;
 import pl.robert.project.app.admin.query.*;
 import pl.robert.project.app.role.Role;
-import pl.robert.project.core.security.dto.AppUserDto;
+import pl.robert.project.app.security.dto.AppUserDto;
 
 import java.util.ArrayList;
 import java.util.HashMap;

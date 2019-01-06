@@ -1,4 +1,4 @@
-package pl.robert.project.core.security.dto;
+package pl.robert.project.app.security.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

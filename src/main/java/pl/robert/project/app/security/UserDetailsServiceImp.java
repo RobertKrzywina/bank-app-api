@@ -1,4 +1,4 @@
-package pl.robert.project.core.security;
+package pl.robert.project.app.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import pl.robert.project.app.admin.domain.AdminFacade;
 import pl.robert.project.app.role.Role;
 import pl.robert.project.app.user.domain.UserFacade;
-import pl.robert.project.core.security.dto.AppUserDto;
+import pl.robert.project.app.security.dto.AppUserDto;
 
 import java.util.HashSet;
 import java.util.Set;

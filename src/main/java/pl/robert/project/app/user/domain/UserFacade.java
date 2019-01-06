@@ -20,7 +20,7 @@ import pl.robert.project.app.user_bank_account.UserBankAccount;
 import pl.robert.project.app.user_bank_account.UserBankAccountFacade;
 import pl.robert.project.app.user_contact.UserContact;
 import pl.robert.project.app.user_contact.UserContactFacade;
-import pl.robert.project.core.security.dto.AppUserDto;
+import pl.robert.project.app.security.dto.AppUserDto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class UserFacade implements UserValidationStrings {
 
     private UserRepository repository;
     private UserFactory factory;
-    private UserValidator validator;
+    private UserValidator userValidator;
     private BaseUserQuery baseQuery;
     private CreateUserDto createUserDto;
     private ReadUserDto readUserDto;
@@ -43,7 +43,7 @@ public class UserFacade implements UserValidationStrings {
     private UserBankAccountFacade userBankAccountFacade;
 
     public CreateUserQueryDto add(CreateUserDto dto, BindingResult result) {
-        if (validator.supports(dto.getClass())) {
+        if (userValidator.supports(dto.getClass())) {
 
             UserContact contact = new UserContact();
 
@@ -64,11 +64,10 @@ public class UserFacade implements UserValidationStrings {
 
             bankAccount.setPesel(dto.getPesel());
             bankAccount.setAccountNumber(bankAccountNumberGenerator());
-            bankAccount.setBalance(0.0);
 
             userContactFacade.validate(contact, result);
             userAddressFacade.validate(address, result);
-            validator.validate(dto, result);
+            userValidator.validate(dto, result);
 
             if (!result.hasErrors()) {
 
@@ -149,9 +148,9 @@ public class UserFacade implements UserValidationStrings {
     }
 
     public ReadUserQueryDto getUserByPesel(String pesel, ReadUserDto dto, BindingResult result) {
-        if (validator.supports(dto.getClass())) {
+        if (userValidator.supports(dto.getClass())) {
 
-            validator.validate(dto, result);
+            userValidator.validate(dto, result);
 
             if (!result.hasErrors()) {
 
@@ -193,9 +192,9 @@ public class UserFacade implements UserValidationStrings {
     }
 
     public DeleteUserQueryDto deleteUserByPesel(String pesel, DeleteUserDto dto, BindingResult result) {
-        if (validator.supports(dto.getClass())) {
+        if (userValidator.supports(dto.getClass())) {
 
-            validator.validate(dto, result);
+            userValidator.validate(dto, result);
 
             if (!result.hasErrors()) {
                 repository.delete(repository.findByPesel(pesel));

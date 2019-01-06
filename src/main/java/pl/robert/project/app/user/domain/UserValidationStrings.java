@@ -2,11 +2,11 @@ package pl.robert.project.app.user.domain;
 
 interface UserValidationStrings {
 
-    int LENGTH_PESEL = 11;
-    int MIN_LENGTH_NAME = 2;
-    int MAX_LENGTH_NAME = 20;
-    int MIN_LENGTH_PASSWORD = 6;
-    int MAX_LENGTH_PASSWORD = 61;
+    int PESEL_LENGTH = 11;
+    int NAME_MIN_LENGTH = 2;
+    int NAME_MAX_LENGTH = 20;
+    int PASSWORD_MIN_LENGTH = 6;
+    int PASSWORD_MAX_LENGTH = 61;
 
     ////////////////////////////////////////////////////////////////////////////////////////////
 

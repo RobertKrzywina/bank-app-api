@@ -1,5 +1,6 @@
 package pl.robert.project.app.user_bank_account;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,10 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
-import static pl.robert.project.app.user_bank_account.UserBankAccountValidationStrings.MAX_LENGTH_ACCOUNT_NUMBER;
-import static pl.robert.project.app.user_bank_account.UserBankAccountValidationStrings.MIN_LENGTH_ACCOUNT_NUMBER;
+import static pl.robert.project.app.user_bank_account.UserBankAccountValidationStrings.ACCOUNT_NUMBER_LENGTH;
 
 @Entity
 @Table(name = "user_bank_account")
@@ -22,13 +21,13 @@ import static pl.robert.project.app.user_bank_account.UserBankAccountValidationS
 public class UserBankAccount {
 
     @Id
+    @JsonIgnore
     @Column(name = "user_bank_account_pesel", unique = true, nullable = false)
     private String pesel;
 
-    @Size(min = MIN_LENGTH_ACCOUNT_NUMBER, max = MAX_LENGTH_ACCOUNT_NUMBER)
-    @Column(name = "account_number", unique = true, nullable = false)
+    @Column(name = "account_number", unique = true, nullable = false, length = ACCOUNT_NUMBER_LENGTH)
     private String accountNumber;
 
     @Column
-    private double balance;
+    private double balance = 0.0;
 }

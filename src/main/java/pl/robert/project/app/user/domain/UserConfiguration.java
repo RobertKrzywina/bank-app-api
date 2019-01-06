@@ -19,7 +19,7 @@ class UserConfiguration {
     @Bean
     UserFacade facade(UserRepository repository,
                       UserFactory factory,
-                      UserValidator validator,
+                      UserValidator userValidator,
                       BaseUserQuery query,
                       CreateUserDto createDto,
                       ReadUserDto readDto,
@@ -27,7 +27,7 @@ class UserConfiguration {
                       UserContactFacade userContactFacade,
                       UserAddressFacade userAddressFacade,
                       UserBankAccountFacade userBankAccountFacade) {
-        return new UserFacade(repository, factory, validator, query,
+        return new UserFacade(repository, factory, userValidator, query,
                               createDto, readDto, deleteDto,
                               userContactFacade, userAddressFacade, userBankAccountFacade);
     }

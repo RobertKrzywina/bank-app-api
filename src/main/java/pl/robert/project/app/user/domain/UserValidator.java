@@ -52,11 +52,11 @@ class UserValidator implements Validator, UserValidationStrings {
 
         if (dto.getPesel() != null) {
 
-            if (isFieldLengthCorrect(dto.getPesel(), LENGTH_PESEL, LENGTH_PESEL)) {
+            if (isFieldLengthCorrect(dto.getPesel(), PESEL_LENGTH, PESEL_LENGTH)) {
                 errors.reject(C_PESEL_LENGTH, M_PESEL_LENGTH);
             }
 
-            if (isPeselExists(dto.getPesel()) && dto.getPesel().length() == LENGTH_PESEL) {
+            if (isPeselExists(dto.getPesel()) && dto.getPesel().length() == PESEL_LENGTH) {
                 errors.reject(C_USER_PESEL_EXISTS, M_USER_PESEL_EXISTS);
             }
 
@@ -66,7 +66,7 @@ class UserValidator implements Validator, UserValidationStrings {
 
         if (dto.getFirstName() != null) {
 
-            if (isFieldLengthCorrect(dto.getFirstName(), MIN_LENGTH_NAME, MAX_LENGTH_NAME)) {
+            if (isFieldLengthCorrect(dto.getFirstName(), NAME_MIN_LENGTH, NAME_MAX_LENGTH)) {
                 errors.reject(C_FIRST_NAME_LENGTH, M_FIRST_NAME_LENGTH);
             }
 
@@ -76,7 +76,7 @@ class UserValidator implements Validator, UserValidationStrings {
 
         if (dto.getLastName() != null) {
 
-            if (isFieldLengthCorrect(dto.getLastName(), MIN_LENGTH_NAME, MAX_LENGTH_NAME)) {
+            if (isFieldLengthCorrect(dto.getLastName(), NAME_MIN_LENGTH, NAME_MAX_LENGTH)) {
                 errors.reject(C_LAST_NAME_LENGTH, M_LAST_NAME_LENGTH);
             }
 
@@ -86,7 +86,7 @@ class UserValidator implements Validator, UserValidationStrings {
 
         if (dto.getPassword() != null) {
 
-            if (isFieldLengthCorrect(dto.getPassword(), MIN_LENGTH_PASSWORD, MAX_LENGTH_PASSWORD)) {
+            if (isFieldLengthCorrect(dto.getPassword(), PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH)) {
                 errors.reject(C_PASSWORD_LENGTH, M_PASSWORD_LENGTH);
             }
 

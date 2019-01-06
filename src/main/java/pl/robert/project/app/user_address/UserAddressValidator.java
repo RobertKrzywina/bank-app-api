@@ -36,7 +36,7 @@ class UserAddressValidator implements Validator, UserAddressValidationStrings {
 
         if (address.getCity() != null) {
 
-            if (isFieldLengthCorrect(address.getCity(), MIN_LENGTH_CITY, MAX_LENGTH_CITY)) {
+            if (isFieldLengthCorrect(address.getCity(), CITY_MIN_LENGTH, CITY_MAX_LENGTH)) {
                 errors.reject(C_CITY_LENGTH, M_CITY_LENGTH);
             }
 
@@ -56,7 +56,7 @@ class UserAddressValidator implements Validator, UserAddressValidationStrings {
 
         if (address.getStreet() != null) {
 
-            if (isFieldLengthCorrect(address.getCity(), MIN_LENGTH_STREET, MAX_LENGTH_STREET)) {
+            if (isFieldLengthCorrect(address.getCity(), STREET_MIN_LENGTH, STREET_MAX_LENGTH)) {
                 errors.reject(C_STREET_LENGTH, M_STREET_LENGTH);
             }
 

@@ -22,26 +22,25 @@ import static pl.robert.project.app.user.domain.UserValidationStrings.*;
 class User {
 
     @Id
-    @Size(min = LENGTH_PESEL, max = LENGTH_PESEL)
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = PESEL_LENGTH)
     private String pesel;
 
-    @Size(min = MIN_LENGTH_NAME, max = MAX_LENGTH_NAME)
+    @Size(min = NAME_MIN_LENGTH, max = NAME_MAX_LENGTH)
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Size(min = MIN_LENGTH_NAME, max = MAX_LENGTH_NAME)
+    @Size(min = NAME_MIN_LENGTH, max = NAME_MAX_LENGTH)
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Size(min = MIN_LENGTH_PASSWORD, max = MAX_LENGTH_PASSWORD)
+    @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "decoded_BCrypt_password")
+    @Column(name = "decoded_BCrypt_password", nullable = false)
     private String decodedBCryptPassword;
 
-    @Column(nullable = false, name = "role_name")
+    @Column(name = "role_name", nullable = false)
     private String roleName = "ROLE_USER";
 
     @ManyToMany(fetch = FetchType.EAGER)

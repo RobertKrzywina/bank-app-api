@@ -28,15 +28,14 @@ public class UserAddress {
     @Column(nullable = false)
     private String province;
 
-    @Size(min = MIN_LENGTH_CITY, max = MAX_LENGTH_CITY)
+    @Size(min = CITY_MIN_LENGTH, max = CITY_MAX_LENGTH)
     @Column(nullable = false)
     private String city;
 
-    @Size(min = LENGTH_ZIP_CODE, max = LENGTH_ZIP_CODE)
-    @Column(name = "zip_code", nullable = false)
+    @Column(name = "zip_code", nullable = false, length = ZIP_CODE_LENGTH)
     private String zipCode;
 
-    @Size(min = MIN_LENGTH_STREET, max = MAX_LENGTH_STREET)
+    @Size(min = STREET_MIN_LENGTH, max = STREET_MAX_LENGTH)
     @Column(nullable = false)
     private String street;
 

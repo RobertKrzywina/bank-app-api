@@ -10,6 +10,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static pl.robert.project.app.user_contact.UserContactValidationStrings.PHONE_NUMBER_LENGTH;
+
 @Entity
 @Table(name = "user_contact")
 @Getter @Setter
@@ -25,7 +27,7 @@ public class UserContact {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(name = "phone_number", unique = true, nullable = false)
+    @Column(name = "phone_number", unique = true, nullable = false, length = PHONE_NUMBER_LENGTH)
     private String phoneNumber;
 
     @Transient

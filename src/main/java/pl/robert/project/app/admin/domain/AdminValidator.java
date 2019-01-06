@@ -17,10 +17,10 @@ class AdminValidator implements Validator, AdminValidationStrings {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return (clazz.isAssignableFrom(CreateAdminDto.class)  ||
-               (clazz.isAssignableFrom(ReadAdminDto.class))   ||
-               (clazz.isAssignableFrom(DeleteAdminDto.class)) ||
-               (clazz.isAssignableFrom(ChangeAdminPasswordDto.class)));
+        return (clazz.isAssignableFrom(CreateAdminDto.class) ||
+                clazz.isAssignableFrom(ReadAdminDto.class) ||
+                clazz.isAssignableFrom(DeleteAdminDto.class) ||
+                clazz.isAssignableFrom(ChangeAdminPasswordDto.class));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package pl.robert.project.core.security;
+package pl.robert.project.app.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

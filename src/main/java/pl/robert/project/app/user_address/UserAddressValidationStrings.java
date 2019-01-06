@@ -2,11 +2,11 @@ package pl.robert.project.app.user_address;
 
 interface UserAddressValidationStrings {
 
-    int MIN_LENGTH_CITY = 3;
-    int MAX_LENGTH_CITY = 50;
-    int LENGTH_ZIP_CODE = 6;
-    int MIN_LENGTH_STREET = 3;
-    int MAX_LENGTH_STREET = 50;
+    int CITY_MIN_LENGTH = 3;
+    int CITY_MAX_LENGTH = 50;
+    int ZIP_CODE_LENGTH = 6;
+    int STREET_MIN_LENGTH = 3;
+    int STREET_MAX_LENGTH = 50;
     String ZIP_CODE_REGEX = "[0-9]{2}\\-[0-9]{3}";
     String HOUSE_NUMBER_REGEX = "^[0-9]*$";
 

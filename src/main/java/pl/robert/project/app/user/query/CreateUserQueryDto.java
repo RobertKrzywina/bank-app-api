@@ -13,7 +13,7 @@ public class CreateUserQueryDto {
     private String PESEL;
     private String firstName;
     private String lastName;
-    private String decodedBCryptPassword;
+    private String password;
     private UserContact contact;
     private UserAddress address;
     private UserBankAccount bankAccount;

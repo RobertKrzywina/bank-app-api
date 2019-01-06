@@ -1,4 +1,4 @@
-package pl.robert.project.core.security;
+package pl.robert.project.app.security;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;

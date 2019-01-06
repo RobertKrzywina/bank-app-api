@@ -1,4 +1,4 @@
-package pl.robert.project.core.base;
+package pl.robert.project.app.base;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
