@@ -13,21 +13,20 @@ import pl.robert.project.app.user_bank_account.UserBankAccountFacade;
 import pl.robert.project.app.user_contact.UserContactFacade;
 
 @Configuration
-@Import({AdminFacade.class})
 class UserConfiguration {
 
     @Bean
-    UserFacade facade(UserRepository repository,
-                      UserFactory factory,
-                      UserValidator userValidator,
-                      BaseUserQuery query,
-                      CreateUserDto createDto,
-                      ReadUserDto readDto,
-                      DeleteUserDto deleteDto,
-                      UserContactFacade userContactFacade,
-                      UserAddressFacade userAddressFacade,
-                      UserBankAccountFacade userBankAccountFacade) {
-        return new UserFacade(repository, factory, userValidator, query,
+    UserFacade userFacade(UserRepository repository,
+                          UserFactory factory,
+                          UserValidator validator,
+                          BaseUserQuery baseQuery,
+                          CreateUserDto createDto,
+                          ReadUserDto readDto,
+                          DeleteUserDto deleteDto,
+                          UserContactFacade userContactFacade,
+                          UserAddressFacade userAddressFacade,
+                          UserBankAccountFacade userBankAccountFacade) {
+        return new UserFacade(repository, factory, validator, baseQuery,
                               createDto, readDto, deleteDto,
                               userContactFacade, userAddressFacade, userBankAccountFacade);
     }

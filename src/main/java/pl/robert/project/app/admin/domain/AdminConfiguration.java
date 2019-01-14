@@ -11,18 +11,17 @@ import pl.robert.project.app.admin.query.BaseAdminQuery;
 import pl.robert.project.app.user.domain.UserFacade;
 
 @Configuration
-@Import({UserFacade.class})
 class AdminConfiguration {
 
     @Bean
-    AdminFacade facade(AdminRepository repository,
-                       AdminFactory factory,
-                       AdminValidator validator,
-                       BaseAdminQuery query,
-                       CreateAdminDto createDto,
-                       ReadAdminDto readDto,
-                       DeleteAdminDto deleteDto,
-                       ChangeAdminPasswordDto changePasswordDto) {
+    AdminFacade adminFacade(AdminRepository repository,
+                            AdminFactory factory,
+                            AdminValidator validator,
+                            BaseAdminQuery query,
+                            CreateAdminDto createDto,
+                            ReadAdminDto readDto,
+                            DeleteAdminDto deleteDto,
+                            ChangeAdminPasswordDto changePasswordDto) {
         return new AdminFacade(repository, factory, validator, query,
                                createDto,
                                readDto,

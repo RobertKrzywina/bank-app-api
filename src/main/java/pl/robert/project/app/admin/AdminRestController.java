@@ -1,5 +1,6 @@
 package pl.robert.project.app.admin;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,19 +31,11 @@ import java.util.List;
 @PreAuthorize("hasRole('ROLE_HEAD-ADMIN') or hasRole('ROLE_ADMIN')")
 @RequestMapping("/api/admin-panel")
 @CrossOrigin("http://localhost:4200")
+@AllArgsConstructor
 class AdminRestController {
 
     private AdminFacade adminFacade;
     private UserFacade userFacade;
-
-    AdminRestController(AdminFacade facade) {
-        this.adminFacade = facade;
-    }
-
-    @Autowired
-    void setUserFacade(UserFacade userFacade) {
-        this.userFacade = userFacade;
-    }
 
     @PostMapping("/admin")
     public ResponseEntity create(@RequestBody @Valid CreateAdminDto dto, BindingResult result) {
@@ -55,7 +48,7 @@ class AdminRestController {
         return ResponseEntity.status(201).body(newAdminDto);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     public HashMap<String, Object> aboutMe(Authentication auth) {
         if (auth != null) {
             return adminFacade.aboutMe(auth);

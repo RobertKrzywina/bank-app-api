@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 class UserContactConfiguration {
 
     @Bean
-    UserContactFacade facade(UserContactRepository repository,
-                             UserContactValidator validator) {
+    UserContactFacade userContactFacade(UserContactRepository repository,
+                                        UserContactValidator validator) {
         return new UserContactFacade(repository, validator);
     }
 }

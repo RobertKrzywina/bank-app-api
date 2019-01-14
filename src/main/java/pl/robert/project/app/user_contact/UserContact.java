@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.robert.project.app.user.domain.dto.CreateUserDto;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,4 +34,10 @@ public class UserContact {
     @Transient
     @JsonIgnore
     private List<String> errors = new ArrayList<>();
+
+    public UserContact(CreateUserDto dto) {
+        pesel = dto.getPesel();
+        email = dto.getContact().getEmail();
+        phoneNumber = dto.getContact().getPhoneNumber();
+    }
 }

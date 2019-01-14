@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.robert.project.app.user.domain.dto.CreateUserDto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 class UserAddressConfiguration {
 
     @Bean
-    UserAddressFacade facade(UserAddressRepository repository,
-                             UserAddressValidator validator) {
+    UserAddressFacade userAddressFacade(UserAddressRepository repository,
+                                        UserAddressValidator validator) {
         return new UserAddressFacade(repository, validator);
     }
 }

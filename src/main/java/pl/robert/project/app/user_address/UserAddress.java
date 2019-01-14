@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.robert.project.app.user.domain.dto.CreateUserDto;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -45,4 +46,13 @@ public class UserAddress {
     @Transient
     @JsonIgnore
     private List<String> errors = new ArrayList<>();
+
+    public UserAddress(CreateUserDto dto) {
+        pesel = dto.getPesel();
+        province = dto.getAddress().getProvince();
+        city = dto.getAddress().getCity();
+        zipCode = dto.getAddress().getZipCode();
+        street = dto.getAddress().getStreet();
+        houseNumber = dto.getAddress().getHouseNumber();
+    }
 }

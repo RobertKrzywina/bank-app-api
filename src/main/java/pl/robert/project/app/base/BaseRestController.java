@@ -1,5 +1,6 @@
 package pl.robert.project.app.base;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +13,10 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin("http://localhost:4200")
+@AllArgsConstructor
 class BaseRestController {
 
     private UserFacade userFacade;
-
-    BaseRestController(UserFacade userFacade) {
-        this.userFacade = userFacade;
-    }
 
     @PostMapping("/register")
     public ResponseEntity registerUser(@RequestBody @Valid CreateUserDto dto, BindingResult result) {

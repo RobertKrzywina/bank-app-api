@@ -54,8 +54,6 @@ public class AdminFacade implements AdminValidationStrings {
 
                 repository.saveAndFlush(factory.create(dto));
 
-                //updateAdminsId();
-
                 return baseQuery.query(createAdminDto);
             }
         }
@@ -120,7 +118,6 @@ public class AdminFacade implements AdminValidationStrings {
 
         if (admins != null) {
             repository.deleteAdminsExceptHeadAdmin();
-            //updateAdminsId();
             deleteAdminDto.setMessage(M_DELETED_ALL_ADMINS);
         } else {
             deleteAdminDto.setMessage(M_NO_ADMINS);
@@ -136,7 +133,6 @@ public class AdminFacade implements AdminValidationStrings {
 
             if (!result.hasErrors()) {
                 repository.deleteById(id);
-                //updateAdminsId();
                 deleteAdminDto.setMessage(M_ADMIN_DELETED);
 
                 return baseQuery.query(deleteAdminDto);
@@ -187,15 +183,5 @@ public class AdminFacade implements AdminValidationStrings {
         }
 
         return null;
-    }
-
-    private void updateAdminsId() {
-        List<Admin> admins = repository.findAll();
-        long checker = 0L;
-        for (Admin admin : admins) {
-            if (admin.getId() != ++checker) {
-                repository.updateAdminId(checker, admin.getId());
-            }
-        }
     }
 }
