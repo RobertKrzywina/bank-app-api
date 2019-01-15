@@ -2,25 +2,22 @@ package pl.robert.project.app.user.domain;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
-import pl.robert.project.app.role.Role;
+import pl.robert.project.app.security.dto.AppUserDto;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
 import pl.robert.project.app.user.domain.dto.DeleteUserDto;
 import pl.robert.project.app.user.domain.dto.ReadUserDto;
 import pl.robert.project.app.user.query.BaseUserQuery;
-import pl.robert.project.app.user.query.CreateUserQueryDto;
 import pl.robert.project.app.user.query.DeleteUserQueryDto;
 import pl.robert.project.app.user.query.ReadUserQueryDto;
+import pl.robert.project.app.user.query.CreateUserQueryDto;
 import pl.robert.project.app.user_address.UserAddress;
 import pl.robert.project.app.user_address.UserAddressFacade;
 import pl.robert.project.app.user_bank_account.UserBankAccount;
 import pl.robert.project.app.user_bank_account.UserBankAccountFacade;
 import pl.robert.project.app.user_contact.UserContact;
 import pl.robert.project.app.user_contact.UserContactFacade;
-import pl.robert.project.app.security.dto.AppUserDto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,35 +56,28 @@ public class UserFacade implements UserValidationStrings {
 
             if (!result.hasErrors()) {
 
-                PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
                 createUserDto.setPesel(dto.getPesel());
                 createUserDto.setFirstName(dto.getFirstName());
                 createUserDto.setLastName(dto.getLastName());
                 createUserDto.setPassword(dto.getPassword());
-                createUserDto.setDecodedBCryptPassword(dto.getPassword());
+                createUserDto.setRePassword(dto.getRePassword());
 
-                dto.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
-                dto.setDecodedBCryptPassword(createUserDto.getDecodedBCryptPassword());
+                createUserDto.setProvince(dto.getProvince());
+                createUserDto.setCity(dto.getCity());
+                createUserDto.setZipCode(dto.getZipCode());
+                createUserDto.setStreet(dto.getStreet());
+                createUserDto.setHouseNumber(dto.getHouseNumber());
 
-                dto.getRoles().add(new Role(3L, "ROLE_USER"));
-                createUserDto.setRoles(dto.getRoles());
-
-                createUserDto.setContact(contact);
-                dto.setContact(createUserDto.getContact());
-
-                createUserDto.setAddress(address);
-                dto.setAddress(createUserDto.getAddress());
-
-                createUserDto.setBankAccount(bankAccount);
-                dto.setBankAccount(createUserDto.getBankAccount());
+                createUserDto.setEmail(dto.getEmail());
+                createUserDto.setPhoneNumber(dto.getPhoneNumber());
 
                 userContactFacade.saveUserContact(contact);
                 userAddressFacade.saveUserAddress(address);
                 userBankAccountFacade.saveUserBankAccount(bankAccount);
-                repository.saveAndFlush(factory.create(dto));
 
-                return baseQuery.query(createUserDto);
+                repository.saveAndFlush(factory.create(dto, contact, address, bankAccount));
+
+                return baseQuery.query(createUserDto, bankAccount);
             }
         }
 

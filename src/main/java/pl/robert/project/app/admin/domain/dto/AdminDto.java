@@ -2,6 +2,7 @@ package pl.robert.project.app.admin.domain.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.validation.ObjectError;
 import pl.robert.project.app.role.Role;
 
 import java.util.ArrayList;
@@ -19,6 +20,6 @@ public abstract class AdminDto {
     protected String decodedBCryptPassword;
     protected String roleName;
 
-    protected List<String> errors = new ArrayList<>();
+    protected List<ObjectError> errors = new ArrayList<>();
     protected Set<Role> roles = new HashSet<>();
 }

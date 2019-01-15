@@ -1,7 +1,6 @@
 package pl.robert.project.app.user.domain;
 
 import lombok.AllArgsConstructor;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -9,8 +8,6 @@ import pl.robert.project.app.user.domain.dto.CreateUserDto;
 import pl.robert.project.app.user.domain.dto.DeleteUserDto;
 import pl.robert.project.app.user.domain.dto.ReadUserDto;
 import pl.robert.project.app.user.domain.dto.UserDto;
-
-import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -32,20 +29,22 @@ class UserValidator implements Validator, UserValidationStrings {
             CreateUserDto dto = (CreateUserDto) obj;
 
             validateCreateUser(dto, errors);
-        } else if (obj instanceof ReadUserDto) {
-            ReadUserDto dto = (ReadUserDto) obj;
 
-            validateReadUser(dto, errors);
-        } else if (obj instanceof DeleteUserDto) {
-            DeleteUserDto dto = (DeleteUserDto) obj;
+            ((CreateUserDto) obj).setErrors(errors.getAllErrors());
+        } else {
 
-            validateDeleteUser(dto, errors);
+            if (obj instanceof ReadUserDto) {
+                ReadUserDto dto = (ReadUserDto) obj;
+
+                validateReadUser(dto, errors);
+            } else if (obj instanceof DeleteUserDto) {
+                DeleteUserDto dto = (DeleteUserDto) obj;
+
+                validateDeleteUser(dto, errors);
+            }
+
+            ((UserDto) obj).setErrors(errors.getAllErrors());
         }
-
-        ((UserDto) obj).setErrors(errors.getAllErrors()
-                .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.toList()));
     }
 
     private void validateCreateUser(CreateUserDto dto, Errors errors) {

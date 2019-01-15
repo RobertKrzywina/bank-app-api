@@ -2,6 +2,7 @@ package pl.robert.project.app.user.domain.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.validation.ObjectError;
 import pl.robert.project.app.role.Role;
 import pl.robert.project.app.user_address.UserAddress;
 import pl.robert.project.app.user_bank_account.UserBankAccount;
@@ -25,6 +26,6 @@ public abstract class UserDto {
     protected UserAddress address;
     protected UserBankAccount bankAccount;
 
-    protected List<String> errors = new ArrayList<>();
+    protected List<ObjectError> errors = new ArrayList<>();
     protected Set<Role> roles = new HashSet<>();
 }

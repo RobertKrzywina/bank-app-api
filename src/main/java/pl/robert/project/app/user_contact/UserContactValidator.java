@@ -1,13 +1,11 @@
 package pl.robert.project.app.user_contact;
 
 import lombok.AllArgsConstructor;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -26,10 +24,7 @@ class UserContactValidator implements Validator, UserContactValidationStrings {
 
         validateContact(contact, errors);
 
-        ((UserContact) obj).setErrors(errors.getAllErrors()
-                .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.toList()));
+        ((UserContact) obj).setErrors(errors.getAllErrors());
     }
 
     private void validateContact(UserContact contact, Errors errors) {

@@ -1,13 +1,10 @@
 package pl.robert.project.app.admin.domain;
 
 import lombok.AllArgsConstructor;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import pl.robert.project.app.admin.domain.dto.*;
-
-import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -47,10 +44,7 @@ class AdminValidator implements Validator, AdminValidationStrings {
             validateChangeAdminPassword(dto, errors);
         }
 
-        ((AdminDto) obj).setErrors(errors.getAllErrors()
-                .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.toList()));
+        ((AdminDto) obj).setErrors(errors.getAllErrors());
     }
 
     private void validateCreateAdmin(CreateAdminDto dto, Errors errors) {

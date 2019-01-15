@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.validation.ObjectError;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
 
 import javax.persistence.*;
@@ -33,11 +34,11 @@ public class UserContact {
 
     @Transient
     @JsonIgnore
-    private List<String> errors = new ArrayList<>();
+    private List<ObjectError> errors = new ArrayList<>();
 
     public UserContact(CreateUserDto dto) {
         pesel = dto.getPesel();
-        email = dto.getContact().getEmail();
-        phoneNumber = dto.getContact().getPhoneNumber();
+        email = dto.getEmail();
+        phoneNumber = dto.getPhoneNumber();
     }
 }

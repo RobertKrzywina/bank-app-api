@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.validation.ObjectError;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
 
 import javax.persistence.*;
@@ -45,14 +46,14 @@ public class UserAddress {
 
     @Transient
     @JsonIgnore
-    private List<String> errors = new ArrayList<>();
+    private List<ObjectError> errors = new ArrayList<>();
 
     public UserAddress(CreateUserDto dto) {
         pesel = dto.getPesel();
-        province = dto.getAddress().getProvince();
-        city = dto.getAddress().getCity();
-        zipCode = dto.getAddress().getZipCode();
-        street = dto.getAddress().getStreet();
-        houseNumber = dto.getAddress().getHouseNumber();
+        province = dto.getProvince();
+        city = dto.getCity();
+        zipCode = dto.getZipCode();
+        street = dto.getStreet();
+        houseNumber = dto.getHouseNumber();
     }
 }

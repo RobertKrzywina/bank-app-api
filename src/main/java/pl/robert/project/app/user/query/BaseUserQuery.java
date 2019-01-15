@@ -5,20 +5,26 @@ import org.springframework.stereotype.Component;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
 import pl.robert.project.app.user.domain.dto.DeleteUserDto;
 import pl.robert.project.app.user.domain.dto.ReadUserDto;
+import pl.robert.project.app.user_bank_account.UserBankAccount;
 
 @Component
 @NoArgsConstructor
 public class BaseUserQuery {
 
-    public CreateUserQueryDto query(CreateUserDto dto) {
+    public CreateUserQueryDto query(CreateUserDto dto, UserBankAccount bankAccount) {
         return new CreateUserQueryDto(
                 dto.getPesel(),
                 dto.getFirstName(),
                 dto.getLastName(),
-                dto.getDecodedBCryptPassword(),
-                dto.getContact(),
-                dto.getAddress(),
-                dto.getBankAccount()
+                dto.getProvince(),
+                dto.getCity(),
+                dto.getZipCode(),
+                dto.getStreet(),
+                dto.getHouseNumber(),
+                dto.getEmail(),
+                dto.getPhoneNumber(),
+                dto.getPassword(),
+                bankAccount.getAccountNumber()
         );
     }
 

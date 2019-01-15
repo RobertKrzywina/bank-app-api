@@ -1,12 +1,10 @@
 package pl.robert.project.app.user_address;
 
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Component
 class UserAddressValidator implements Validator, UserAddressValidationStrings {
@@ -22,10 +20,7 @@ class UserAddressValidator implements Validator, UserAddressValidationStrings {
 
         validateAddress(address, errors);
 
-        ((UserAddress) obj).setErrors(errors.getAllErrors()
-                .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.toList()));
+        ((UserAddress) obj).setErrors(errors.getAllErrors());
     }
 
     private void validateAddress(UserAddress address, Errors errors) {
