@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.robert.project.app.user.domain.dto.CreateUserDto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,6 +29,16 @@ public class UserBankAccount {
     @Column(name = "account_number", unique = true, nullable = false, length = ACCOUNT_NUMBER_LENGTH)
     private String accountNumber;
 
-    @Column
-    private double balance = 0.0;
+    @Column(name = "account_balance")
+    private double accountBalance = 0.0;
+
+    public UserBankAccount(String pesel, String accountNumber) {
+        this.pesel = pesel;
+        this.accountNumber = accountNumber;
+    }
+
+    public UserBankAccount(CreateUserDto dto) {
+        pesel = dto.getPesel();
+        accountNumber = dto.getAccountNumber();
+    }
 }

@@ -2,6 +2,8 @@ package pl.robert.project.app.user.domain;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import pl.robert.project.app.security.dto.AppUserDto;
@@ -45,22 +47,21 @@ public class UserFacade implements UserValidationStrings {
             UserContact contact = new UserContact(dto);
             UserAddress address = new UserAddress(dto);
 
-            UserBankAccount bankAccount = new UserBankAccount();
-
-            bankAccount.setPesel(dto.getPesel());
-            bankAccount.setAccountNumber(bankAccountNumberGenerator());
-
             userContactFacade.validate(contact, result);
             userAddressFacade.validate(address, result);
             validator.validate(dto, result);
 
             if (!result.hasErrors()) {
 
+                UserBankAccount bankAccount = new UserBankAccount(dto.getPesel(), bankAccountNumberGenerator());
+                PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
                 createUserDto.setPesel(dto.getPesel());
                 createUserDto.setFirstName(dto.getFirstName());
                 createUserDto.setLastName(dto.getLastName());
                 createUserDto.setPassword(dto.getPassword());
                 createUserDto.setRePassword(dto.getRePassword());
+                dto.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
 
                 createUserDto.setProvince(dto.getProvince());
                 createUserDto.setCity(dto.getCity());
@@ -71,13 +72,16 @@ public class UserFacade implements UserValidationStrings {
                 createUserDto.setEmail(dto.getEmail());
                 createUserDto.setPhoneNumber(dto.getPhoneNumber());
 
+                createUserDto.setAccountNumber(bankAccount.getAccountNumber());
+                dto.setAccountNumber(bankAccount.getAccountNumber());
+
                 userContactFacade.saveUserContact(contact);
                 userAddressFacade.saveUserAddress(address);
                 userBankAccountFacade.saveUserBankAccount(bankAccount);
 
-                repository.saveAndFlush(factory.create(dto, contact, address, bankAccount));
+                repository.saveAndFlush(factory.create(dto));
 
-                return baseQuery.query(createUserDto, bankAccount);
+                return baseQuery.query(createUserDto);
             }
         }
 
@@ -114,11 +118,17 @@ public class UserFacade implements UserValidationStrings {
                     user.getPesel(),
                     user.getFirstName(),
                     user.getLastName(),
+                    user.getAddress().getProvince(),
+                    user.getAddress().getCity(),
+                    user.getAddress().getZipCode(),
+                    user.getAddress().getStreet(),
+                    user.getAddress().getHouseNumber(),
+                    user.getContact().getEmail(),
+                    user.getContact().getPhoneNumber(),
                     user.getPassword(),
                     user.getDecodedBCryptPassword(),
-                    user.getContact(),
-                    user.getAddress(),
-                    user.getBankAccount()
+                    user.getBankAccount().getAccountNumber(),
+                    user.getBankAccount().getAccountBalance()
             ));
         }
 
@@ -138,16 +148,15 @@ public class UserFacade implements UserValidationStrings {
                 readUserDto.setFirstName(user.getFirstName());
                 readUserDto.setLastName(user.getLastName());
                 readUserDto.setPassword(user.getPassword());
-                readUserDto.setDecodedBCryptPassword(user.getDecodedBCryptPassword());
-
-                UserContact contact = userContactFacade.findByPesel(pesel);
-                readUserDto.setContact(contact);
-
-                UserAddress address = userAddressFacade.findByPesel(pesel);
-                readUserDto.setAddress(address);
-
-                UserBankAccount bankAccount = userBankAccountFacade.findByPesel(pesel);
-                readUserDto.setBankAccount(bankAccount);
+                readUserDto.setProvince(user.getAddress().getProvince());
+                readUserDto.setCity(user.getAddress().getCity());
+                readUserDto.setZipCode(user.getAddress().getZipCode());
+                readUserDto.setStreet(user.getAddress().getStreet());
+                readUserDto.setHouseNumber(user.getAddress().getHouseNumber());
+                readUserDto.setEmail(user.getContact().getEmail());
+                readUserDto.setPhoneNumber(user.getContact().getPhoneNumber());
+                readUserDto.setAccountNumber(user.getBankAccount().getAccountNumber());
+                readUserDto.setAccountBalance(user.getBankAccount().getAccountBalance());
 
                 return baseQuery.query(readUserDto);
             }

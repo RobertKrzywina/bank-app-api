@@ -18,5 +18,5 @@ public class CreateUserQueryDto {
     private String email;
     private String phoneNumber;
     private String password;
-    private String bankAccountNumber;
+    private String accountNumber;
 }

@@ -1,31 +1,56 @@
 package pl.robert.project.app.user.domain.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.validation.ObjectError;
-import pl.robert.project.app.role.Role;
-import pl.robert.project.app.user_address.UserAddress;
-import pl.robert.project.app.user_bank_account.UserBankAccount;
-import pl.robert.project.app.user_contact.UserContact;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter @Setter
+@NoArgsConstructor
 public abstract class UserDto {
 
-    protected String pesel;
-    protected String firstName;
-    protected String lastName;
-    protected String password;
-    protected String decodedBCryptPassword;
-    protected String roleName = "ROLE_USER";
-    protected UserContact contact;
-    protected UserAddress address;
-    protected UserBankAccount bankAccount;
+    private String pesel;
+    private String firstName;
+    private String lastName;
+    private String province;
+    private String city;
+    private String zipCode;
+    private String street;
+    private String houseNumber;
+    private String email;
+    private String phoneNumber;
+    private String password;
+    private String decodedBCryptPassword;
+    private String rePassword;
+    private String accountNumber;
+    private Double accountBalance;
 
-    protected List<ObjectError> errors = new ArrayList<>();
-    protected Set<Role> roles = new HashSet<>();
+    private List<ObjectError> errors = new ArrayList<>();
+
+    public UserDto(String pesel, String firstName, String lastName,
+                   String province, String city, String zipCode, String street, String houseNumber,
+                   String email, String phoneNumber,
+                   String password, String rePassword,
+                   String accountNumber, Double accountBalance,
+                   int type) {
+        this.pesel = pesel;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.province = province;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.street = street;
+        this.houseNumber = houseNumber;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.accountNumber = accountNumber;
+
+        if (type == 1) { this.rePassword = rePassword; }
+
+        else { this.accountBalance = accountBalance; }
+    }
 }

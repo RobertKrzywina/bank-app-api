@@ -33,7 +33,7 @@ VALUES ('80022136394', 'Warszawa', '44', 'Mazowieckie', 'Krakowskie Przedmieści
        ('67020584817', 'Poznan', '99', 'Wielkopolskie', '11 Listopada', '60-106'),
        ('77071382883', 'Szczecin', '59', 'Zachodniopomorskie', 'Akacjowa', '70-004');
 
-INSERT INTO user_bank_account (user_bank_account_pesel, account_number, balance)
+INSERT INTO user_bank_account (user_bank_account_pesel, account_number, account_balance)
 VALUES ('80022136394', 'PL38 6304 4308 4918 4834 9838', 4810.01),
        ('83100949123', 'PL62 8058 5353 1332 3091 4284', 8263.63),
        ('76082787162', 'PL46 3539 4580 4736 5776 8890', 2389.09),
