@@ -7,9 +7,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import pl.robert.project.app.admin.domain.dto.ChangeAdminPasswordDto;
 import pl.robert.project.app.admin.domain.dto.CreateAdminDto;
-import pl.robert.project.app.admin.domain.dto.DeleteAdminDto;
 import pl.robert.project.app.admin.domain.dto.ReadAdminDto;
-import pl.robert.project.app.admin.query.*;
+import pl.robert.project.app.admin.query.BaseAdminQuery;
+import pl.robert.project.app.admin.query.ChangeAdminPasswordQueryDto;
+import pl.robert.project.app.admin.query.CreateAdminQueryDto;
+import pl.robert.project.app.admin.query.ReadAdminQueryDto;
 import pl.robert.project.app.role.Role;
 import pl.robert.project.app.security.dto.AppUserDto;
 
@@ -26,7 +28,6 @@ public class AdminFacade implements AdminValidationStrings {
     private BaseAdminQuery baseQuery;
     private CreateAdminDto createAdminDto;
     private ReadAdminDto readAdminDto;
-    private DeleteAdminDto deleteAdminDto;
     private ChangeAdminPasswordDto changePasswordDto;
 
     public CreateAdminQueryDto add(CreateAdminDto dto, BindingResult result) {
@@ -41,10 +42,8 @@ public class AdminFacade implements AdminValidationStrings {
                 createAdminDto.setName(dto.getName());
                 createAdminDto.setLogin(dto.getLogin());
                 createAdminDto.setPassword(dto.getPassword());
-                createAdminDto.setDecodedBCryptPassword(dto.getPassword());
-
+                createAdminDto.setRePassword(dto.getRePassword());
                 dto.setPassword(passwordEncoder.encode(createAdminDto.getPassword()));
-                dto.setDecodedBCryptPassword(createAdminDto.getDecodedBCryptPassword());
 
                 Role role = verifyRole(dto.getRoleName());
                 dto.getRoles().add(role);
@@ -63,9 +62,6 @@ public class AdminFacade implements AdminValidationStrings {
 
     private Role verifyRole(String roleToVerify) {
         Role role = new Role();
-
-        final String roleHeadAdmin = "ROLE_HEAD-ADMIN";
-        final String roleAdmin = "ROLE_ADMIN";
 
         if (roleToVerify.equals(roleHeadAdmin)) {
             role.setId(1L);
@@ -86,14 +82,14 @@ public class AdminFacade implements AdminValidationStrings {
             adminsDto.add(new ReadAdminQueryDto(
                     admin.getId(),
                     admin.getName(),
-                    admin.getRoles()
+                    admin.getRoleName()
             ));
         }
 
         return adminsDto;
     }
 
-    public ReadAdminQueryDto getAdminById(ReadAdminDto dto, long id, BindingResult result) {
+    public ReadAdminQueryDto getAdminById(long id, ReadAdminDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
 
             validator.validate(dto, result);
@@ -102,9 +98,11 @@ public class AdminFacade implements AdminValidationStrings {
 
                 Admin admin = repository.findById(id);
 
+                System.out.println(admin.toString());
+
                 readAdminDto.setId(admin.getId());
                 readAdminDto.setName(admin.getName());
-                readAdminDto.setRoles(admin.getRoles());
+                readAdminDto.setRoleName(admin.getRoleName());
 
                 return baseQuery.query(readAdminDto);
             }
@@ -113,33 +111,37 @@ public class AdminFacade implements AdminValidationStrings {
         return null;
     }
 
-    public DeleteAdminQueryDto delete() {
-        List<Admin> admins = repository.findAll();
+    public String deleteAllAdminsExceptHeadAdmin() {
+        List<Admin> admins = repository.findAllAdminsExceptHeadAdmins();
 
         if (admins != null) {
             repository.deleteAdminsExceptHeadAdmin();
-            deleteAdminDto.setMessage(M_DELETED_ALL_ADMINS);
-        } else {
-            deleteAdminDto.setMessage(M_NO_ADMINS);
+
+            return M_DELETED_ALL_ADMINS;
         }
 
-        return baseQuery.query(deleteAdminDto);
+        return M_NO_ADMINS;
     }
 
-    public DeleteAdminQueryDto deleteById(DeleteAdminDto dto, long id, BindingResult result) {
-        if (validator.supports(dto.getClass())) {
+    public List<ReadAdminQueryDto> getAllAdminsExceptHeadAdmins() {
+        List<Admin> admins = repository.findAllAdminsExceptHeadAdmins();
+        List<ReadAdminQueryDto> adminsDto = new ArrayList<>();
 
-            validator.validate(dto, result);
-
-            if (!result.hasErrors()) {
-                repository.deleteById(id);
-                deleteAdminDto.setMessage(M_ADMIN_DELETED);
-
-                return baseQuery.query(deleteAdminDto);
-            }
+        for (Admin admin : admins) {
+            adminsDto.add(new ReadAdminQueryDto(
+                    admin.getId(),
+                    admin.getName(),
+                    admin.getRoleName()
+            ));
         }
 
-        return null;
+        return adminsDto;
+    }
+
+    public String deleteById(long id) {
+        repository.deleteById(id);
+
+        return M_ADMIN_DELETED;
     }
 
     public ChangeAdminPasswordQueryDto changePassword(ChangeAdminPasswordDto dto, BindingResult result) {

@@ -6,12 +6,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 interface AdminRepository extends JpaRepository<Admin, Long> {
 
     Admin findByLogin(String login);
 
     Admin findById(long id);
+
+    @Query(value = "SELECT * FROM admins WHERE role_name = 'ROLE_ADMIN'", nativeQuery = true)
+    List<Admin> findAllAdminsExceptHeadAdmins();
 
     @Modifying
     @Transactional

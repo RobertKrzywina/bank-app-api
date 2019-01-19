@@ -14,9 +14,7 @@ class AdminValidator implements Validator, AdminValidationStrings {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return (clazz.isAssignableFrom(CreateAdminDto.class) ||
-                clazz.isAssignableFrom(ReadAdminDto.class) ||
-                clazz.isAssignableFrom(DeleteAdminDto.class) ||
+        return (clazz.isAssignableFrom(CreateAdminDto.class) || clazz.isAssignableFrom(ReadAdminDto.class) ||
                 clazz.isAssignableFrom(ChangeAdminPasswordDto.class));
     }
 
@@ -32,11 +30,6 @@ class AdminValidator implements Validator, AdminValidationStrings {
             ReadAdminDto dto = (ReadAdminDto) obj;
 
             validateReadAdmin(dto, errors);
-
-        } else if (obj instanceof DeleteAdminDto) {
-            DeleteAdminDto dto = (DeleteAdminDto) obj;
-
-            validateDeleteAdmin(dto, errors);
 
         } else if (obj instanceof ChangeAdminPasswordDto) {
             ChangeAdminPasswordDto dto = (ChangeAdminPasswordDto) obj;
@@ -105,16 +98,6 @@ class AdminValidator implements Validator, AdminValidationStrings {
     private void validateReadAdmin(ReadAdminDto dto, Errors errors) {
         if (adminRepo.findById(dto.getId()) == null) {
             errors.reject(C_ADMIN_NOT_EXISTS, M_ADMIN_ID_NOT_EXISTS);
-        }
-    }
-
-    private void validateDeleteAdmin(DeleteAdminDto dto, Errors errors) {
-        Admin admin = adminRepo.findById(dto.getId());
-
-        if (admin == null) {
-            errors.reject(C_ADMIN_NOT_EXISTS, M_ADMIN_ID_NOT_EXISTS);
-        } else if (admin.getRoleName().equals(ROLE_HEAD_ADMIN)) {
-            errors.reject(C_CANT_DELETE_HEAD_ADMIN, M_CANT_DELETE_HEAD_ADMIN);
         }
     }
 

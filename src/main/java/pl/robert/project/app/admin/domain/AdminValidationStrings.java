@@ -9,6 +9,9 @@ interface AdminValidationStrings {
     int MIN_LENGTH_PASSWORD = 6;
     int MAX_LENGTH_PASSWORD = 61;
 
+    String roleHeadAdmin = "ROLE_HEAD-ADMIN";
+    String roleAdmin = "ROLE_ADMIN";
+
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     String ROLE_HEAD_ADMIN = "ROLE_HEAD-ADMIN";

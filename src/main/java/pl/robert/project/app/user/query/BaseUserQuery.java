@@ -3,7 +3,6 @@ package pl.robert.project.app.user.query;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
-import pl.robert.project.app.user.domain.dto.DeleteUserDto;
 import pl.robert.project.app.user.domain.dto.ReadUserDto;
 
 @Component
@@ -39,16 +38,9 @@ public class BaseUserQuery {
                 dto.getHouseNumber(),
                 dto.getEmail(),
                 dto.getPhoneNumber(),
-                dto.getPassword(),
                 dto.getDecodedBCryptPassword(),
                 dto.getAccountNumber(),
                 dto.getAccountBalance()
-        );
-    }
-
-    public DeleteUserQueryDto query(DeleteUserDto dto) {
-        return new DeleteUserQueryDto(
-                dto.getMessage()
         );
     }
 }

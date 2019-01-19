@@ -8,12 +8,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import pl.robert.project.app.security.dto.AppUserDto;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
-import pl.robert.project.app.user.domain.dto.DeleteUserDto;
 import pl.robert.project.app.user.domain.dto.ReadUserDto;
 import pl.robert.project.app.user.query.BaseUserQuery;
-import pl.robert.project.app.user.query.DeleteUserQueryDto;
-import pl.robert.project.app.user.query.ReadUserQueryDto;
 import pl.robert.project.app.user.query.CreateUserQueryDto;
+import pl.robert.project.app.user.query.ReadUserQueryDto;
 import pl.robert.project.app.user_address.UserAddress;
 import pl.robert.project.app.user_address.UserAddressFacade;
 import pl.robert.project.app.user_bank_account.UserBankAccount;
@@ -28,7 +26,7 @@ import java.util.Random;
 
 @Component
 @AllArgsConstructor
-public class UserFacade implements UserValidationStrings {
+public class UserFacade {
 
     private UserRepository repository;
     private UserFactory factory;
@@ -36,7 +34,6 @@ public class UserFacade implements UserValidationStrings {
     private BaseUserQuery baseQuery;
     private CreateUserDto createUserDto;
     private ReadUserDto readUserDto;
-    private DeleteUserDto deleteUserDto;
     private UserContactFacade userContactFacade;
     private UserAddressFacade userAddressFacade;
     private UserBankAccountFacade userBankAccountFacade;
@@ -125,7 +122,6 @@ public class UserFacade implements UserValidationStrings {
                     user.getAddress().getHouseNumber(),
                     user.getContact().getEmail(),
                     user.getContact().getPhoneNumber(),
-                    user.getPassword(),
                     user.getDecodedBCryptPassword(),
                     user.getBankAccount().getAccountNumber(),
                     user.getBankAccount().getAccountBalance()
@@ -165,33 +161,22 @@ public class UserFacade implements UserValidationStrings {
         return null;
     }
 
-    public DeleteUserQueryDto delete() {
-        List<User> users = repository.findAll();
+    public String delete() {
+        List<User> usersDto = repository.findAll();
 
-        if (users != null) {
+        if (usersDto != null) {
             repository.deleteAll();
-            deleteUserDto.setMessage(M_DELETED_ALL_USERS);
-        } else {
-            deleteUserDto.setMessage(M_NO_USERS);
+
+            return "Users deleted.";
         }
 
-        return baseQuery.query(deleteUserDto);
+        return "No users.";
     }
 
-    public DeleteUserQueryDto deleteUserByPesel(String pesel, DeleteUserDto dto, BindingResult result) {
-        if (validator.supports(dto.getClass())) {
+    public String deleteUserByPesel(String pesel) {
+        repository.deleteById(pesel);
 
-            validator.validate(dto, result);
-
-            if (!result.hasErrors()) {
-                repository.delete(repository.findByPesel(pesel));
-                deleteUserDto.setMessage(M_USER_DELETED);
-
-                return baseQuery.query(deleteUserDto);
-            }
-        }
-
-        return null;
+        return "User deleted.";
     }
 
     public HashMap<String, Object> aboutMe(Authentication authentication) {

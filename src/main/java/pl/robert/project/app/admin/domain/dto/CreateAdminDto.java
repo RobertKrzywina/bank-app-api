@@ -10,5 +10,9 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class CreateAdminDto extends AdminDto {
 
-    private String rePassword;
+    public CreateAdminDto(long id, String name, String login,
+                          String password, String rePassword,
+                          String roleName) {
+        super(id, name, login, password, rePassword, roleName);
+    }
 }

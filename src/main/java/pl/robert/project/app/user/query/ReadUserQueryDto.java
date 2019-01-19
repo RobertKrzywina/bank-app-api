@@ -18,7 +18,6 @@ public class ReadUserQueryDto {
     private String email;
     private String phoneNumber;
     private String password;
-    private String decodedBCryptPassword;
     private String accountNumber;
     private Double accountBalance;
 }
