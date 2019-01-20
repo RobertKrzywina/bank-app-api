@@ -11,7 +11,6 @@ import pl.robert.project.app.admin.domain.AdminFacade;
 import pl.robert.project.app.admin.domain.dto.ChangeAdminPasswordDto;
 import pl.robert.project.app.admin.domain.dto.CreateAdminDto;
 import pl.robert.project.app.admin.domain.dto.ReadAdminDto;
-import pl.robert.project.app.admin.query.ChangeAdminPasswordQueryDto;
 import pl.robert.project.app.admin.query.CreateAdminQueryDto;
 import pl.robert.project.app.admin.query.ReadAdminQueryDto;
 import pl.robert.project.app.user.domain.UserFacade;
@@ -53,25 +52,25 @@ class AdminRestController {
     }
 
     @GetMapping("/admins")
-    public ResponseEntity<?> read() {
-        List<ReadAdminQueryDto> adminsDto = adminFacade.getAll();
+    public ResponseEntity read(@Valid ReadAdminDto dto, BindingResult result) {
+        List<ReadAdminQueryDto> adminsDto = adminFacade.getAll(dto, result);
 
-        if (adminsDto != null) {
-            return ResponseEntity.status(200).body(adminsDto);
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
         }
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(200).body(adminsDto);
     }
 
     @GetMapping("/users")
-    public ResponseEntity<?> readUsers() {
-        List<ReadUserQueryDto> usersDto = userFacade.getAll();
+    public ResponseEntity readUsers(@Valid ReadUserDto dto, BindingResult result) {
+        List<ReadUserQueryDto> usersDto = userFacade.getAll(dto, result);
 
-        if (usersDto != null) {
-            return ResponseEntity.status(200).body(usersDto);
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
         }
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(200).body(usersDto);
     }
 
     @GetMapping("/admins/{id}")
@@ -97,63 +96,60 @@ class AdminRestController {
     }
 
     @DeleteMapping("/users")
-    public ResponseEntity deleteUsers() {
-        List<ReadUserQueryDto> usersDto = userFacade.getAll();
-        String msg = userFacade.delete();
-
-        if (usersDto != null) {
-            return ResponseEntity.status(200).body(msg);
-        }
-
-        return ResponseEntity.status(404).body(msg);
-    }
-
-    @DeleteMapping("/users/{pesel}")
-    public ResponseEntity deleteUserByPesel(@PathVariable("pesel") String pesel, ReadUserDto dto, BindingResult result) {
-        ReadUserQueryDto userDto = userFacade.getUserByPesel(pesel, dto, result);
-
-        if (userDto != null) {
-            String msg = userFacade.deleteUserByPesel(pesel);
-            return ResponseEntity.status(200).body(msg);
-        }
-
-        return ResponseEntity.status(400).body(dto.getErrors());
-    }
-
-    @PreAuthorize("hasRole('HEAD-ADMIN')")
-    @DeleteMapping("/admins")
-    public ResponseEntity deleteAdmins() {
-        List<ReadAdminQueryDto> adminsDto = adminFacade.getAllAdminsExceptHeadAdmins();
-        String msg = adminFacade.deleteAllAdminsExceptHeadAdmin();
-
-        if (adminsDto != null) {
-            return ResponseEntity.status(200).body(msg);
-        }
-
-        return ResponseEntity.status(404).body(msg);
-    }
-
-    @PreAuthorize("hasRole('HEAD-ADMIN')")
-    @DeleteMapping("/admins/{id}")
-    public ResponseEntity deleteAdminById(@PathVariable("id") String id, ReadAdminDto dto, BindingResult result) {
-        ReadAdminQueryDto adminDto = adminFacade.getAdminById(Long.parseLong(id), dto, result);
-
-        if (adminDto != null) {
-            String msg = adminFacade.deleteById(Long.parseLong(id));
-            return ResponseEntity.status(200).body(msg);
-        }
-
-        return ResponseEntity.status(400).body(dto.getErrors());
-    }
-
-    @PutMapping("/admin/change-password")
-    public ResponseEntity changeAdminPassword(@RequestBody @Valid ChangeAdminPasswordDto dto, BindingResult result) {
-        ChangeAdminPasswordQueryDto dtoNewPassword = adminFacade.changePassword(dto, result);
+    public ResponseEntity deleteUsers(@Valid ReadUserDto dto, BindingResult result) {
+        userFacade.deleteAllUsers(dto, result);
 
         if (!dto.getErrors().isEmpty()) {
             return ResponseEntity.status(400).body(dto.getErrors());
         }
 
-        return ResponseEntity.status(200).body(dtoNewPassword);
+        return ResponseEntity.status(200).body(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/users/{pesel}")
+    public ResponseEntity deleteUserByPesel(@PathVariable("pesel") String pesel, @Valid ReadUserDto dto, BindingResult result) {
+        userFacade.deleteUserByPesel(pesel, dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
+        }
+
+        return ResponseEntity.status(200).body(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('HEAD-ADMIN')")
+    @DeleteMapping("/admins")
+    public ResponseEntity deleteAdmins(@Valid ReadAdminDto dto, BindingResult result) {
+        adminFacade.deleteAllAdminsExceptHeadAdmins(dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
+        }
+
+        return ResponseEntity.status(200).body(HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('HEAD-ADMIN')")
+    @DeleteMapping("/admins/{id}")
+    public ResponseEntity deleteAdminById(@PathVariable("id") String id, @Valid ReadAdminDto dto, BindingResult result) {
+        adminFacade.deleteAdminById(Long.parseLong(id), dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
+        }
+
+        return ResponseEntity.status(200).body(HttpStatus.OK);
+    }
+
+    @PatchMapping("/admin/change-password/{id}")
+    public ResponseEntity changeAdminPassword(@PathVariable("id") String id,
+                                              @RequestBody @Valid ChangeAdminPasswordDto dto, BindingResult result) {
+        adminFacade.changePassword(Long.parseLong(id), dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
+        }
+
+        return ResponseEntity.status(200).body(dto.getNewPassword());
     }
 }

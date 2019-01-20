@@ -22,6 +22,8 @@ public abstract class AdminDto {
     private String rePassword;
     private String decodedBCryptPassword;
     private String roleName;
+    private String newPassword;
+    private String reNewPassword;
 
     private List<ObjectError> errors = new ArrayList<>();
     private Set<Role> roles = new HashSet<>();
@@ -41,5 +43,12 @@ public abstract class AdminDto {
         this.id = id;
         this.name = name;
         this.roleName = roleName;
+    }
+
+    public AdminDto(String password, String rePassword, String newPassword, String reNewPassword) {
+        this.password = password;
+        this.rePassword = rePassword;
+        this.newPassword = newPassword;
+        this.reNewPassword = reNewPassword;
     }
 }

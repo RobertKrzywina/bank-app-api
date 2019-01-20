@@ -37,6 +37,24 @@ class UserValidator implements Validator, UserValidationStrings {
         ((UserDto) obj).setErrors(errors.getAllErrors());
     }
 
+    void validateGetAllUsers(ReadUserDto dto, Errors errors) {
+
+        if (userRepo.findAll().isEmpty()) {
+            errors.reject(C_USERS_NOT_EXISTS, M_USERS_NOT_EXISTS);
+        }
+
+        dto.setErrors(errors.getAllErrors());
+    }
+
+    void validateGetUser(String pesel, ReadUserDto dto, Errors errors) {
+
+        if (userRepo.findByPesel(pesel) == null) {
+            errors.reject(C_USER_NOT_EXISTS, M_USER_NOT_EXISTS);
+        }
+
+        dto.setErrors(errors.getAllErrors());
+    }
+
     private void validateCreateUser(CreateUserDto dto, Errors errors) {
 
         if (dto.getPesel() != null) {

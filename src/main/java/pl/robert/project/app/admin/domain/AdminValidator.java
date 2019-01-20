@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import pl.robert.project.app.admin.domain.dto.*;
+import pl.robert.project.app.admin.domain.dto.AdminDto;
+import pl.robert.project.app.admin.domain.dto.ChangeAdminPasswordDto;
+import pl.robert.project.app.admin.domain.dto.CreateAdminDto;
+import pl.robert.project.app.admin.domain.dto.ReadAdminDto;
 
 @Component
 @AllArgsConstructor
@@ -38,6 +41,33 @@ class AdminValidator implements Validator, AdminValidationStrings {
         }
 
         ((AdminDto) obj).setErrors(errors.getAllErrors());
+    }
+
+    void validateGetAllAdmins(ReadAdminDto dto, Errors errors) {
+
+        if (adminRepo.findAll().isEmpty()) {
+            errors.reject(C_ADMINS_NOT_EXISTS, M_ADMINS_NOT_EXISTS);
+        }
+
+        dto.setErrors(errors.getAllErrors());
+    }
+
+    void validateGetAllAdminsExceptHeadAdmins(ReadAdminDto dto, Errors errors) {
+
+        if (adminRepo.findAllAdminsExceptHeadAdmins().isEmpty()) {
+            errors.reject(C_ADMINS_NOT_EXISTS, M_ADMINS_NOT_EXISTS);
+        }
+
+        dto.setErrors(errors.getAllErrors());
+    }
+
+    void validateGetAdminExceptHeadAdmin(long id, ReadAdminDto dto, Errors errors) {
+
+        if (adminRepo.findByIdExceptHeadAdmin(id) == null) {
+            errors.reject(C_ADMIN_NOT_EXISTS, M_ADMIN_ID_NOT_EXISTS);
+        }
+
+        dto.setErrors(errors.getAllErrors());
     }
 
     private void validateCreateAdmin(CreateAdminDto dto, Errors errors) {
@@ -102,42 +132,53 @@ class AdminValidator implements Validator, AdminValidationStrings {
     }
 
     private void validateChangeAdminPassword(ChangeAdminPasswordDto dto, Errors errors) {
-        if (dto.getOldPassword() != null) {
-            if (!dto.getOldPassword().equals(adminRepo.findById(dto.getId()).getPassword())) {
-                errors.reject(C_OLD_PASSWORD_NOT_MATCH, M_OLD_PASSWORD_NOT_MATCH);
-            }
+
+        Admin admin = adminRepo.findById(dto.getId());
+
+        if (admin == null) {
+            errors.reject(C_ADMIN_NOT_EXISTS, M_ADMIN_ID_NOT_EXISTS);
+
         } else {
-            errors.reject(C_OLD_PASSWORD_NULL, M_OLD_PASSWORD_NULL);
-        }
 
-        if (dto.getReOldPassword() != null) {
-            if (!dto.getOldPassword().equals(dto.getReOldPassword())) {
-                errors.reject(C_RE_OLD_PASSWORD_NOT_MATCH, M_RE_OLD_PASSWORD_NOT_MATCH);
-            }
-        } else {
-            errors.reject(C_RE_OLD_PASSWORD_NULL, M_RE_OLD_PASSWORD_NULL);
-        }
+            if (dto.getPassword() != null) {
 
-        if (dto.getNewPassword() != null) {
-            if (isFieldLengthCorrect(dto.getNewPassword(), MIN_LENGTH_PASSWORD, MAX_LENGTH_PASSWORD)) {
-                errors.reject(C_PASSWORD_LENGTH, M_PASSWORD_LENGTH);
-            }
-        } else {
-            errors.reject(C_NEW_PASSWORD_NULL, M_NEW_PASSWORD_NULL);
-        }
-
-        if (dto.getReNewPassword() != null) {
-            if (!dto.getNewPassword().equals(dto.getReNewPassword())) {
-                errors.reject(C_RE_NEW_PASSWORD_NOT_MATCH, M_RE_NEW_PASSWORD_NOT_MATCH);
-            } else {
-
-                if (hasAnyWhiteSpaces(dto.getNewPassword())) {
-                    dto.setNewPassword(convertAllWhiteSpacesToHash(dto.getNewPassword()));
+                if (!dto.getPassword().equals(admin.getDecodedBCryptPassword())) {
+                    errors.reject(C_OLD_PASSWORD_NOT_MATCH, M_OLD_PASSWORD_NOT_MATCH);
                 }
 
+            } else {
+                errors.reject(C_OLD_PASSWORD_NULL, M_OLD_PASSWORD_NULL);
             }
-        } else {
-            errors.reject(C_RE_NEW_PASSWORD_NULL, M_RE_NEW_PASSWORD_NULL);
+
+            if (dto.getRePassword() != null) {
+                if (!dto.getPassword().equals(dto.getRePassword())) {
+                    errors.reject(C_RE_OLD_PASSWORD_NOT_MATCH, M_RE_OLD_PASSWORD_NOT_MATCH);
+                }
+            } else {
+                errors.reject(C_RE_OLD_PASSWORD_NULL, M_RE_OLD_PASSWORD_NULL);
+            }
+
+            if (dto.getNewPassword() != null) {
+                if (isFieldLengthCorrect(dto.getNewPassword(), MIN_LENGTH_PASSWORD, MAX_LENGTH_PASSWORD)) {
+                    errors.reject(C_PASSWORD_LENGTH, M_PASSWORD_LENGTH);
+                }
+            } else {
+                errors.reject(C_NEW_PASSWORD_NULL, M_NEW_PASSWORD_NULL);
+            }
+
+            if (dto.getReNewPassword() != null) {
+                if (!dto.getNewPassword().equals(dto.getReNewPassword())) {
+                    errors.reject(C_RE_NEW_PASSWORD_NOT_MATCH, M_RE_NEW_PASSWORD_NOT_MATCH);
+                } else {
+
+                    if (hasAnyWhiteSpaces(dto.getNewPassword())) {
+                        dto.setNewPassword(convertAllWhiteSpacesToHash(dto.getNewPassword()));
+                    }
+
+                }
+            } else {
+                errors.reject(C_RE_NEW_PASSWORD_NULL, M_RE_NEW_PASSWORD_NULL);
+            }
         }
     }
 

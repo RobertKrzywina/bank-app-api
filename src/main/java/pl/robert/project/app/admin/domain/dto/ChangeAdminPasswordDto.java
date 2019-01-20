@@ -10,9 +10,8 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class ChangeAdminPasswordDto extends AdminDto {
 
-    private long id;
-    private String oldPassword;
-    private String reOldPassword;
-    private String newPassword;
-    private String reNewPassword;
+    public ChangeAdminPasswordDto(String password, String rePassword,
+                                  String newPassword, String reNewPassword) {
+        super(password, rePassword, newPassword, reNewPassword);
+    }
 }

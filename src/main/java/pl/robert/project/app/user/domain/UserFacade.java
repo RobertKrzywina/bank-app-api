@@ -106,29 +106,60 @@ public class UserFacade {
         return userBankAccountFacade.findByAccountNumber(accountNumber) != null;
     }
 
-    public List<ReadUserQueryDto> getAll() {
-        List<User> users = repository.findAll();
-        List<ReadUserQueryDto> usersDto = new ArrayList<>();
+    public List<ReadUserQueryDto> getAll(ReadUserDto dto, BindingResult result) {
+        if (validator.supports(dto.getClass())) {
 
-        for (User user : users) {
-            usersDto.add(new ReadUserQueryDto(
-                    user.getPesel(),
-                    user.getFirstName(),
-                    user.getLastName(),
-                    user.getAddress().getProvince(),
-                    user.getAddress().getCity(),
-                    user.getAddress().getZipCode(),
-                    user.getAddress().getStreet(),
-                    user.getAddress().getHouseNumber(),
-                    user.getContact().getEmail(),
-                    user.getContact().getPhoneNumber(),
-                    user.getDecodedBCryptPassword(),
-                    user.getBankAccount().getAccountNumber(),
-                    user.getBankAccount().getAccountBalance()
-            ));
+            List<User> users = repository.findAll();
+            validator.validateGetAllUsers(dto, result);
+
+            if (!result.hasErrors()) {
+                List<ReadUserQueryDto> usersDto = new ArrayList<>();
+
+                for (User user : users) {
+                    usersDto.add(new ReadUserQueryDto(
+                            user.getPesel(),
+                            user.getFirstName(),
+                            user.getLastName(),
+                            user.getAddress().getProvince(),
+                            user.getAddress().getCity(),
+                            user.getAddress().getZipCode(),
+                            user.getAddress().getStreet(),
+                            user.getAddress().getHouseNumber(),
+                            user.getContact().getEmail(),
+                            user.getContact().getPhoneNumber(),
+                            user.getDecodedBCryptPassword(),
+                            user.getBankAccount().getAccountNumber(),
+                            user.getBankAccount().getAccountBalance()
+                    ));
+                }
+
+                return usersDto;
+            }
         }
 
-        return usersDto;
+        return null;
+    }
+
+    public void deleteAllUsers(ReadUserDto dto, BindingResult result) {
+        if (validator.supports(dto.getClass())) {
+
+            validator.validateGetAllUsers(dto, result);
+
+            if (!result.hasErrors()) {
+                repository.deleteAll();
+            }
+        }
+    }
+
+    public void deleteUserByPesel(String pesel, ReadUserDto dto, BindingResult result) {
+        if (validator.supports(dto.getClass())) {
+
+            validator.validateGetUser(pesel, dto, result);
+
+            if (!result.hasErrors()) {
+                repository.deleteById(pesel);
+            }
+        }
     }
 
     public ReadUserQueryDto getUserByPesel(String pesel, ReadUserDto dto, BindingResult result) {
@@ -159,24 +190,6 @@ public class UserFacade {
         }
 
         return null;
-    }
-
-    public String delete() {
-        List<User> usersDto = repository.findAll();
-
-        if (usersDto != null) {
-            repository.deleteAll();
-
-            return "Users deleted.";
-        }
-
-        return "No users.";
-    }
-
-    public String deleteUserByPesel(String pesel) {
-        repository.deleteById(pesel);
-
-        return "User deleted.";
     }
 
     public HashMap<String, Object> aboutMe(Authentication authentication) {

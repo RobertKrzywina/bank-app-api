@@ -9,9 +9,6 @@ interface AdminValidationStrings {
     int MIN_LENGTH_PASSWORD = 6;
     int MAX_LENGTH_PASSWORD = 61;
 
-    String roleHeadAdmin = "ROLE_HEAD-ADMIN";
-    String roleAdmin = "ROLE_ADMIN";
-
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     String ROLE_HEAD_ADMIN = "ROLE_HEAD-ADMIN";
@@ -38,9 +35,9 @@ interface AdminValidationStrings {
     String C_LOGIN_LENGTH = "login.length";
     String C_PASSWORD_LENGTH = "admin.password_length";
 
+    String C_ADMINS_NOT_EXISTS = "admins.not_exists";
     String C_ADMIN_NOT_EXISTS = "admin.by_id_not_exists";
     String C_ADMIN_LOGIN_EXISTS = "admin.exists";
-    String C_CANT_DELETE_HEAD_ADMIN = "cant.delete.head_admin";
     String C_INCORRECT_ROLE_NAME = "incorrect.role_name";
 
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,6 +56,7 @@ interface AdminValidationStrings {
     String M_PASSWORD_LENGTH = "Password should contain from 6 to 61 characters";
 
     String M_ADMIN_LOGIN_EXISTS = "Login already exists";
+    String M_ADMINS_NOT_EXISTS = "Admins not exists";
     String M_ADMIN_ID_NOT_EXISTS = "Admin id not exists";
 
     String M_RE_PASSWORD_NOT_MATCH_PASSWORD = "Passwords are not identical";
@@ -66,9 +64,5 @@ interface AdminValidationStrings {
     String M_RE_OLD_PASSWORD_NOT_MATCH = "Old passwords are not identical";
     String M_RE_NEW_PASSWORD_NOT_MATCH = "New passwords are not identical";
 
-    String M_DELETED_ALL_ADMINS = "All admins deleted successfully";
-    String M_NO_ADMINS = "No admins here";
-    String M_CANT_DELETE_HEAD_ADMIN = "You can't delete head admin";
-    String M_ADMIN_DELETED = "Admin deleted";
     String M_INCORRECT_ROLE_NAME = "Incorrect role name";
 }
