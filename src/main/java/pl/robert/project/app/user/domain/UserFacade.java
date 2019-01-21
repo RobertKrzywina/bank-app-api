@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import pl.robert.project.app.security.dto.AppUserDto;
+import pl.robert.project.app.user.domain.dto.ChangeUserPasswordDto;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
 import pl.robert.project.app.user.domain.dto.ReadUserDto;
 import pl.robert.project.app.user.query.BaseUserQuery;
@@ -36,6 +37,7 @@ public class UserFacade {
     private ReadUserDto readUserDto;
     private UserContactFacade userContactFacade;
     private UserAddressFacade userAddressFacade;
+    private ChangeUserPasswordDto changePasswordDto;
     private UserBankAccountFacade userBankAccountFacade;
 
     public CreateUserQueryDto add(CreateUserDto dto, BindingResult result) {
@@ -190,6 +192,24 @@ public class UserFacade {
         }
 
         return null;
+    }
+
+    public void changePassword(String pesel, ChangeUserPasswordDto dto, BindingResult result) {
+        if (validator.supports(dto.getClass())) {
+
+            dto.setPesel(pesel);
+
+            validator.validate(dto, result);
+
+            if (!result.hasErrors()) {
+
+                PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+                repository.updateUserPassword(passwordEncoder.encode(dto.getNewPassword()), pesel);
+                repository.updateUserDecodedBCryptPassword(dto.getNewPassword(), pesel);
+                changePasswordDto.setNewPassword(dto.getNewPassword());
+            }
+        }
     }
 
     public HashMap<String, Object> aboutMe(Authentication authentication) {

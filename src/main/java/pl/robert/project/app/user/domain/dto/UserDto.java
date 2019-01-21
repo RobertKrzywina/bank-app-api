@@ -25,6 +25,8 @@ public abstract class UserDto {
     private String password;
     private String decodedBCryptPassword;
     private String rePassword;
+    private String newPassword;
+    private String reNewPassword;
     private String accountNumber;
     private Double accountBalance;
 
@@ -52,5 +54,13 @@ public abstract class UserDto {
         if (type == 1) { this.rePassword = rePassword; }
 
         else { this.accountBalance = accountBalance; }
+    }
+
+    public UserDto(String password, String rePassword,
+                   String newPassword, String reNewPassword) {
+        this.password = password;
+        this.rePassword = rePassword;
+        this.newPassword = newPassword;
+        this.reNewPassword = reNewPassword;
     }
 }

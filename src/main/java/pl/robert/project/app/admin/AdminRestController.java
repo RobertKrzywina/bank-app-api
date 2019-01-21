@@ -14,6 +14,7 @@ import pl.robert.project.app.admin.domain.dto.ReadAdminDto;
 import pl.robert.project.app.admin.query.CreateAdminQueryDto;
 import pl.robert.project.app.admin.query.ReadAdminQueryDto;
 import pl.robert.project.app.user.domain.UserFacade;
+import pl.robert.project.app.user.domain.dto.ChangeUserPasswordDto;
 import pl.robert.project.app.user.domain.dto.ReadUserDto;
 import pl.robert.project.app.user.query.ReadUserQueryDto;
 
@@ -141,10 +142,24 @@ class AdminRestController {
         return ResponseEntity.status(200).body(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('HEAD-ADMIN')")
     @PatchMapping("/admin/change-password/{id}")
     public ResponseEntity changeAdminPassword(@PathVariable("id") String id,
                                               @RequestBody @Valid ChangeAdminPasswordDto dto, BindingResult result) {
         adminFacade.changePassword(Long.parseLong(id), dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
+        }
+
+        return ResponseEntity.status(200).body(dto.getNewPassword());
+    }
+
+    @PreAuthorize("hasRole('HEAD-ADMIN')")
+    @PatchMapping("/user/change-password/{pesel}")
+    public ResponseEntity changeUserPassword(@PathVariable("pesel") String pesel,
+                                             @RequestBody @Valid ChangeUserPasswordDto dto, BindingResult result) {
+        userFacade.changePassword(pesel, dto, result);
 
         if (!dto.getErrors().isEmpty()) {
             return ResponseEntity.status(400).body(dto.getErrors());

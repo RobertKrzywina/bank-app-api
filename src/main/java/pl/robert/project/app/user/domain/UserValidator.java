@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import pl.robert.project.app.user.domain.dto.ChangeUserPasswordDto;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
 import pl.robert.project.app.user.domain.dto.ReadUserDto;
 import pl.robert.project.app.user.domain.dto.UserDto;
@@ -16,7 +17,8 @@ class UserValidator implements Validator, UserValidationStrings {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return (clazz.isAssignableFrom(CreateUserDto.class) || clazz.isAssignableFrom(ReadUserDto.class));
+        return (clazz.isAssignableFrom(CreateUserDto.class) || clazz.isAssignableFrom(ReadUserDto.class) ||
+                clazz.isAssignableFrom(ChangeUserPasswordDto.class));
     }
 
     @Override
@@ -31,7 +33,10 @@ class UserValidator implements Validator, UserValidationStrings {
             ReadUserDto dto = (ReadUserDto) obj;
 
             validateReadUser(dto, errors);
+        } else if (obj instanceof ChangeUserPasswordDto) {
+            ChangeUserPasswordDto dto = (ChangeUserPasswordDto) obj;
 
+            validateChangeUserPassword(dto, errors);
         }
 
         ((UserDto) obj).setErrors(errors.getAllErrors());
@@ -106,6 +111,57 @@ class UserValidator implements Validator, UserValidationStrings {
         }
     }
 
+    private void validateChangeUserPassword(ChangeUserPasswordDto dto, Errors errors) {
+
+        User user = userRepo.findByPesel(dto.getPesel());
+
+        if (user == null) {
+            errors.reject(C_USER_NOT_EXISTS, M_USER_NOT_EXISTS);
+
+        } else {
+
+            if (dto.getPassword() != null) {
+
+                if (!dto.getPassword().equals(user.getDecodedBCryptPassword())) {
+                    errors.reject(C_OLD_PASSWORD_NOT_MATCH, M_OLD_PASSWORD_NOT_MATCH);
+                }
+
+            } else {
+                errors.reject(C_OLD_PASSWORD_NULL, M_OLD_PASSWORD_NULL);
+            }
+
+            if (dto.getRePassword() != null) {
+                if (!dto.getPassword().equals(dto.getRePassword())) {
+                    errors.reject(C_RE_OLD_PASSWORD_NOT_MATCH, M_RE_OLD_PASSWORD_NOT_MATCH);
+                }
+            } else {
+                errors.reject(C_RE_OLD_PASSWORD_NULL, M_RE_OLD_PASSWORD_NULL);
+            }
+
+            if (dto.getNewPassword() != null) {
+                if (isFieldLengthCorrect(dto.getNewPassword(), PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH)) {
+                    errors.reject(C_PASSWORD_LENGTH, M_PASSWORD_LENGTH);
+                }
+            } else {
+                errors.reject(C_NEW_PASSWORD_NULL, M_NEW_PASSWORD_NULL);
+            }
+
+            if (dto.getReNewPassword() != null) {
+                if (!dto.getNewPassword().equals(dto.getReNewPassword())) {
+                    errors.reject(C_RE_NEW_PASSWORD_NOT_MATCH, M_RE_NEW_PASSWORD_NOT_MATCH);
+                } else {
+
+                    if (hasAnyWhiteSpaces(dto.getNewPassword())) {
+                        dto.setNewPassword(convertAllWhiteSpacesToHash(dto.getNewPassword()));
+                    }
+
+                }
+            } else {
+                errors.reject(C_RE_NEW_PASSWORD_NULL, M_RE_NEW_PASSWORD_NULL);
+            }
+        }
+    }
+
     private void validateReadUser(ReadUserDto dto, Errors errors) {
         if (userRepo.findByPesel(dto.getPesel()) == null) {
             errors.reject(C_USER_NOT_EXISTS, M_USER_NOT_EXISTS);
@@ -118,5 +174,25 @@ class UserValidator implements Validator, UserValidationStrings {
 
     private boolean isPeselExists(String pesel) {
         return userRepo.findByPesel(pesel) != null;
+    }
+
+    private boolean hasAnyWhiteSpaces(String fieldToCheck) {
+        for (int i = 0; i < fieldToCheck.length(); i++) {
+            if (fieldToCheck.charAt(i) == ' ' || fieldToCheck.charAt(i) == '_') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private String convertAllWhiteSpacesToHash(String fieldToConvert) {
+        for (int i = 0; i < fieldToConvert.length(); i++) {
+            if (fieldToConvert.charAt(i) == ' ' || fieldToConvert.charAt(i) == '_') {
+                fieldToConvert = fieldToConvert.replace(' ', '#');
+            }
+        }
+
+        return fieldToConvert;
     }
 }

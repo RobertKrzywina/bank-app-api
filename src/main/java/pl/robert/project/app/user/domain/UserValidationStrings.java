@@ -14,6 +14,14 @@ interface UserValidationStrings {
     String C_FIRST_NAME_NULL = "first_name.null";
     String C_LAST_NAME_NULL = "last_name.null";
     String C_PASSWORD_NULL = "password.null";
+    String C_OLD_PASSWORD_NULL = "old_password.null";
+    String C_RE_OLD_PASSWORD_NULL = "re_old_password.null";
+    String C_NEW_PASSWORD_NULL = "new_password.null";
+    String C_RE_NEW_PASSWORD_NULL = "re_new_password.null";
+
+    String C_OLD_PASSWORD_NOT_MATCH = "old_password.not_match";
+    String C_RE_OLD_PASSWORD_NOT_MATCH = "re_old_password.not_match";
+    String C_RE_NEW_PASSWORD_NOT_MATCH = "re_new_password.not_match";
 
     String C_PESEL_LENGTH = "pesel.length";
     String C_FIRST_NAME_LENGTH = "first_name.length";
@@ -32,6 +40,10 @@ interface UserValidationStrings {
     String M_FIRST_NAME_NULL = "Enter your first name";
     String M_LAST_NAME_NULL = "Enter your last name";
     String M_PASSWORD_NULL = "Enter your password";
+    String M_OLD_PASSWORD_NULL = "Enter your old password";
+    String M_RE_OLD_PASSWORD_NULL = "Re enter your old password";
+    String M_NEW_PASSWORD_NULL = "Enter your new password";
+    String M_RE_NEW_PASSWORD_NULL = "Re enter your new password";
 
     String M_PESEL_LENGTH = "Pesel should have 11 numbers";
     String M_FIRST_NAME_LENGTH = "First name should have from 2 to 20 characters";
@@ -43,4 +55,8 @@ interface UserValidationStrings {
     String M_USER_NOT_EXISTS = "User pesel not exists";
 
     String M_RE_PASSWORD_NOT_MATCH_PASSWORD = "Passwords are not identical";
+    String M_OLD_PASSWORD_NOT_MATCH = "Old password not match";
+    String M_RE_OLD_PASSWORD_NOT_MATCH = "Old passwords are not identical";
+    String M_RE_NEW_PASSWORD_NOT_MATCH = "New passwords are not identical";
+
 }

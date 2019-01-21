@@ -2,6 +2,7 @@ package pl.robert.project.app.user.domain;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.robert.project.app.user.domain.dto.ChangeUserPasswordDto;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
 import pl.robert.project.app.user.domain.dto.ReadUserDto;
 import pl.robert.project.app.user.query.BaseUserQuery;
@@ -21,9 +22,11 @@ class UserConfiguration {
                           ReadUserDto readDto,
                           UserContactFacade userContactFacade,
                           UserAddressFacade userAddressFacade,
+                          ChangeUserPasswordDto changePasswordDto,
                           UserBankAccountFacade userBankAccountFacade) {
         return new UserFacade(repository, factory, validator, baseQuery,
                               createDto, readDto,
-                              userContactFacade, userAddressFacade, userBankAccountFacade);
+                              userContactFacade, userAddressFacade, changePasswordDto,
+                              userBankAccountFacade);
     }
 }
