@@ -1,5 +1,6 @@
 package pl.robert.project.app.user.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,13 +24,18 @@ public abstract class UserDto {
     private String email;
     private String phoneNumber;
     private String password;
-    private String decodedBCryptPassword;
     private String rePassword;
-    private String newPassword;
-    private String reNewPassword;
+
+    @JsonIgnore
     private String accountNumber;
+
+    @JsonIgnore
     private Double accountBalance;
 
+    @JsonIgnore
+    private String decodedBCryptPassword;
+
+    @JsonIgnore
     private List<ObjectError> errors = new ArrayList<>();
 
     public UserDto(String pesel, String firstName, String lastName,
@@ -54,13 +60,5 @@ public abstract class UserDto {
         if (type == 1) { this.rePassword = rePassword; }
 
         else { this.accountBalance = accountBalance; }
-    }
-
-    public UserDto(String password, String rePassword,
-                   String newPassword, String reNewPassword) {
-        this.password = password;
-        this.rePassword = rePassword;
-        this.newPassword = newPassword;
-        this.reNewPassword = reNewPassword;
     }
 }

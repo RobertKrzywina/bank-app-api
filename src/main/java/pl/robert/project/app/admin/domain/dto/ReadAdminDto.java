@@ -10,8 +10,11 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class ReadAdminDto extends AdminDto {
 
+    private String roleName;
+
     public ReadAdminDto(long id, String name,
                         String roleName) {
-        super(id, name, roleName);
+        super(id, name);
+        this.roleName = roleName;
     }
 }

@@ -33,11 +33,6 @@ class AdminValidator implements Validator, AdminValidationStrings {
             ReadAdminDto dto = (ReadAdminDto) obj;
 
             validateReadAdmin(dto, errors);
-
-        } else if (obj instanceof ChangeAdminPasswordDto) {
-            ChangeAdminPasswordDto dto = (ChangeAdminPasswordDto) obj;
-
-            validateChangeAdminPassword(dto, errors);
         }
 
         ((AdminDto) obj).setErrors(errors.getAllErrors());
@@ -131,7 +126,7 @@ class AdminValidator implements Validator, AdminValidationStrings {
         }
     }
 
-    private void validateChangeAdminPassword(ChangeAdminPasswordDto dto, Errors errors) {
+    void validateChangeAdminPassword(ChangeAdminPasswordDto dto, Errors errors) {
 
         Admin admin = adminRepo.findById(dto.getId());
 
@@ -140,9 +135,9 @@ class AdminValidator implements Validator, AdminValidationStrings {
 
         } else {
 
-            if (dto.getPassword() != null) {
+            if (dto.getOldPassword() != null) {
 
-                if (!dto.getPassword().equals(admin.getDecodedBCryptPassword())) {
+                if (!dto.getOldPassword().equals(admin.getDecodedBCryptPassword())) {
                     errors.reject(C_OLD_PASSWORD_NOT_MATCH, M_OLD_PASSWORD_NOT_MATCH);
                 }
 
@@ -150,8 +145,8 @@ class AdminValidator implements Validator, AdminValidationStrings {
                 errors.reject(C_OLD_PASSWORD_NULL, M_OLD_PASSWORD_NULL);
             }
 
-            if (dto.getRePassword() != null) {
-                if (!dto.getPassword().equals(dto.getRePassword())) {
+            if (dto.getReOldPassword() != null) {
+                if (!dto.getOldPassword().equals(dto.getReOldPassword())) {
                     errors.reject(C_RE_OLD_PASSWORD_NOT_MATCH, M_RE_OLD_PASSWORD_NOT_MATCH);
                 }
             } else {
@@ -180,6 +175,8 @@ class AdminValidator implements Validator, AdminValidationStrings {
                 errors.reject(C_RE_NEW_PASSWORD_NULL, M_RE_NEW_PASSWORD_NULL);
             }
         }
+
+        dto.setErrors(errors.getAllErrors());
     }
 
     private boolean isLoginExists(String login) {

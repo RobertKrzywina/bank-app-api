@@ -144,7 +144,7 @@ public class AdminFacade implements AdminValidationStrings {
 
             dto.setId(id);
 
-            validator.validate(dto, result);
+            validator.validateChangeAdminPassword(dto, result);
 
             if (!result.hasErrors()) {
 

@@ -1,5 +1,6 @@
 package pl.robert.project.app.admin.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,35 +21,27 @@ public abstract class AdminDto {
     private String login;
     private String password;
     private String rePassword;
-    private String decodedBCryptPassword;
-    private String roleName;
-    private String newPassword;
-    private String reNewPassword;
 
+    @JsonIgnore
+    private String decodedBCryptPassword;
+
+    @JsonIgnore
     private List<ObjectError> errors = new ArrayList<>();
+
+    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
     public AdminDto(long id, String name, String login,
-                    String password, String rePassword,
-                    String roleName) {
+                    String password, String rePassword) {
         this.id = id;
         this.name = name;
         this.login = login;
         this.password = password;
         this.rePassword = rePassword;
-        this.roleName = roleName;
     }
 
-    public AdminDto(long id, String name, String roleName) {
+    public AdminDto(long id, String name) {
         this.id = id;
         this.name = name;
-        this.roleName = roleName;
-    }
-
-    public AdminDto(String password, String rePassword, String newPassword, String reNewPassword) {
-        this.password = password;
-        this.rePassword = rePassword;
-        this.newPassword = newPassword;
-        this.reNewPassword = reNewPassword;
     }
 }

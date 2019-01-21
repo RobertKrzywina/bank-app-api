@@ -199,7 +199,7 @@ public class UserFacade {
 
             dto.setPesel(pesel);
 
-            validator.validate(dto, result);
+            validator.validateChangeUserPassword(dto, result);
 
             if (!result.hasErrors()) {
 

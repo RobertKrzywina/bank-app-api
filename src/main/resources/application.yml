@@ -2,8 +2,8 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/bank-account-app
     username: postgres
-    #password: admin
-    password: postgres
+    password: admin
+#    password: postgres
     driverClassName: org.postgresql.Driver
     initialization-mode: always
   jpa:

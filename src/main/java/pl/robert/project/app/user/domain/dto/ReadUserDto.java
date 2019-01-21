@@ -14,7 +14,7 @@ public class ReadUserDto extends UserDto {
                        String province, String city, String zipCode, String street, String houseNumber,
                        String email, String phoneNumber,
                        String password,
-                       String accountNumber, double accountBalance) {
+                       String accountNumber, Double accountBalance) {
         super(pesel, firstName, lastName,
               province, city, zipCode, street, houseNumber,
               email, phoneNumber, password, null,

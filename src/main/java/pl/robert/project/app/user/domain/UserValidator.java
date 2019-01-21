@@ -33,10 +33,6 @@ class UserValidator implements Validator, UserValidationStrings {
             ReadUserDto dto = (ReadUserDto) obj;
 
             validateReadUser(dto, errors);
-        } else if (obj instanceof ChangeUserPasswordDto) {
-            ChangeUserPasswordDto dto = (ChangeUserPasswordDto) obj;
-
-            validateChangeUserPassword(dto, errors);
         }
 
         ((UserDto) obj).setErrors(errors.getAllErrors());
@@ -111,7 +107,7 @@ class UserValidator implements Validator, UserValidationStrings {
         }
     }
 
-    private void validateChangeUserPassword(ChangeUserPasswordDto dto, Errors errors) {
+    void validateChangeUserPassword(ChangeUserPasswordDto dto, Errors errors) {
 
         User user = userRepo.findByPesel(dto.getPesel());
 
@@ -120,9 +116,9 @@ class UserValidator implements Validator, UserValidationStrings {
 
         } else {
 
-            if (dto.getPassword() != null) {
+            if (dto.getOldPassword() != null) {
 
-                if (!dto.getPassword().equals(user.getDecodedBCryptPassword())) {
+                if (!dto.getOldPassword().equals(user.getDecodedBCryptPassword())) {
                     errors.reject(C_OLD_PASSWORD_NOT_MATCH, M_OLD_PASSWORD_NOT_MATCH);
                 }
 
@@ -130,8 +126,8 @@ class UserValidator implements Validator, UserValidationStrings {
                 errors.reject(C_OLD_PASSWORD_NULL, M_OLD_PASSWORD_NULL);
             }
 
-            if (dto.getRePassword() != null) {
-                if (!dto.getPassword().equals(dto.getRePassword())) {
+            if (dto.getReOldPassword() != null) {
+                if (!dto.getOldPassword().equals(dto.getReOldPassword())) {
                     errors.reject(C_RE_OLD_PASSWORD_NOT_MATCH, M_RE_OLD_PASSWORD_NOT_MATCH);
                 }
             } else {
@@ -160,6 +156,8 @@ class UserValidator implements Validator, UserValidationStrings {
                 errors.reject(C_RE_NEW_PASSWORD_NULL, M_RE_NEW_PASSWORD_NULL);
             }
         }
+
+        dto.setErrors(errors.getAllErrors());
     }
 
     private void validateReadUser(ReadUserDto dto, Errors errors) {
