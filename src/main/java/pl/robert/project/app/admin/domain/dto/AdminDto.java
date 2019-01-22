@@ -44,4 +44,10 @@ public abstract class AdminDto {
         this.id = id;
         this.name = name;
     }
+
+    public AdminDto(String name, String login, String password) {
+        this.name = name;
+        this.login = login;
+        this.password = password;
+    }
 }

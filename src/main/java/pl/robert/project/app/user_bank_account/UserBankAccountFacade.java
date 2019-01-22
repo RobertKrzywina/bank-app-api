@@ -16,8 +16,4 @@ public class UserBankAccountFacade {
     public void saveUserBankAccount(UserBankAccount bankAccount) {
         repository.saveAndFlush(bankAccount);
     }
-
-    public UserBankAccount findByPesel(String pesel) {
-        return repository.findByPesel(pesel);
-    }
 }

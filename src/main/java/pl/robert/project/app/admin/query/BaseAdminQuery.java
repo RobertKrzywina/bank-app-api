@@ -2,6 +2,7 @@ package pl.robert.project.app.admin.query;
 
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
+import pl.robert.project.app.admin.domain.dto.AboutMeAdminDto;
 import pl.robert.project.app.admin.domain.dto.CreateAdminDto;
 import pl.robert.project.app.admin.domain.dto.ReadAdminDto;
 
@@ -22,6 +23,15 @@ public class BaseAdminQuery {
         return new ReadAdminQueryDto(
                 dto.getId(),
                 dto.getName(),
+                dto.getRoleName()
+        );
+    }
+
+    public AboutMeAdminQueryDto query(AboutMeAdminDto dto) {
+        return new AboutMeAdminQueryDto(
+                dto.getName(),
+                dto.getLogin(),
+                dto.getPassword(),
                 dto.getRoleName()
         );
     }

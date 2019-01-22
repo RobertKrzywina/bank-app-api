@@ -2,6 +2,7 @@ package pl.robert.project.app.admin.domain;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.robert.project.app.admin.domain.dto.AboutMeAdminDto;
 import pl.robert.project.app.admin.domain.dto.ChangeAdminPasswordDto;
 import pl.robert.project.app.admin.domain.dto.CreateAdminDto;
 import pl.robert.project.app.admin.domain.dto.ReadAdminDto;
@@ -17,10 +18,12 @@ class AdminConfiguration {
                             BaseAdminQuery query,
                             CreateAdminDto createDto,
                             ReadAdminDto readDto,
-                            ChangeAdminPasswordDto changePasswordDto) {
+                            ChangeAdminPasswordDto changePasswordDto,
+                            AboutMeAdminDto aboutMeAdminDto) {
         return new AdminFacade(repository, factory, validator, query,
                                createDto,
                                readDto,
-                               changePasswordDto);
+                               changePasswordDto,
+                               aboutMeAdminDto);
     }
 }

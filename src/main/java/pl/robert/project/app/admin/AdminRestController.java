@@ -11,6 +11,7 @@ import pl.robert.project.app.admin.domain.AdminFacade;
 import pl.robert.project.app.admin.domain.dto.ChangeAdminPasswordDto;
 import pl.robert.project.app.admin.domain.dto.CreateAdminDto;
 import pl.robert.project.app.admin.domain.dto.ReadAdminDto;
+import pl.robert.project.app.admin.query.AboutMeAdminQueryDto;
 import pl.robert.project.app.admin.query.CreateAdminQueryDto;
 import pl.robert.project.app.admin.query.ReadAdminQueryDto;
 import pl.robert.project.app.user.domain.UserFacade;
@@ -19,7 +20,6 @@ import pl.robert.project.app.user.domain.dto.ReadUserDto;
 import pl.robert.project.app.user.query.ReadUserQueryDto;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -32,13 +32,15 @@ class AdminRestController {
     private AdminFacade adminFacade;
     private UserFacade userFacade;
 
-    @GetMapping
-    public HashMap<String, Object> aboutMe(Authentication auth) {
-        if (auth != null) {
-            return adminFacade.aboutMe(auth);
+    @GetMapping("/about-me")
+    public ResponseEntity aboutMe(Authentication auth) {
+        AboutMeAdminQueryDto aboutMeAdminDto = adminFacade.aboutMe(auth);
+
+        if (aboutMeAdminDto == null) {
+            return ResponseEntity.status(404).body(HttpStatus.NO_CONTENT);
         }
 
-        return null;
+        return ResponseEntity.status(200).body(aboutMeAdminDto);
     }
 
     @PostMapping("/admin")

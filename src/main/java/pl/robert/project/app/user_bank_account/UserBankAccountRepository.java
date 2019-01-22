@@ -5,6 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 interface UserBankAccountRepository extends JpaRepository<UserBankAccount, String> {
 
     UserBankAccount findByAccountNumber(String accountNumber);
-
-    UserBankAccount findByPesel(String pesel);
 }

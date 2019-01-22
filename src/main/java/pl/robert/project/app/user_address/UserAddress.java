@@ -1,10 +1,7 @@
 package pl.robert.project.app.user_address;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.validation.ObjectError;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
 

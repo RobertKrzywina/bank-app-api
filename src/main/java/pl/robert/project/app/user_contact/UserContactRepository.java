@@ -7,6 +7,4 @@ interface UserContactRepository extends JpaRepository<UserContact, String> {
     UserContact findByEmail(String email);
 
     UserContact findByPhoneNumber(String phoneNumber);
-
-    UserContact findByPesel(String pesel);
 }

@@ -7,9 +7,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import pl.robert.project.app.security.dto.AppUserDto;
+import pl.robert.project.app.user.domain.dto.AboutMeUserDto;
 import pl.robert.project.app.user.domain.dto.ChangeUserPasswordDto;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
 import pl.robert.project.app.user.domain.dto.ReadUserDto;
+import pl.robert.project.app.user.query.AboutMeUserQueryDto;
 import pl.robert.project.app.user.query.BaseUserQuery;
 import pl.robert.project.app.user.query.CreateUserQueryDto;
 import pl.robert.project.app.user.query.ReadUserQueryDto;
@@ -21,7 +23,6 @@ import pl.robert.project.app.user_contact.UserContact;
 import pl.robert.project.app.user_contact.UserContactFacade;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -39,6 +40,7 @@ public class UserFacade {
     private UserAddressFacade userAddressFacade;
     private ChangeUserPasswordDto changePasswordDto;
     private UserBankAccountFacade userBankAccountFacade;
+    private AboutMeUserDto aboutMeUserDto;
 
     public CreateUserQueryDto add(CreateUserDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
@@ -212,19 +214,6 @@ public class UserFacade {
         }
     }
 
-    public HashMap<String, Object> aboutMe(Authentication authentication) {
-        HashMap<String, Object> map = new HashMap<>();
-
-        map.put("NAME", authentication.getName());
-        map.put("AUTHORITIES", authentication.getAuthorities());
-        map.put("CREDENTIALS", authentication.getCredentials());
-        map.put("DETIALS", authentication.getDetails());
-        map.put("PRINCIPAL", authentication.getPrincipal());
-        map.put("CLASS", authentication.getClass());
-
-        return map;
-    }
-
     public AppUserDto getAppUser(String login) {
         User user = repository.findByPesel(login);
 
@@ -234,6 +223,31 @@ public class UserFacade {
                     user.getPassword(),
                     user.getRoles()
             );
+        }
+
+        return null;
+    }
+
+    public AboutMeUserQueryDto aboutMe(Authentication auth) {
+        User user = repository.findByPesel(auth.getName());
+
+        if (user != null) {
+
+            aboutMeUserDto.setPesel(user.getPesel());
+            aboutMeUserDto.setFirstName(user.getFirstName());
+            aboutMeUserDto.setLastName(user.getLastName());
+            aboutMeUserDto.setProvince(user.getAddress().getProvince());
+            aboutMeUserDto.setCity(user.getAddress().getCity());
+            aboutMeUserDto.setZipCode(user.getAddress().getZipCode());
+            aboutMeUserDto.setStreet(user.getAddress().getStreet());
+            aboutMeUserDto.setHouseNumber(user.getAddress().getHouseNumber());
+            aboutMeUserDto.setEmail(user.getContact().getEmail());
+            aboutMeUserDto.setPhoneNumber(user.getContact().getPhoneNumber());
+            aboutMeUserDto.setPassword(user.getDecodedBCryptPassword());
+            aboutMeUserDto.setAccountNumber(user.getBankAccount().getAccountNumber());
+            aboutMeUserDto.setAccountBalance(user.getBankAccount().getAccountBalance());
+
+            return baseQuery.query(aboutMeUserDto);
         }
 
         return null;

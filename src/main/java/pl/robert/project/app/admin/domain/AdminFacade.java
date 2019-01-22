@@ -5,18 +5,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
+import pl.robert.project.app.admin.domain.dto.AboutMeAdminDto;
 import pl.robert.project.app.admin.domain.dto.ChangeAdminPasswordDto;
 import pl.robert.project.app.admin.domain.dto.CreateAdminDto;
 import pl.robert.project.app.admin.domain.dto.ReadAdminDto;
+import pl.robert.project.app.admin.query.AboutMeAdminQueryDto;
 import pl.robert.project.app.admin.query.BaseAdminQuery;
 import pl.robert.project.app.admin.query.CreateAdminQueryDto;
 import pl.robert.project.app.admin.query.ReadAdminQueryDto;
 import pl.robert.project.app.role.Role;
 import pl.robert.project.app.security.dto.AppUserDto;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @AllArgsConstructor
 public class AdminFacade implements AdminValidationStrings {
@@ -28,6 +28,7 @@ public class AdminFacade implements AdminValidationStrings {
     private CreateAdminDto createAdminDto;
     private ReadAdminDto readAdminDto;
     private ChangeAdminPasswordDto changePasswordDto;
+    private AboutMeAdminDto aboutMeAdminDto;
 
     public CreateAdminQueryDto add(CreateAdminDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
@@ -157,19 +158,6 @@ public class AdminFacade implements AdminValidationStrings {
         }
     }
 
-    public HashMap<String, Object> aboutMe(Authentication authentication) {
-        HashMap<String, Object> map = new HashMap<>();
-
-        map.put("NAME", authentication.getName());
-        map.put("AUTHORITIES", authentication.getAuthorities());
-        map.put("CREDENTIALS", authentication.getCredentials());
-        map.put("DETIALS", authentication.getDetails());
-        map.put("PRINCIPAL", authentication.getPrincipal());
-        map.put("CLASS", authentication.getClass());
-
-        return map;
-    }
-
     public AppUserDto getAppUser(String login) {
         Admin admin = repository.findByLogin(login);
 
@@ -179,6 +167,22 @@ public class AdminFacade implements AdminValidationStrings {
                     admin.getPassword(),
                     admin.getRoles()
             );
+        }
+
+        return null;
+    }
+
+    public AboutMeAdminQueryDto aboutMe(Authentication auth) {
+        Admin admin = repository.findByLogin(auth.getName());
+
+        if (admin != null) {
+
+            aboutMeAdminDto.setName(admin.getName());
+            aboutMeAdminDto.setLogin(admin.getLogin());
+            aboutMeAdminDto.setPassword(admin.getDecodedBCryptPassword());
+            aboutMeAdminDto.setRoleName(admin.getRoleName());
+
+            return baseQuery.query(aboutMeAdminDto);
         }
 
         return null;
