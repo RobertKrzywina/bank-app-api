@@ -16,4 +16,8 @@ public class UserBankAccountFacade {
     public void saveUserBankAccount(UserBankAccount bankAccount) {
         repository.saveAndFlush(bankAccount);
     }
+
+    public void addMoneyToReceivedUser(Double amount, String bankAccountNumber) {
+         repository.addAmountToReceivedUser(amount, bankAccountNumber);
+    }
 }

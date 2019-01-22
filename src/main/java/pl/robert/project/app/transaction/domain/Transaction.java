@@ -1,18 +1,17 @@
 package pl.robert.project.app.transaction.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
 import static pl.robert.project.app.transaction.domain.TransactionValidationStrings.BANK_ACCOUNT_NUMBER_LENGTH;
+import static pl.robert.project.app.transaction.domain.TransactionValidationStrings.TRANSACTION_TITLE_LENGTH;
 
 @Entity
 @Table(name = "transactions")
 @Getter @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transaction {
@@ -23,11 +22,14 @@ public class Transaction {
     private long id;
 
     @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
+    @Column()
     private Date date;
 
-    @Column(nullable = false)
+    @Column(length = TRANSACTION_TITLE_LENGTH, nullable = false)
     private String title;
+
+    @Column(nullable = false)
+    private String description;
 
     @Column(nullable = false)
     private Double amount;

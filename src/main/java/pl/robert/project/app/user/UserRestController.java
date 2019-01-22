@@ -5,12 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import pl.robert.project.app.transaction.domain.dto.SendTransactionDto;
 import pl.robert.project.app.user.domain.UserFacade;
 import pl.robert.project.app.user.query.AboutMeUserQueryDto;
+
+import javax.validation.Valid;
 
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
@@ -32,10 +33,15 @@ class UserRestController {
         return ResponseEntity.status(200).body(aboutMeUserDto);
     }
 
-//    @PostMapping("/send-transaction")
-//    public ResponseEntity sendTransaction(Authentication auth,
-//                                          @Valid SendTransactionDto, BindingResult result) {
-//
-//        return null;
-//    }
+    @PostMapping("/send-transaction")
+    public ResponseEntity sendTransaction(Authentication auth,
+                                          @RequestBody @Valid SendTransactionDto dto, BindingResult result) {
+        userFacade.sendTransaction(auth, dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
+        }
+
+        return ResponseEntity.status(200).body(HttpStatus.OK);
+    }
 }

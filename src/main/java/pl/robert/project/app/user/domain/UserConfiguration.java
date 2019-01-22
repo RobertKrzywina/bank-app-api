@@ -2,6 +2,7 @@ package pl.robert.project.app.user.domain;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.robert.project.app.transaction.domain.TransactionFacade;
 import pl.robert.project.app.user.domain.dto.AboutMeUserDto;
 import pl.robert.project.app.user.domain.dto.ChangeUserPasswordDto;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
@@ -25,11 +26,13 @@ class UserConfiguration {
                           UserAddressFacade userAddressFacade,
                           ChangeUserPasswordDto changePasswordDto,
                           UserBankAccountFacade userBankAccountFacade,
-                          AboutMeUserDto aboutMeUserDto) {
+                          AboutMeUserDto aboutMeUserDto,
+                          TransactionFacade transactionFacade) {
         return new UserFacade(repository, factory, validator, baseQuery,
                               createDto, readDto,
                               userContactFacade, userAddressFacade, changePasswordDto,
                               userBankAccountFacade,
-                              aboutMeUserDto);
+                              aboutMeUserDto,
+                              transactionFacade);
     }
 }

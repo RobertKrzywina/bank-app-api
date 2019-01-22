@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import pl.robert.project.app.security.dto.AppUserDto;
+import pl.robert.project.app.transaction.domain.TransactionFacade;
+import pl.robert.project.app.transaction.domain.dto.SendTransactionDto;
 import pl.robert.project.app.user.domain.dto.AboutMeUserDto;
 import pl.robert.project.app.user.domain.dto.ChangeUserPasswordDto;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
@@ -41,6 +43,7 @@ public class UserFacade {
     private ChangeUserPasswordDto changePasswordDto;
     private UserBankAccountFacade userBankAccountFacade;
     private AboutMeUserDto aboutMeUserDto;
+    private TransactionFacade transactionFacade;
 
     public CreateUserQueryDto add(CreateUserDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
@@ -251,5 +254,21 @@ public class UserFacade {
         }
 
         return null;
+    }
+
+    public void sendTransaction(Authentication auth,
+                                SendTransactionDto dto, BindingResult result) {
+        User user = repository.findByPesel(auth.getName());
+
+        if (user != null) {
+            dto.setCurrentAccountBalance(user.getBankAccount().getAccountBalance());
+            dto.setSenderBankAccountNumber(user.getBankAccount().getAccountNumber());
+            dto.setPesel(user.getPesel());
+            transactionFacade.sendTransaction(dto, result);
+
+            if (dto.getErrors().isEmpty()) {
+                userBankAccountFacade.addMoneyToReceivedUser(dto.getAmount(), dto.getReceiverBankAccountNumber());
+            }
+        }
     }
 }
