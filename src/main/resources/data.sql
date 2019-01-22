@@ -64,3 +64,16 @@ VALUES ('80022136394', 3),
        ('76082787162', 3),
        ('67020584817', 3),
        ('77071382883', 3);
+
+INSERT INTO transactions (amount, date, receiver_bank_account_number, sender_bank_account_number, title,
+                          pesel_user_bank_account)
+VALUES (1000.45, '2019-01-04', 'PL62 8058 5353 1332 3091 4284', 'PL38 6304 4308 4918 4834 9838',
+        'Money from Sarah to Justin', '80022136394'),
+       (1221.11, '2019-01-12', 'PL91 3018 4529 8669 0250 7367', 'PL38 6304 4308 4918 4834 9838',
+        'Money from Justin to Chris', '80022136394'),
+       (1240.22, '2019-01-13', 'PL62 8058 5353 1332 3091 4284', 'PL91 3018 4529 8669 0250 7367',
+        'Money from Chris to Spencer', '67020584817'),
+       (2389.09, '2019-01-14', 'PL46 3539 4580 4736 5776 8890', 'PL85 7529 0532 0943 1086 2148',
+        'Money from Kari to Sarah', '77071382883'),
+       (3827.22, '2019-01-15', 'PL85 7529 0532 0943 1086 2148', 'PL46 3539 4580 4736 5776 8890',
+        'Money from Sarah to Kari', '76082787162');

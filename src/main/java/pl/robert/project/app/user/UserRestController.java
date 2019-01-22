@@ -31,4 +31,11 @@ class UserRestController {
 
         return ResponseEntity.status(200).body(aboutMeUserDto);
     }
+
+//    @PostMapping("/send-transaction")
+//    public ResponseEntity sendTransaction(Authentication auth,
+//                                          @Valid SendTransactionDto, BindingResult result) {
+//
+//        return null;
+//    }
 }
