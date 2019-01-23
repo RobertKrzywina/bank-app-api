@@ -38,112 +38,90 @@ class AdminRestController {
 
     @GetMapping("/about-me")
     public ResponseEntity aboutMe(Authentication auth) {
-        AboutMeAdminQueryDto aboutMeAdminDto = adminFacade.aboutMe(auth);
+        AboutMeAdminQueryDto aboutMeQuery = adminFacade.aboutMe(auth);
 
-        if (aboutMeAdminDto == null) {
+        if (aboutMeQuery == null) {
             return ResponseEntity.status(404).body(HttpStatus.NO_CONTENT);
         }
 
-        return ResponseEntity.status(200).body(aboutMeAdminDto);
-    }
-
-    @PostMapping("/admin")
-    public ResponseEntity create(@RequestBody @Valid CreateAdminDto dto, BindingResult result) {
-        CreateAdminQueryDto newAdminDto = adminFacade.add(dto, result);
-
-        if (!dto.getErrors().isEmpty()) {
-            return ResponseEntity.status(400).body(dto.getErrors());
-        }
-
-        return ResponseEntity.status(201).body(newAdminDto);
+        return ResponseEntity.status(200).body(aboutMeQuery);
     }
 
     @GetMapping("/admins")
-    public ResponseEntity read(@Valid ReadAdminDto dto, BindingResult result) {
-        List<ReadAdminQueryDto> adminsDto = adminFacade.getAll(dto, result);
+    public ResponseEntity getAdmins(@Valid ReadAdminDto dto, BindingResult result) {
+        List<ReadAdminQueryDto> adminsQuery = adminFacade.getAllAdmins(dto, result);
 
         if (!dto.getErrors().isEmpty()) {
             return ResponseEntity.status(400).body(dto.getErrors());
         }
 
-        return ResponseEntity.status(200).body(adminsDto);
-    }
-
-    @GetMapping("/users")
-    public ResponseEntity readUsers(@Valid ReadUserDto dto, BindingResult result) {
-        List<ReadUserQueryDto> usersDto = userFacade.getAll(dto, result);
-
-        if (!dto.getErrors().isEmpty()) {
-            return ResponseEntity.status(400).body(dto.getErrors());
-        }
-
-        return ResponseEntity.status(200).body(usersDto);
-    }
-
-    @GetMapping("/transactions")
-    public ResponseEntity readTransactions(@Valid ReadTransactionDto dto, BindingResult result) {
-        List<ReadTransactionQueryDto> transactionsDto = transactionFacade.getAll(dto, result);
-
-        if (!dto.getErrors().isEmpty()) {
-            return ResponseEntity.status(400).body(dto.getErrors());
-        }
-
-        return ResponseEntity.status(200).body(transactionsDto);
+        return ResponseEntity.status(200).body(adminsQuery);
     }
 
     @GetMapping("/admins/{id}")
-    public ResponseEntity readById(@PathVariable("id") String id, ReadAdminDto dto, BindingResult result) {
-        ReadAdminQueryDto adminDto = adminFacade.getAdminById(Long.parseLong(id), dto, result);
+    public ResponseEntity getAdminById(@PathVariable("id") String id, ReadAdminDto dto, BindingResult result) {
+        ReadAdminQueryDto adminQuery = adminFacade.getAdminById(Long.parseLong(id), dto, result);
 
         if (!dto.getErrors().isEmpty()) {
             return ResponseEntity.status(400).body(dto.getErrors());
         }
 
-        return ResponseEntity.status(200).body(adminDto);
+        return ResponseEntity.status(200).body(adminQuery);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity getUsers(@Valid ReadUserDto dto, BindingResult result) {
+        List<ReadUserQueryDto> usersQuery = userFacade.getAll(dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
+        }
+
+        return ResponseEntity.status(200).body(usersQuery);
     }
 
     @GetMapping("/users/{pesel}")
-    public ResponseEntity readUserByPesel(@PathVariable("pesel") String pesel, ReadUserDto dto, BindingResult result) {
-        ReadUserQueryDto userDto = userFacade.getUserByPesel(pesel, dto, result);
+    public ResponseEntity getUserByPesel(@PathVariable("pesel") String pesel, ReadUserDto dto, BindingResult result) {
+        ReadUserQueryDto userQuery = userFacade.getUserByPesel(pesel, dto, result);
 
         if (!dto.getErrors().isEmpty()) {
             return ResponseEntity.status(400).body(dto.getErrors());
         }
 
-        return ResponseEntity.status(200).body(userDto);
+        return ResponseEntity.status(200).body(userQuery);
+    }
+
+    @GetMapping("/transactions")
+    public ResponseEntity getTransactions(@Valid ReadTransactionDto dto, BindingResult result) {
+        List<ReadTransactionQueryDto> transactionsQuery = transactionFacade.getAll(dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
+        }
+
+        return ResponseEntity.status(200).body(transactionsQuery);
     }
 
     @GetMapping("/transactions/{id}")
-    public ResponseEntity readTransactions(@PathVariable("id") String id, ReadTransactionDto dto, BindingResult result) {
-        ReadTransactionQueryDto transactionDto = transactionFacade.getTransactionById(Long.parseLong(id), dto, result);
+    public ResponseEntity getTransactionById(@PathVariable("id") String id, ReadTransactionDto dto, BindingResult result) {
+        ReadTransactionQueryDto transactionQuery = transactionFacade.getTransactionById(Long.parseLong(id), dto, result);
 
         if (!dto.getErrors().isEmpty()) {
             return ResponseEntity.status(400).body(dto.getErrors());
         }
 
-        return ResponseEntity.status(200).body(transactionDto);
+        return ResponseEntity.status(200).body(transactionQuery);
     }
 
-    @DeleteMapping("/users")
-    public ResponseEntity deleteUsers(@Valid ReadUserDto dto, BindingResult result) {
-        userFacade.deleteAllUsers(dto, result);
+    @PostMapping("/admin")
+    public ResponseEntity createAdmin(@RequestBody @Valid CreateAdminDto dto, BindingResult result) {
+        CreateAdminQueryDto newAdminQuery = adminFacade.add(dto, result);
 
         if (!dto.getErrors().isEmpty()) {
             return ResponseEntity.status(400).body(dto.getErrors());
         }
 
-        return ResponseEntity.status(200).body(HttpStatus.OK);
-    }
-
-    @DeleteMapping("/users/{pesel}")
-    public ResponseEntity deleteUserByPesel(@PathVariable("pesel") String pesel, @Valid ReadUserDto dto, BindingResult result) {
-        userFacade.deleteUserByPesel(pesel, dto, result);
-
-        if (!dto.getErrors().isEmpty()) {
-            return ResponseEntity.status(400).body(dto.getErrors());
-        }
-
-        return ResponseEntity.status(200).body(HttpStatus.OK);
+        return ResponseEntity.status(201).body(newAdminQuery);
     }
 
     @PreAuthorize("hasRole('HEAD-ADMIN')")
@@ -170,11 +148,33 @@ class AdminRestController {
         return ResponseEntity.status(200).body(HttpStatus.OK);
     }
 
+    @DeleteMapping("/users")
+    public ResponseEntity deleteUsers(@Valid ReadUserDto dto, BindingResult result) {
+        userFacade.deleteAllUsers(dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
+        }
+
+        return ResponseEntity.status(200).body(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/users/{pesel}")
+    public ResponseEntity deleteUserByPesel(@PathVariable("pesel") String pesel, @Valid ReadUserDto dto, BindingResult result) {
+        userFacade.deleteUserByPesel(pesel, dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
+        }
+
+        return ResponseEntity.status(200).body(HttpStatus.OK);
+    }
+
     @PreAuthorize("hasRole('HEAD-ADMIN')")
     @PatchMapping("/admin/change-password/{id}")
     public ResponseEntity changeAdminPassword(@PathVariable("id") String id,
                                               @RequestBody @Valid ChangeAdminPasswordDto dto, BindingResult result) {
-        adminFacade.changePassword(Long.parseLong(id), dto, result);
+        adminFacade.changeAdminPassword(Long.parseLong(id), dto, result);
 
         if (!dto.getErrors().isEmpty()) {
             return ResponseEntity.status(400).body(dto.getErrors());

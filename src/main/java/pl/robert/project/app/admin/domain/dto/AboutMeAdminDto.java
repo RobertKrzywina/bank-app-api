@@ -8,12 +8,4 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter @Setter
 @NoArgsConstructor
-public class AboutMeAdminDto extends AdminDto {
-
-    private String roleName;
-
-    public AboutMeAdminDto(String name, String login, String password, String roleName) {
-        super(name, login, password);
-        this.roleName = roleName;
-    }
-}
+public class AboutMeAdminDto extends AdminDto { }

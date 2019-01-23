@@ -1,4 +1,4 @@
-package pl.robert.project.app.user_address;
+package pl.robert.project.app.address;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -10,18 +10,18 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-import static pl.robert.project.app.user_address.UserAddressValidationStrings.*;
+import static pl.robert.project.app.address.AddressValidationStrings.*;
 
 @Entity
-@Table(name = "user_address")
+@Table(name = "addresses")
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAddress {
+public class Address {
 
     @Id
     @JsonIgnore
-    @Column(name = "user_address_pesel", unique = true, nullable = false)
+    @Column(name = "address_owner_pesel", unique = true, nullable = false)
     private String pesel;
 
     @Column(nullable = false)
@@ -45,7 +45,7 @@ public class UserAddress {
     @JsonIgnore
     private List<ObjectError> errors = new ArrayList<>();
 
-    public UserAddress(CreateUserDto dto) {
+    public Address(CreateUserDto dto) {
         pesel = dto.getPesel();
         province = dto.getProvince();
         city = dto.getCity();

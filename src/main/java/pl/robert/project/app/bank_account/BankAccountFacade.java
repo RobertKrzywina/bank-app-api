@@ -1,19 +1,19 @@
-package pl.robert.project.app.user_bank_account;
+package pl.robert.project.app.bank_account;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class UserBankAccountFacade {
+public class BankAccountFacade {
 
-    private UserBankAccountRepository repository;
+    private BankAccountRepository repository;
 
-    public UserBankAccount findByAccountNumber(String accountNumber) {
+    public BankAccount findByAccountNumber(String accountNumber) {
         return repository.findByAccountNumber(accountNumber);
     }
 
-    public void saveUserBankAccount(UserBankAccount bankAccount) {
+    public void saveBankAccount(BankAccount bankAccount) {
         repository.saveAndFlush(bankAccount);
     }
 
@@ -22,7 +22,7 @@ public class UserBankAccountFacade {
     }
 
     public void addMoneyToReceivedUser(Double amount, String bankAccountNumber) {
-         repository.addAmountToReceivedUser(amount, bankAccountNumber);
+        repository.addAmountToReceivedUser(amount, bankAccountNumber);
     }
 
     public Double getAccountBalanceFromGivenAccountNumber(String bankAccountNumber) {

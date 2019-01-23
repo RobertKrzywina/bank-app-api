@@ -50,7 +50,7 @@ class UserDetailsServiceImp implements UserDetailsService {
     }
 
     private Set<GrantedAuthority> convertAuthorities(Set<Role> userRoles) {
-        for(Role ur: userRoles) {
+        for (Role ur : userRoles) {
             authorities.add(new SimpleGrantedAuthority(ur.getRole()));
         }
         return authorities;

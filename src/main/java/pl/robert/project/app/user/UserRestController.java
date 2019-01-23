@@ -24,13 +24,13 @@ class UserRestController {
 
     @GetMapping("/about-me")
     public ResponseEntity aboutMe(Authentication auth) {
-        AboutMeUserQueryDto aboutMeUserDto = userFacade.aboutMe(auth);
+        AboutMeUserQueryDto aboutMeQuery = userFacade.aboutMe(auth);
 
-        if (aboutMeUserDto == null) {
+        if (aboutMeQuery == null) {
             return ResponseEntity.status(404).body(HttpStatus.NO_CONTENT);
         }
 
-        return ResponseEntity.status(200).body(aboutMeUserDto);
+        return ResponseEntity.status(200).body(aboutMeQuery);
     }
 
     @PostMapping("/send-transaction")

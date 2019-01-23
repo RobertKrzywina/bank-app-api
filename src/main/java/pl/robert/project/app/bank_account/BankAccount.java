@@ -1,4 +1,4 @@
-package pl.robert.project.app.user_bank_account;
+package pl.robert.project.app.bank_account;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -12,18 +12,18 @@ import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
 
-import static pl.robert.project.app.user_bank_account.UserBankAccountValidationStrings.ACCOUNT_NUMBER_LENGTH;
+import static pl.robert.project.app.bank_account.BankAccountValidationStrings.ACCOUNT_NUMBER_LENGTH;
 
 @Entity
-@Table(name = "user_bank_account")
+@Table(name = "bank_accounts")
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserBankAccount {
+public class BankAccount {
 
     @Id
     @JsonIgnore
-    @Column(name = "user_bank_account_pesel", unique = true, nullable = false)
+    @Column(name = "bank_account_owner_pesel", unique = true, nullable = false)
     private String pesel;
 
     @Column(name = "account_number", unique = true, nullable = false, length = ACCOUNT_NUMBER_LENGTH)
@@ -35,17 +35,17 @@ public class UserBankAccount {
     @OneToMany(mappedBy = "account")
     private List<Transaction> transactions = new LinkedList<>();
 
-    public UserBankAccount(String pesel, String accountNumber) {
+    public BankAccount(String pesel, String accountNumber) {
         this.pesel = pesel;
         this.accountNumber = accountNumber;
     }
 
-    public UserBankAccount(CreateUserDto dto) {
+    public BankAccount(CreateUserDto dto) {
         pesel = dto.getPesel();
         accountNumber = dto.getAccountNumber();
     }
 
-    public UserBankAccount(String pesel) {
+    public BankAccount(String pesel) {
         this.pesel = pesel;
     }
 }

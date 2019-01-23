@@ -11,7 +11,7 @@ public class AboutMeUserQueryDto {
     private String firstName;
     private String lastName;
     private String province;
-    private String ciy;
+    private String city;
     private String zipCode;
     private String street;
     private String houseNumber;

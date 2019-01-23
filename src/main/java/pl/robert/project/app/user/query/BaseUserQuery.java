@@ -39,7 +39,7 @@ public class BaseUserQuery {
                 dto.getHouseNumber(),
                 dto.getEmail(),
                 dto.getPhoneNumber(),
-                dto.getDecodedBCryptPassword(),
+                dto.getPassword(),
                 dto.getAccountNumber(),
                 dto.getAccountBalance()
         );

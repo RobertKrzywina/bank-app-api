@@ -17,12 +17,12 @@ import pl.robert.project.app.user.query.AboutMeUserQueryDto;
 import pl.robert.project.app.user.query.BaseUserQuery;
 import pl.robert.project.app.user.query.CreateUserQueryDto;
 import pl.robert.project.app.user.query.ReadUserQueryDto;
-import pl.robert.project.app.user_address.UserAddress;
-import pl.robert.project.app.user_address.UserAddressFacade;
-import pl.robert.project.app.user_bank_account.UserBankAccount;
-import pl.robert.project.app.user_bank_account.UserBankAccountFacade;
-import pl.robert.project.app.user_contact.UserContact;
-import pl.robert.project.app.user_contact.UserContactFacade;
+import pl.robert.project.app.address.Address;
+import pl.robert.project.app.address.AddressFacade;
+import pl.robert.project.app.bank_account.BankAccount;
+import pl.robert.project.app.bank_account.BankAccountFacade;
+import pl.robert.project.app.contact.Contact;
+import pl.robert.project.app.contact.ContactFacade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,56 +36,56 @@ public class UserFacade {
     private UserFactory factory;
     private UserValidator validator;
     private BaseUserQuery baseQuery;
-    private CreateUserDto createUserDto;
-    private ReadUserDto readUserDto;
-    private UserContactFacade userContactFacade;
-    private UserAddressFacade userAddressFacade;
+    private CreateUserDto createDto;
+    private ReadUserDto readDto;
     private ChangeUserPasswordDto changePasswordDto;
-    private UserBankAccountFacade userBankAccountFacade;
-    private AboutMeUserDto aboutMeUserDto;
+    private AboutMeUserDto aboutMeDto;
+    private ContactFacade contactFacade;
+    private AddressFacade addressFacade;
+    private BankAccountFacade bankAccountFacade;
     private TransactionFacade transactionFacade;
 
     public CreateUserQueryDto add(CreateUserDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
 
-            UserContact contact = new UserContact(dto);
-            UserAddress address = new UserAddress(dto);
+            Contact contact = new Contact(dto);
+            Address address = new Address(dto);
 
-            userContactFacade.validate(contact, result);
-            userAddressFacade.validate(address, result);
+            contactFacade.validate(contact, result);
+            addressFacade.validate(address, result);
             validator.validate(dto, result);
 
             if (!result.hasErrors()) {
 
-                UserBankAccount bankAccount = new UserBankAccount(dto.getPesel(), bankAccountNumberGenerator());
+                BankAccount bankAccount = new BankAccount(dto.getPesel(), bankAccountNumberGenerator());
                 PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-                createUserDto.setPesel(dto.getPesel());
-                createUserDto.setFirstName(dto.getFirstName());
-                createUserDto.setLastName(dto.getLastName());
-                createUserDto.setPassword(dto.getPassword());
-                createUserDto.setRePassword(dto.getRePassword());
-                dto.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
+                createDto.setPesel(dto.getPesel());
+                createDto.setFirstName(dto.getFirstName());
+                createDto.setLastName(dto.getLastName());
+                createDto.setPassword(dto.getPassword());
+                createDto.setRePassword(dto.getRePassword());
+                dto.setPassword(passwordEncoder.encode(createDto.getPassword()));
 
-                createUserDto.setProvince(dto.getProvince());
-                createUserDto.setCity(dto.getCity());
-                createUserDto.setZipCode(dto.getZipCode());
-                createUserDto.setStreet(dto.getStreet());
-                createUserDto.setHouseNumber(dto.getHouseNumber());
+                createDto.setProvince(dto.getProvince());
+                createDto.setCity(dto.getCity());
+                createDto.setZipCode(dto.getZipCode());
+                createDto.setStreet(dto.getStreet());
+                createDto.setHouseNumber(dto.getHouseNumber());
 
-                createUserDto.setEmail(dto.getEmail());
-                createUserDto.setPhoneNumber(dto.getPhoneNumber());
+                createDto.setEmail(dto.getEmail());
+                createDto.setPhoneNumber(dto.getPhoneNumber());
 
-                createUserDto.setAccountNumber(bankAccount.getAccountNumber());
+                createDto.setAccountNumber(bankAccount.getAccountNumber());
                 dto.setAccountNumber(bankAccount.getAccountNumber());
 
-                userContactFacade.saveUserContact(contact);
-                userAddressFacade.saveUserAddress(address);
-                userBankAccountFacade.saveUserBankAccount(bankAccount);
+                contactFacade.saveUserContact(contact);
+                addressFacade.saveUserAddress(address);
+                bankAccountFacade.saveBankAccount(bankAccount);
 
                 repository.saveAndFlush(factory.create(dto));
 
-                return baseQuery.query(createUserDto);
+                return baseQuery.query(createDto);
             }
         }
 
@@ -110,7 +110,7 @@ public class UserFacade {
     }
 
     private boolean isAccountNumberExists(String accountNumber) {
-        return userBankAccountFacade.findByAccountNumber(accountNumber) != null;
+        return bankAccountFacade.findByAccountNumber(accountNumber) != null;
     }
 
     public List<ReadUserQueryDto> getAll(ReadUserDto dto, BindingResult result) {
@@ -178,21 +178,21 @@ public class UserFacade {
 
                 User user = repository.findByPesel(pesel);
 
-                readUserDto.setPesel(user.getPesel());
-                readUserDto.setFirstName(user.getFirstName());
-                readUserDto.setLastName(user.getLastName());
-                readUserDto.setPassword(user.getPassword());
-                readUserDto.setProvince(user.getAddress().getProvince());
-                readUserDto.setCity(user.getAddress().getCity());
-                readUserDto.setZipCode(user.getAddress().getZipCode());
-                readUserDto.setStreet(user.getAddress().getStreet());
-                readUserDto.setHouseNumber(user.getAddress().getHouseNumber());
-                readUserDto.setEmail(user.getContact().getEmail());
-                readUserDto.setPhoneNumber(user.getContact().getPhoneNumber());
-                readUserDto.setAccountNumber(user.getBankAccount().getAccountNumber());
-                readUserDto.setAccountBalance(user.getBankAccount().getAccountBalance());
+                readDto.setPesel(user.getPesel());
+                readDto.setFirstName(user.getFirstName());
+                readDto.setLastName(user.getLastName());
+                readDto.setPassword(user.getDecodedBCryptPassword());
+                readDto.setProvince(user.getAddress().getProvince());
+                readDto.setCity(user.getAddress().getCity());
+                readDto.setZipCode(user.getAddress().getZipCode());
+                readDto.setStreet(user.getAddress().getStreet());
+                readDto.setHouseNumber(user.getAddress().getHouseNumber());
+                readDto.setEmail(user.getContact().getEmail());
+                readDto.setPhoneNumber(user.getContact().getPhoneNumber());
+                readDto.setAccountNumber(user.getBankAccount().getAccountNumber());
+                readDto.setAccountBalance(user.getBankAccount().getAccountBalance());
 
-                return baseQuery.query(readUserDto);
+                return baseQuery.query(readDto);
             }
         }
 
@@ -236,21 +236,21 @@ public class UserFacade {
 
         if (user != null) {
 
-            aboutMeUserDto.setPesel(user.getPesel());
-            aboutMeUserDto.setFirstName(user.getFirstName());
-            aboutMeUserDto.setLastName(user.getLastName());
-            aboutMeUserDto.setProvince(user.getAddress().getProvince());
-            aboutMeUserDto.setCity(user.getAddress().getCity());
-            aboutMeUserDto.setZipCode(user.getAddress().getZipCode());
-            aboutMeUserDto.setStreet(user.getAddress().getStreet());
-            aboutMeUserDto.setHouseNumber(user.getAddress().getHouseNumber());
-            aboutMeUserDto.setEmail(user.getContact().getEmail());
-            aboutMeUserDto.setPhoneNumber(user.getContact().getPhoneNumber());
-            aboutMeUserDto.setPassword(user.getDecodedBCryptPassword());
-            aboutMeUserDto.setAccountNumber(user.getBankAccount().getAccountNumber());
-            aboutMeUserDto.setAccountBalance(user.getBankAccount().getAccountBalance());
+            aboutMeDto.setPesel(user.getPesel());
+            aboutMeDto.setFirstName(user.getFirstName());
+            aboutMeDto.setLastName(user.getLastName());
+            aboutMeDto.setProvince(user.getAddress().getProvince());
+            aboutMeDto.setCity(user.getAddress().getCity());
+            aboutMeDto.setZipCode(user.getAddress().getZipCode());
+            aboutMeDto.setStreet(user.getAddress().getStreet());
+            aboutMeDto.setHouseNumber(user.getAddress().getHouseNumber());
+            aboutMeDto.setEmail(user.getContact().getEmail());
+            aboutMeDto.setPhoneNumber(user.getContact().getPhoneNumber());
+            aboutMeDto.setPassword(user.getDecodedBCryptPassword());
+            aboutMeDto.setAccountNumber(user.getBankAccount().getAccountNumber());
+            aboutMeDto.setAccountBalance(user.getBankAccount().getAccountBalance());
 
-            return baseQuery.query(aboutMeUserDto);
+            return baseQuery.query(aboutMeDto);
         }
 
         return null;
@@ -267,8 +267,8 @@ public class UserFacade {
             transactionFacade.sendTransaction(dto, result);
 
             if (dto.getErrors().isEmpty()) {
-                userBankAccountFacade.getMoneyFromSenderUser(dto.getAmount(), dto.getSenderBankAccountNumber());
-                userBankAccountFacade.addMoneyToReceivedUser(dto.getAmount(), dto.getReceiverBankAccountNumber());
+                bankAccountFacade.getMoneyFromSenderUser(dto.getAmount(), dto.getSenderBankAccountNumber());
+                bankAccountFacade.addMoneyToReceivedUser(dto.getAmount(), dto.getReceiverBankAccountNumber());
             }
         }
     }

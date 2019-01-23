@@ -13,12 +13,13 @@ import pl.robert.project.app.user.domain.dto.UserDto;
 @AllArgsConstructor
 class UserValidator implements Validator, UserValidationStrings {
 
-    private UserRepository userRepo;
+    private UserRepository repository;
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return (clazz.isAssignableFrom(CreateUserDto.class) || clazz.isAssignableFrom(ReadUserDto.class) ||
-                clazz.isAssignableFrom(ChangeUserPasswordDto.class));
+        return clazz.isAssignableFrom(CreateUserDto.class) ||
+               clazz.isAssignableFrom(ReadUserDto.class) ||
+               clazz.isAssignableFrom(ChangeUserPasswordDto.class);
     }
 
     @Override
@@ -40,7 +41,7 @@ class UserValidator implements Validator, UserValidationStrings {
 
     void validateGetAllUsers(ReadUserDto dto, Errors errors) {
 
-        if (userRepo.findAll().isEmpty()) {
+        if (repository.findAll().isEmpty()) {
             errors.reject(C_USERS_NOT_EXISTS, M_USERS_NOT_EXISTS);
         }
 
@@ -49,7 +50,7 @@ class UserValidator implements Validator, UserValidationStrings {
 
     void validateGetUser(String pesel, ReadUserDto dto, Errors errors) {
 
-        if (userRepo.findByPesel(pesel) == null) {
+        if (repository.findByPesel(pesel) == null) {
             errors.reject(C_USER_NOT_EXISTS, M_USER_NOT_EXISTS);
         }
 
@@ -109,7 +110,7 @@ class UserValidator implements Validator, UserValidationStrings {
 
     void validateChangeUserPassword(ChangeUserPasswordDto dto, Errors errors) {
 
-        User user = userRepo.findByPesel(dto.getPesel());
+        User user = repository.findByPesel(dto.getPesel());
 
         if (user == null) {
             errors.reject(C_USER_NOT_EXISTS, M_USER_NOT_EXISTS);
@@ -127,31 +128,31 @@ class UserValidator implements Validator, UserValidationStrings {
             }
 
             if (dto.getReOldPassword() != null) {
+
                 if (!dto.getOldPassword().equals(dto.getReOldPassword())) {
                     errors.reject(C_RE_OLD_PASSWORD_NOT_MATCH, M_RE_OLD_PASSWORD_NOT_MATCH);
                 }
+
             } else {
                 errors.reject(C_RE_OLD_PASSWORD_NULL, M_RE_OLD_PASSWORD_NULL);
             }
 
             if (dto.getNewPassword() != null) {
+
                 if (isFieldLengthCorrect(dto.getNewPassword(), PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH)) {
                     errors.reject(C_PASSWORD_LENGTH, M_PASSWORD_LENGTH);
                 }
+
             } else {
                 errors.reject(C_NEW_PASSWORD_NULL, M_NEW_PASSWORD_NULL);
             }
 
             if (dto.getReNewPassword() != null) {
+
                 if (!dto.getNewPassword().equals(dto.getReNewPassword())) {
                     errors.reject(C_RE_NEW_PASSWORD_NOT_MATCH, M_RE_NEW_PASSWORD_NOT_MATCH);
-                } else {
-
-                    if (hasAnyWhiteSpaces(dto.getNewPassword())) {
-                        dto.setNewPassword(convertAllWhiteSpacesToHash(dto.getNewPassword()));
-                    }
-
                 }
+
             } else {
                 errors.reject(C_RE_NEW_PASSWORD_NULL, M_RE_NEW_PASSWORD_NULL);
             }
@@ -161,7 +162,8 @@ class UserValidator implements Validator, UserValidationStrings {
     }
 
     private void validateReadUser(ReadUserDto dto, Errors errors) {
-        if (userRepo.findByPesel(dto.getPesel()) == null) {
+
+        if (repository.findByPesel(dto.getPesel()) == null) {
             errors.reject(C_USER_NOT_EXISTS, M_USER_NOT_EXISTS);
         }
     }
@@ -171,26 +173,6 @@ class UserValidator implements Validator, UserValidationStrings {
     }
 
     private boolean isPeselExists(String pesel) {
-        return userRepo.findByPesel(pesel) != null;
-    }
-
-    private boolean hasAnyWhiteSpaces(String fieldToCheck) {
-        for (int i = 0; i < fieldToCheck.length(); i++) {
-            if (fieldToCheck.charAt(i) == ' ' || fieldToCheck.charAt(i) == '_') {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private String convertAllWhiteSpacesToHash(String fieldToConvert) {
-        for (int i = 0; i < fieldToConvert.length(); i++) {
-            if (fieldToConvert.charAt(i) == ' ' || fieldToConvert.charAt(i) == '_') {
-                fieldToConvert = fieldToConvert.replace(' ', '#');
-            }
-        }
-
-        return fieldToConvert;
+        return repository.findByPesel(pesel) != null;
     }
 }

@@ -15,15 +15,15 @@ class AdminConfiguration {
     AdminFacade adminFacade(AdminRepository repository,
                             AdminFactory factory,
                             AdminValidator validator,
-                            BaseAdminQuery query,
+                            BaseAdminQuery baseQuery,
                             CreateAdminDto createDto,
                             ReadAdminDto readDto,
                             ChangeAdminPasswordDto changePasswordDto,
-                            AboutMeAdminDto aboutMeAdminDto) {
-        return new AdminFacade(repository, factory, validator, query,
+                            AboutMeAdminDto aboutMeDto) {
+        return new AdminFacade(repository, factory, validator, baseQuery,
                                createDto,
                                readDto,
                                changePasswordDto,
-                               aboutMeAdminDto);
+                               aboutMeDto);
     }
 }

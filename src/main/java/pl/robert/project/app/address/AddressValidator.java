@@ -1,4 +1,4 @@
-package pl.robert.project.app.user_address;
+package pl.robert.project.app.address;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -7,23 +7,23 @@ import org.springframework.validation.Validator;
 import java.util.regex.Pattern;
 
 @Component
-class UserAddressValidator implements Validator, UserAddressValidationStrings {
+class AddressValidator implements Validator, AddressValidationStrings {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.isAssignableFrom(UserAddress.class);
+        return clazz.isAssignableFrom(Address.class);
     }
 
     @Override
     public void validate(Object obj, Errors errors) {
-        UserAddress address = (UserAddress) obj;
+        Address address = (Address) obj;
 
         validateAddress(address, errors);
 
-        ((UserAddress) obj).setErrors(errors.getAllErrors());
+        ((Address) obj).setErrors(errors.getAllErrors());
     }
 
-    private void validateAddress(UserAddress address, Errors errors) {
+    private void validateAddress(Address address, Errors errors) {
 
         if (address.getProvince() == null) {
             errors.reject(C_PROVINCE_NULL, M_PROVINCE_NULL);

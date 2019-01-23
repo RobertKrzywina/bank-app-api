@@ -2,9 +2,9 @@ package pl.robert.project.app.user.domain;
 
 import lombok.*;
 import pl.robert.project.app.role.Role;
-import pl.robert.project.app.user_address.UserAddress;
-import pl.robert.project.app.user_bank_account.UserBankAccount;
-import pl.robert.project.app.user_contact.UserContact;
+import pl.robert.project.app.address.Address;
+import pl.robert.project.app.bank_account.BankAccount;
+import pl.robert.project.app.contact.Contact;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -48,13 +48,13 @@ class User {
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "user_contact_pesel")
-    private UserContact contact;
+    private Contact contact;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "user_address_pesel")
-    private UserAddress address;
+    private Address address;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "user_bank_account_pesel")
-    private UserBankAccount bankAccount;
+    private BankAccount bankAccount;
 }

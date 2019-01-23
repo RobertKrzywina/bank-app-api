@@ -1,6 +1,6 @@
-package pl.robert.project.app.user_contact;
+package pl.robert.project.app.contact;
 
-interface UserContactValidationStrings {
+interface ContactValidationStrings {
 
     int PHONE_NUMBER_LENGTH = 9;
     String EMAIL_REGEX = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$";

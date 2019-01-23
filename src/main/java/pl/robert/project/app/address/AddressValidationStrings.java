@@ -1,6 +1,6 @@
-package pl.robert.project.app.user_address;
+package pl.robert.project.app.address;
 
-interface UserAddressValidationStrings {
+interface AddressValidationStrings {
 
     int CITY_MIN_LENGTH = 3;
     int CITY_MAX_LENGTH = 50;

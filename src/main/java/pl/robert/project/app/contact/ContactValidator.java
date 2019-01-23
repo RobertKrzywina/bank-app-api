@@ -1,4 +1,4 @@
-package pl.robert.project.app.user_contact;
+package pl.robert.project.app.contact;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,25 +9,25 @@ import java.util.regex.Pattern;
 
 @Component
 @AllArgsConstructor
-class UserContactValidator implements Validator, UserContactValidationStrings {
+class ContactValidator implements Validator, ContactValidationStrings {
 
-    private UserContactRepository repository;
+    private ContactRepository repository;
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.isAssignableFrom(UserContact.class);
+        return clazz.isAssignableFrom(Contact.class);
     }
 
     @Override
     public void validate(Object obj, Errors errors) {
-        UserContact contact = (UserContact) obj;
+        Contact contact = (Contact) obj;
 
         validateContact(contact, errors);
 
-        ((UserContact) obj).setErrors(errors.getAllErrors());
+        ((Contact) obj).setErrors(errors.getAllErrors());
     }
 
-    private void validateContact(UserContact contact, Errors errors) {
+    private void validateContact(Contact contact, Errors errors) {
 
         if (contact.getEmail() != null) {
 

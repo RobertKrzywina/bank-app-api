@@ -11,14 +11,13 @@ class TransactionConfiguration {
 
     @Bean
     TransactionFacade transactionFacade(TransactionRepository repository,
-                                        TransactionValidator validator,
                                         TransactionFactory factory,
-                                        SendTransactionDto sendTransactionDto,
-                                        ReadTransactionDto readTransactionDto,
-                                        BaseTransactionQuery baseQuery) {
-        return new TransactionFacade(repository, validator, factory,
-                                     sendTransactionDto,
-                                     readTransactionDto,
-                                     baseQuery);
+                                        TransactionValidator validator,
+                                        BaseTransactionQuery baseQuery,
+                                        SendTransactionDto sendDto,
+                                        ReadTransactionDto readDto) {
+        return new TransactionFacade(repository, factory, validator, baseQuery,
+                                     sendDto,
+                                     readDto);
     }
 }

@@ -20,12 +20,12 @@ class BaseRestController {
 
     @PostMapping("/register")
     public ResponseEntity registerUser(@RequestBody @Valid CreateUserDto dto, BindingResult result) {
-        CreateUserQueryDto newUserDto = userFacade.add(dto, result);
+        CreateUserQueryDto newUserQuery = userFacade.add(dto, result);
 
         if (!dto.getErrors().isEmpty()) {
             return ResponseEntity.status(400).body(dto.getErrors());
         }
 
-        return ResponseEntity.status(201).body(newUserDto);
+        return ResponseEntity.status(201).body(newUserQuery);
     }
 }

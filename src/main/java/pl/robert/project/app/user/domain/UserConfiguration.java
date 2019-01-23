@@ -8,9 +8,9 @@ import pl.robert.project.app.user.domain.dto.ChangeUserPasswordDto;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
 import pl.robert.project.app.user.domain.dto.ReadUserDto;
 import pl.robert.project.app.user.query.BaseUserQuery;
-import pl.robert.project.app.user_address.UserAddressFacade;
-import pl.robert.project.app.user_bank_account.UserBankAccountFacade;
-import pl.robert.project.app.user_contact.UserContactFacade;
+import pl.robert.project.app.address.AddressFacade;
+import pl.robert.project.app.bank_account.BankAccountFacade;
+import pl.robert.project.app.contact.ContactFacade;
 
 @Configuration
 class UserConfiguration {
@@ -22,17 +22,17 @@ class UserConfiguration {
                           BaseUserQuery baseQuery,
                           CreateUserDto createDto,
                           ReadUserDto readDto,
-                          UserContactFacade userContactFacade,
-                          UserAddressFacade userAddressFacade,
                           ChangeUserPasswordDto changePasswordDto,
-                          UserBankAccountFacade userBankAccountFacade,
-                          AboutMeUserDto aboutMeUserDto,
+                          AboutMeUserDto aboutMeDto,
+                          ContactFacade contactFacade,
+                          AddressFacade addressFacade,
+                          BankAccountFacade bankAccountFacade,
                           TransactionFacade transactionFacade) {
         return new UserFacade(repository, factory, validator, baseQuery,
-                              createDto, readDto,
-                              userContactFacade, userAddressFacade, changePasswordDto,
-                              userBankAccountFacade,
-                              aboutMeUserDto,
+                              createDto, readDto, changePasswordDto, aboutMeDto,
+                              contactFacade,
+                              addressFacade,
+                              bankAccountFacade,
                               transactionFacade);
     }
 }

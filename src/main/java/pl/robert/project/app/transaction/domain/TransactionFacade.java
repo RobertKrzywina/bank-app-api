@@ -16,11 +16,11 @@ import java.util.List;
 public class TransactionFacade {
 
     private TransactionRepository repository;
-    private TransactionValidator validator;
     private TransactionFactory factory;
+    private TransactionValidator validator;
+    private BaseTransactionQuery baseQuery;
     private SendTransactionDto sendTransactionDto;
     private ReadTransactionDto readTransactionDto;
-    private BaseTransactionQuery baseQuery;
 
     public void sendTransaction(SendTransactionDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
@@ -53,7 +53,7 @@ public class TransactionFacade {
                 for (Transaction transaction : transactions) {
                     transactionsDto.add(new ReadTransactionQueryDto(
                             transaction.getId(),
-                            transaction.getDateTime(),
+                            transaction.getDateOfCompletion(),
                             transaction.getTitle(),
                             transaction.getDescription(),
                             transaction.getAmount(),
@@ -79,7 +79,7 @@ public class TransactionFacade {
                 Transaction transaction = repository.findById(id);
 
                 readTransactionDto.setId(transaction.getId());
-                readTransactionDto.setDateTime(transaction.getDateTime());
+                readTransactionDto.setDateTime(transaction.getDateOfCompletion());
                 readTransactionDto.setTitle(transaction.getTitle());
                 readTransactionDto.setDescription(transaction.getDescription());
                 readTransactionDto.setAmount(transaction.getAmount());

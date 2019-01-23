@@ -31,26 +31,4 @@ public abstract class TransactionDto {
 
     @JsonIgnore
     private List<ObjectError> errors = new ArrayList<>();
-
-    public TransactionDto(String title, String description, Double amount, String receiverBankAccountNumber,
-                          String pesel, String senderBankAccountNumber, LocalDateTime dateTime) {
-        this.title = title;
-        this.description = description;
-        this.amount = amount;
-        this.receiverBankAccountNumber = receiverBankAccountNumber;
-        this.pesel = pesel;
-        this.senderBankAccountNumber = senderBankAccountNumber;
-        this.dateTime = dateTime;
-    }
-
-    public TransactionDto(long id, String title, String description, Double amount, String receiverBankAccountNumber,
-                          String senderBankAccountNumber, LocalDateTime dateTime) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.amount = amount;
-        this.receiverBankAccountNumber = receiverBankAccountNumber;
-        this.senderBankAccountNumber = senderBankAccountNumber;
-        this.dateTime = dateTime;
-    }
 }

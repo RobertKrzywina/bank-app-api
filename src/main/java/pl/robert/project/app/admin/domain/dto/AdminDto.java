@@ -21,6 +21,7 @@ public abstract class AdminDto {
     private String login;
     private String password;
     private String rePassword;
+    private String roleName;
 
     @JsonIgnore
     private String decodedBCryptPassword;
@@ -30,24 +31,4 @@ public abstract class AdminDto {
 
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
-
-    public AdminDto(long id, String name, String login,
-                    String password, String rePassword) {
-        this.id = id;
-        this.name = name;
-        this.login = login;
-        this.password = password;
-        this.rePassword = rePassword;
-    }
-
-    public AdminDto(long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public AdminDto(String name, String login, String password) {
-        this.name = name;
-        this.login = login;
-        this.password = password;
-    }
 }

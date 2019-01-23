@@ -7,14 +7,14 @@ import org.springframework.validation.Validator;
 import pl.robert.project.app.transaction.domain.dto.ReadTransactionDto;
 import pl.robert.project.app.transaction.domain.dto.SendTransactionDto;
 import pl.robert.project.app.transaction.domain.dto.TransactionDto;
-import pl.robert.project.app.user_bank_account.UserBankAccountFacade;
+import pl.robert.project.app.bank_account.BankAccountFacade;
 
 @Component
 @AllArgsConstructor
 class TransactionValidator implements Validator, TransactionValidationStrings {
 
-    private TransactionRepository transactionRepo;
-    private UserBankAccountFacade userBankAccountFacade;
+    private TransactionRepository repository;
+    private BankAccountFacade bankAccountFacade;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -24,6 +24,7 @@ class TransactionValidator implements Validator, TransactionValidationStrings {
 
     @Override
     public void validate(Object obj, Errors errors) {
+
         if (obj instanceof SendTransactionDto) {
             SendTransactionDto dto = (SendTransactionDto) obj;
 
@@ -61,7 +62,7 @@ class TransactionValidator implements Validator, TransactionValidationStrings {
 
         if (dto.getAmount() != null) {
 
-            if (dto.getAmount() > userBankAccountFacade.getAccountBalanceFromGivenAccountNumber(dto.getSenderBankAccountNumber())) {
+            if (dto.getAmount() > bankAccountFacade.getAccountBalanceFromGivenAccountNumber(dto.getSenderBankAccountNumber())) {
                 errors.reject(C_BANK_ACCOUNT_BALANCE_NOT_ENOUGHT_MONEY, M_BANK_ACCOUNT_BALANCE_NOT_ENOUGHT_MONEY);
             }
 
@@ -79,7 +80,7 @@ class TransactionValidator implements Validator, TransactionValidationStrings {
                 errors.reject(C_RECEIVER_BANK_ACCOUNT_NUMBER_WRONG, M_RECEIVER_BANK_ACCOUNT_NUMBER_WRONG);
             }
 
-            if (userBankAccountFacade.findByAccountNumber(dto.getReceiverBankAccountNumber()) == null) {
+            if (bankAccountFacade.findByAccountNumber(dto.getReceiverBankAccountNumber()) == null) {
                 errors.reject(C_RECEIVER_BANK_ACCOUNT_NUMBER_NOT_EXISTS, M_RECEIVER_BANK_ACCOUNT_NUMBER_NOT_EXISTS);
             }
 
@@ -90,7 +91,7 @@ class TransactionValidator implements Validator, TransactionValidationStrings {
 
     void validateGetAllTransactions(ReadTransactionDto dto, Errors errors) {
 
-        if (transactionRepo.findAll().isEmpty()) {
+        if (repository.findAll().isEmpty()) {
             errors.reject(C_TRANSACTIONS_NOT_EXISTS, M_TRANSACTIONS_NOT_EXISTS);
         }
 
@@ -99,7 +100,7 @@ class TransactionValidator implements Validator, TransactionValidationStrings {
 
     private void validateReadTransactionById(ReadTransactionDto dto, Errors errors) {
 
-        if (transactionRepo.findById(dto.getId()) == null) {
+        if (repository.findById(dto.getId()) == null) {
             errors.reject(C_TRANSACTION_NOT_EXISTS, M_TRANSACTION_NOT_EXISTS);
         }
     }

@@ -28,7 +28,7 @@ public class AdminFacade implements AdminValidationStrings {
     private CreateAdminDto createAdminDto;
     private ReadAdminDto readAdminDto;
     private ChangeAdminPasswordDto changePasswordDto;
-    private AboutMeAdminDto aboutMeAdminDto;
+    private AboutMeAdminDto aboutMeDto;
 
     public CreateAdminQueryDto add(CreateAdminDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
@@ -74,7 +74,7 @@ public class AdminFacade implements AdminValidationStrings {
         return role;
     }
 
-    public List<ReadAdminQueryDto> getAll(ReadAdminDto dto, BindingResult result) {
+    public List<ReadAdminQueryDto> getAllAdmins(ReadAdminDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
 
             List<Admin> admins = repository.findAll();
@@ -140,7 +140,7 @@ public class AdminFacade implements AdminValidationStrings {
         }
     }
 
-    public void changePassword(long id, ChangeAdminPasswordDto dto, BindingResult result) {
+    public void changeAdminPassword(long id, ChangeAdminPasswordDto dto, BindingResult result) {
         if (validator.supports(dto.getClass())) {
 
             dto.setId(id);
@@ -177,12 +177,12 @@ public class AdminFacade implements AdminValidationStrings {
 
         if (admin != null) {
 
-            aboutMeAdminDto.setName(admin.getName());
-            aboutMeAdminDto.setLogin(admin.getLogin());
-            aboutMeAdminDto.setPassword(admin.getDecodedBCryptPassword());
-            aboutMeAdminDto.setRoleName(admin.getRoleName());
+            aboutMeDto.setName(admin.getName());
+            aboutMeDto.setLogin(admin.getLogin());
+            aboutMeDto.setPassword(admin.getDecodedBCryptPassword());
+            aboutMeDto.setRoleName(admin.getRoleName());
 
-            return baseQuery.query(aboutMeAdminDto);
+            return baseQuery.query(aboutMeDto);
         }
 
         return null;

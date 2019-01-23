@@ -1,7 +1,7 @@
 package pl.robert.project.app.transaction.domain;
 
 import lombok.*;
-import pl.robert.project.app.user_bank_account.UserBankAccount;
+import pl.robert.project.app.bank_account.BankAccount;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -22,8 +22,8 @@ public class Transaction {
     @Column(name = "transaction_id")
     private long id;
 
-    @Column(name = "date_time")
-    private LocalDateTime dateTime;
+    @Column(name = "date_of_completion")
+    private LocalDateTime dateOfCompletion;
 
     @Size(min = MIN_TRANSACTION_TITLE_LENGTH, max = MAX_TRANSACTION_TITLE_LENGTH)
     @Column(nullable = false)
@@ -42,6 +42,6 @@ public class Transaction {
     private String receiverBankAccountNumber;
 
     @ManyToOne
-    @JoinColumn(name = "pesel_user_bank_account")
-    private UserBankAccount account;
+    @JoinColumn(name = "bank_account_owner_pesel")
+    private BankAccount account;
 }
