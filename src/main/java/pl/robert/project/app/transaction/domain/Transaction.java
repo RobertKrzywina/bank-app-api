@@ -1,9 +1,10 @@
 package pl.robert.project.app.transaction.domain;
 
 import lombok.*;
+import pl.robert.project.app.user_bank_account.UserBankAccount;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static pl.robert.project.app.transaction.domain.TransactionValidationStrings.BANK_ACCOUNT_NUMBER_LENGTH;
 import static pl.robert.project.app.transaction.domain.TransactionValidationStrings.TRANSACTION_TITLE_LENGTH;
@@ -21,14 +22,12 @@ public class Transaction {
     @Column(name = "transaction_id")
     private long id;
 
-    @Temporal(TemporalType.DATE)
-    @Column()
-    private Date date;
+    @Column(name = "date_time")
+    private LocalDateTime dateTime;
 
     @Column(length = TRANSACTION_TITLE_LENGTH, nullable = false)
     private String title;
 
-    @Column(nullable = false)
     private String description;
 
     @Column(nullable = false)
@@ -39,4 +38,8 @@ public class Transaction {
 
     @Column(name = "receiver_bank_account_number", length = BANK_ACCOUNT_NUMBER_LENGTH, nullable = false)
     private String receiverBankAccountNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "pesel_user_bank_account")
+    private UserBankAccount account;
 }

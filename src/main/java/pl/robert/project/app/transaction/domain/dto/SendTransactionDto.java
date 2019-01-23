@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Component
 @Getter @Setter
@@ -17,8 +17,8 @@ public class SendTransactionDto extends TransactionDto {
     private Double currentAccountBalance;
 
     public SendTransactionDto(String title, String description, Double amount, String receiverBankAccountNumber,
-                              String pesel, String senderBankAccountNumber, Date date, Double currentAccountBalance) {
-        super(title, description, amount, receiverBankAccountNumber, pesel, senderBankAccountNumber, date);
+                              String pesel, String senderBankAccountNumber, LocalDateTime dateTime, Double currentAccountBalance) {
+        super(title, description, amount, receiverBankAccountNumber, pesel, senderBankAccountNumber, dateTime);
         this.currentAccountBalance = currentAccountBalance;
     }
 }

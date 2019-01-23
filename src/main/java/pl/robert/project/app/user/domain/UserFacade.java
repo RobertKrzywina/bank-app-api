@@ -267,6 +267,7 @@ public class UserFacade {
             transactionFacade.sendTransaction(dto, result);
 
             if (dto.getErrors().isEmpty()) {
+                userBankAccountFacade.getMoneyFromSenderUser(dto.getAmount(), dto.getSenderBankAccountNumber());
                 userBankAccountFacade.addMoneyToReceivedUser(dto.getAmount(), dto.getReceiverBankAccountNumber());
             }
         }

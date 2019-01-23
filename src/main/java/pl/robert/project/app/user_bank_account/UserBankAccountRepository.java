@@ -13,6 +13,13 @@ interface UserBankAccountRepository extends JpaRepository<UserBankAccount, Strin
 
     @Modifying
     @Transactional
+    @Query("UPDATE UserBankAccount u SET u.accountBalance = u.accountBalance - :givenMoney " +
+           "WHERE u.accountNumber = :accountNumber")
+    void getMoneyFromSenderUser(@Param("givenMoney") Double givenMoney,
+                                @Param("accountNumber") String accountNumber);
+
+    @Modifying
+    @Transactional
     @Query("UPDATE UserBankAccount u SET u.accountBalance = u.accountBalance + :givenMoney " +
            "WHERE u.accountNumber = :accountNumber")
     void addAmountToReceivedUser(@Param("givenMoney") Double givenMoney,

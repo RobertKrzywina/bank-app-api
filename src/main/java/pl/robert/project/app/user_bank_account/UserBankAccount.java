@@ -32,8 +32,7 @@ public class UserBankAccount {
     @Column(name = "account_balance")
     private double accountBalance = 0.0;
 
-    @OneToMany
-    @JoinColumn(name = "pesel_user_bank_account", referencedColumnName = "user_bank_account_pesel")
+    @OneToMany(mappedBy = "account")
     private List<Transaction> transactions = new LinkedList<>();
 
     public UserBankAccount(String pesel, String accountNumber) {
@@ -44,5 +43,9 @@ public class UserBankAccount {
     public UserBankAccount(CreateUserDto dto) {
         pesel = dto.getPesel();
         accountNumber = dto.getAccountNumber();
+    }
+
+    public UserBankAccount(String pesel) {
+        this.pesel = pesel;
     }
 }

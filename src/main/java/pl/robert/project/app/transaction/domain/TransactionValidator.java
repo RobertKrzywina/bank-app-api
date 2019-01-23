@@ -3,6 +3,7 @@ package pl.robert.project.app.transaction.domain;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import pl.robert.project.app.transaction.domain.dto.ReadTransactionDto;
 import pl.robert.project.app.transaction.domain.dto.SendTransactionDto;
 import pl.robert.project.app.transaction.domain.dto.TransactionDto;
 
@@ -11,7 +12,7 @@ class TransactionValidator implements Validator, TransactionValidationStrings {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.isAssignableFrom(SendTransactionDto.class);
+        return clazz.isAssignableFrom(SendTransactionDto.class) || clazz.isAssignableFrom(ReadTransactionDto.class);
     }
 
     @Override
@@ -26,6 +27,10 @@ class TransactionValidator implements Validator, TransactionValidationStrings {
     }
 
     private void validateSendTransaction(SendTransactionDto dto, Errors errors) {
+
+    }
+
+    void validateGetAllTransactions(ReadTransactionDto dto, Errors errors) {
 
     }
 }

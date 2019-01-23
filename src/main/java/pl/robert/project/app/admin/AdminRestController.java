@@ -14,6 +14,9 @@ import pl.robert.project.app.admin.domain.dto.ReadAdminDto;
 import pl.robert.project.app.admin.query.AboutMeAdminQueryDto;
 import pl.robert.project.app.admin.query.CreateAdminQueryDto;
 import pl.robert.project.app.admin.query.ReadAdminQueryDto;
+import pl.robert.project.app.transaction.domain.TransactionFacade;
+import pl.robert.project.app.transaction.domain.dto.ReadTransactionDto;
+import pl.robert.project.app.transaction.query.ReadTransactionQueryDto;
 import pl.robert.project.app.user.domain.UserFacade;
 import pl.robert.project.app.user.domain.dto.ChangeUserPasswordDto;
 import pl.robert.project.app.user.domain.dto.ReadUserDto;
@@ -31,6 +34,7 @@ class AdminRestController {
 
     private AdminFacade adminFacade;
     private UserFacade userFacade;
+    private TransactionFacade transactionFacade;
 
     @GetMapping("/about-me")
     public ResponseEntity aboutMe(Authentication auth) {
@@ -76,6 +80,17 @@ class AdminRestController {
         return ResponseEntity.status(200).body(usersDto);
     }
 
+    @GetMapping("/transactions")
+    public ResponseEntity readTransactions(@Valid ReadTransactionDto dto, BindingResult result) {
+        List<ReadTransactionQueryDto> transactionsDto = transactionFacade.getAll(dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
+        }
+
+        return ResponseEntity.status(200).body(transactionsDto);
+    }
+
     @GetMapping("/admins/{id}")
     public ResponseEntity readById(@PathVariable("id") String id, ReadAdminDto dto, BindingResult result) {
         ReadAdminQueryDto adminDto = adminFacade.getAdminById(Long.parseLong(id), dto, result);
@@ -96,6 +111,17 @@ class AdminRestController {
         }
 
         return ResponseEntity.status(200).body(userDto);
+    }
+
+    @GetMapping("/transactions/{id}")
+    public ResponseEntity readTransactions(@PathVariable("id") String id, ReadTransactionDto dto, BindingResult result) {
+        ReadTransactionQueryDto transactionDto = transactionFacade.getTransactionById(Long.parseLong(id), dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
+        }
+
+        return ResponseEntity.status(200).body(transactionDto);
     }
 
     @DeleteMapping("/users")

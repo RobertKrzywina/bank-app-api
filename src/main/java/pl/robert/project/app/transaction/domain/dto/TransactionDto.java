@@ -6,14 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.validation.ObjectError;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor
 public abstract class TransactionDto {
 
+    private long id;
     private String title;
     private String description;
     private Double amount;
@@ -26,19 +27,30 @@ public abstract class TransactionDto {
     private String senderBankAccountNumber;
 
     @JsonIgnore
-    private Date date;
+    private LocalDateTime dateTime;
 
     @JsonIgnore
     private List<ObjectError> errors = new ArrayList<>();
 
     public TransactionDto(String title, String description, Double amount, String receiverBankAccountNumber,
-                          String pesel, String senderBankAccountNumber, Date date) {
+                          String pesel, String senderBankAccountNumber, LocalDateTime dateTime) {
         this.title = title;
         this.description = description;
         this.amount = amount;
         this.receiverBankAccountNumber = receiverBankAccountNumber;
         this.pesel = pesel;
         this.senderBankAccountNumber = senderBankAccountNumber;
-        this.date = date;
+        this.dateTime = dateTime;
+    }
+
+    public TransactionDto(long id, String title, String description, Double amount, String receiverBankAccountNumber,
+                          String senderBankAccountNumber, LocalDateTime dateTime) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.amount = amount;
+        this.receiverBankAccountNumber = receiverBankAccountNumber;
+        this.senderBankAccountNumber = senderBankAccountNumber;
+        this.dateTime = dateTime;
     }
 }
