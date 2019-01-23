@@ -4,10 +4,10 @@ import lombok.*;
 import pl.robert.project.app.user_bank_account.UserBankAccount;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-import static pl.robert.project.app.transaction.domain.TransactionValidationStrings.BANK_ACCOUNT_NUMBER_LENGTH;
-import static pl.robert.project.app.transaction.domain.TransactionValidationStrings.TRANSACTION_TITLE_LENGTH;
+import static pl.robert.project.app.transaction.domain.TransactionValidationStrings.*;
 
 @Entity
 @Table(name = "transactions")
@@ -25,9 +25,11 @@ public class Transaction {
     @Column(name = "date_time")
     private LocalDateTime dateTime;
 
-    @Column(length = TRANSACTION_TITLE_LENGTH, nullable = false)
+    @Size(min = MIN_TRANSACTION_TITLE_LENGTH, max = MAX_TRANSACTION_TITLE_LENGTH)
+    @Column(nullable = false)
     private String title;
 
+    @Size(min = MIN_TRANSACTION_DESCRIPTION_LENGTH, max = MAX_TRANSACTION_DESCRIPTION_LENGTH)
     private String description;
 
     @Column(nullable = false)

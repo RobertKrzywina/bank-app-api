@@ -11,6 +11,9 @@ interface UserBankAccountRepository extends JpaRepository<UserBankAccount, Strin
 
     UserBankAccount findByAccountNumber(String accountNumber);
 
+    @Query("SELECT u.accountBalance FROM UserBankAccount u WHERE u.accountNumber = :accountNumber")
+    Double findAccountBalanceByAccountNumber(@Param("accountNumber") String accountNumber);
+
     @Modifying
     @Transactional
     @Query("UPDATE UserBankAccount u SET u.accountBalance = u.accountBalance - :givenMoney " +

@@ -24,4 +24,8 @@ public class UserBankAccountFacade {
     public void addMoneyToReceivedUser(Double amount, String bankAccountNumber) {
          repository.addAmountToReceivedUser(amount, bankAccountNumber);
     }
+
+    public Double getAccountBalanceFromGivenAccountNumber(String bankAccountNumber) {
+        return repository.findAccountBalanceByAccountNumber(bankAccountNumber);
+    }
 }
