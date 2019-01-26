@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import pl.robert.project.app.transaction.domain.dto.ReadUserTransactionsDto;
 import pl.robert.project.app.user.domain.dto.ChangeUserPasswordDto;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
 import pl.robert.project.app.user.domain.dto.ReadUserDto;
@@ -49,6 +50,15 @@ class UserValidator implements Validator, UserValidationStrings {
     }
 
     void validateGetUser(String pesel, ReadUserDto dto, Errors errors) {
+
+        if (repository.findByPesel(pesel) == null) {
+            errors.reject(C_USER_NOT_EXISTS, M_USER_NOT_EXISTS);
+        }
+
+        dto.setErrors(errors.getAllErrors());
+    }
+
+    void validateGetUser(String pesel, ReadUserTransactionsDto dto, Errors errors) {
 
         if (repository.findByPesel(pesel) == null) {
             errors.reject(C_USER_NOT_EXISTS, M_USER_NOT_EXISTS);

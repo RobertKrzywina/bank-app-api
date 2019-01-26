@@ -26,6 +26,10 @@ interface TransactionValidationStrings {
     String C_RECEIVER_BANK_ACCOUNT_NUMBER_WRONG = "receiver_bank_account_number.wrong";
     String C_BANK_ACCOUNT_BALANCE_NOT_ENOUGHT_MONEY = "bank_account.balance.not_enought_money";
 
+    String C_USER_HAS_GOT_NO_TRANSACTIONS = "no_transactions";
+    String C_USER_HAS_GOT_NO_SENT_TRANSACTIONS = "no_sent_transactions";
+    String C_USER_HAS_GOT_NO_RECEIVED_TRANSACTIONS = "no_received_transactions";
+
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     String M_TITLE_NULL = "Enter your title";
@@ -43,4 +47,8 @@ interface TransactionValidationStrings {
 
     String M_RECEIVER_BANK_ACCOUNT_NUMBER_WRONG = "You can't send your money from your own account";
     String M_BANK_ACCOUNT_BALANCE_NOT_ENOUGHT_MONEY = "Not enought balance on your account";
+
+    String M_USER_HAS_GOT_NO_TRANSACTIONS = "No transactions";
+    String M_USER_HAS_GOT_NO_SENT_TRANSACTIONS = "No sent transactions";
+    String M_USER_HAS_GOT_NO_RECEIVED_TRANSACTIONS = "No received transactions";
 }

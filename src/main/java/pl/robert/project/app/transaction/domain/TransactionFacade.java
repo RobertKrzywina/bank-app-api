@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import pl.robert.project.app.transaction.domain.dto.ReadTransactionDto;
+import pl.robert.project.app.transaction.domain.dto.ReadUserTransactionsDto;
 import pl.robert.project.app.transaction.domain.dto.SendTransactionDto;
-import pl.robert.project.app.transaction.query.BaseTransactionQuery;
-import pl.robert.project.app.transaction.query.ReadTransactionQueryDto;
+import pl.robert.project.app.transaction.query.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +87,91 @@ public class TransactionFacade {
                 readTransactionDto.setReceiverBankAccountNumber(transaction.getReceiverBankAccountNumber());
 
                 return baseQuery.query(readTransactionDto);
+            }
+        }
+
+        return null;
+    }
+
+    public List<ReadUserTransactionsQueryDto> getAllUserTransactions(String bankAccountNumber,
+                                                                     ReadUserTransactionsDto dto,
+                                                                     BindingResult result) {
+        if (validator.supports(dto.getClass())) {
+
+            List<Transaction> transactions = repository.findAllByBankAccountNumber(bankAccountNumber);
+            validator.validateGetAllUserTransactions(transactions, dto, result);
+
+            if (!result.hasErrors()) {
+                List<ReadUserTransactionsQueryDto> transactionsDto = new ArrayList<>();
+
+                for (Transaction transaction : transactions) {
+                    transactionsDto.add(new ReadUserTransactionsQueryDto(
+                            transaction.getDateOfCompletion(),
+                            transaction.getTitle(),
+                            transaction.getDescription(),
+                            transaction.getAmount(),
+                            transaction.getSenderBankAccountNumber(),
+                            transaction.getReceiverBankAccountNumber()
+                    ));
+                }
+
+                return transactionsDto;
+            }
+        }
+
+        return null;
+    }
+
+    public List<ReadUserSentTransactionsQueryDto> getAllUserSentTransactions(String bankAccountNumber,
+                                                                             ReadUserTransactionsDto dto,
+                                                                             BindingResult result) {
+        if (validator.supports(dto.getClass())) {
+
+            List<Transaction> transactions = repository.findAllByReceiverBankAccountNumber(bankAccountNumber);
+            validator.validateGetAllUserSentTransactions(transactions, dto, result);
+
+            if (!result.hasErrors()) {
+                List<ReadUserSentTransactionsQueryDto> transactionsDto = new ArrayList<>();
+
+                for (Transaction transaction : transactions) {
+                    transactionsDto.add(new ReadUserSentTransactionsQueryDto(
+                            transaction.getDateOfCompletion(),
+                            transaction.getTitle(),
+                            transaction.getDescription(),
+                            transaction.getAmount(),
+                            transaction.getReceiverBankAccountNumber()
+                    ));
+                }
+
+                return transactionsDto;
+            }
+        }
+
+        return null;
+    }
+
+    public List<ReadUserReceivedTransactionsQueryDto> getAllUserReceivedTransactions(String bankAccountNumber,
+                                                                                     ReadUserTransactionsDto dto,
+                                                                                     BindingResult result) {
+        if (validator.supports(dto.getClass())) {
+
+            List<Transaction> transactions = repository.findAllBySenderBankAccountNumber(bankAccountNumber);
+            validator.validateGetAllUserReceivedTransactions(transactions, dto, result);
+
+            if (!result.hasErrors()) {
+                List<ReadUserReceivedTransactionsQueryDto> transactionsDto = new ArrayList<>();
+
+                for (Transaction transaction : transactions) {
+                    transactionsDto.add(new ReadUserReceivedTransactionsQueryDto(
+                            transaction.getDateOfCompletion(),
+                            transaction.getTitle(),
+                            transaction.getDescription(),
+                            transaction.getAmount(),
+                            transaction.getSenderBankAccountNumber()
+                    ));
+                }
+
+                return transactionsDto;
             }
         }
 

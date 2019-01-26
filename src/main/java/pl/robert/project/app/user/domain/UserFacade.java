@@ -6,9 +6,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
+import pl.robert.project.app.address.Address;
+import pl.robert.project.app.address.AddressFacade;
+import pl.robert.project.app.bank_account.BankAccount;
+import pl.robert.project.app.bank_account.BankAccountFacade;
+import pl.robert.project.app.contact.Contact;
+import pl.robert.project.app.contact.ContactFacade;
 import pl.robert.project.app.security.dto.AppUserDto;
 import pl.robert.project.app.transaction.domain.TransactionFacade;
+import pl.robert.project.app.transaction.domain.dto.ReadUserTransactionsDto;
 import pl.robert.project.app.transaction.domain.dto.SendTransactionDto;
+import pl.robert.project.app.transaction.query.ReadUserReceivedTransactionsQueryDto;
+import pl.robert.project.app.transaction.query.ReadUserSentTransactionsQueryDto;
+import pl.robert.project.app.transaction.query.ReadUserTransactionsQueryDto;
 import pl.robert.project.app.user.domain.dto.AboutMeUserDto;
 import pl.robert.project.app.user.domain.dto.ChangeUserPasswordDto;
 import pl.robert.project.app.user.domain.dto.CreateUserDto;
@@ -17,12 +27,6 @@ import pl.robert.project.app.user.query.AboutMeUserQueryDto;
 import pl.robert.project.app.user.query.BaseUserQuery;
 import pl.robert.project.app.user.query.CreateUserQueryDto;
 import pl.robert.project.app.user.query.ReadUserQueryDto;
-import pl.robert.project.app.address.Address;
-import pl.robert.project.app.address.AddressFacade;
-import pl.robert.project.app.bank_account.BankAccount;
-import pl.robert.project.app.bank_account.BankAccountFacade;
-import pl.robert.project.app.contact.Contact;
-import pl.robert.project.app.contact.ContactFacade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -271,5 +275,47 @@ public class UserFacade {
                 bankAccountFacade.addMoneyToReceivedUser(dto.getAmount(), dto.getReceiverBankAccountNumber());
             }
         }
+    }
+
+    public List<ReadUserTransactionsQueryDto> getAllUserTransactions(Authentication auth,
+                                                                     ReadUserTransactionsDto dto,
+                                                                     BindingResult result) {
+        User user = repository.findByPesel(auth.getName());
+
+        validator.validateGetUser(user.getPesel(), dto, result);
+
+        if (!result.hasErrors()) {
+            return transactionFacade.getAllUserTransactions(user.getBankAccount().getAccountNumber(), dto, result);
+        }
+
+        return null;
+    }
+
+    public List<ReadUserSentTransactionsQueryDto> getAllUserSentTransactions(Authentication auth,
+                                                                             ReadUserTransactionsDto dto,
+                                                                             BindingResult result) {
+        User user = repository.findByPesel(auth.getName());
+
+        validator.validateGetUser(user.getPesel(), dto, result);
+
+        if (!result.hasErrors()) {
+            return transactionFacade.getAllUserSentTransactions(user.getBankAccount().getAccountNumber(), dto, result);
+        }
+
+        return null;
+    }
+
+    public List<ReadUserReceivedTransactionsQueryDto> getAllUserReceivedTransactions(Authentication auth,
+                                                                                     ReadUserTransactionsDto dto,
+                                                                                     BindingResult result) {
+        User user = repository.findByPesel(auth.getName());
+
+        validator.validateGetUser(user.getPesel(), dto, result);
+
+        if (!result.hasErrors()) {
+            return transactionFacade.getAllUserReceivedTransactions(user.getBankAccount().getAccountNumber(), dto, result);
+        }
+
+        return null;
     }
 }

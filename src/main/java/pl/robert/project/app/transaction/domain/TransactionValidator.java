@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import pl.robert.project.app.bank_account.BankAccountFacade;
 import pl.robert.project.app.transaction.domain.dto.ReadTransactionDto;
+import pl.robert.project.app.transaction.domain.dto.ReadUserTransactionsDto;
 import pl.robert.project.app.transaction.domain.dto.SendTransactionDto;
 import pl.robert.project.app.transaction.domain.dto.TransactionDto;
-import pl.robert.project.app.bank_account.BankAccountFacade;
+
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -19,7 +22,8 @@ class TransactionValidator implements Validator, TransactionValidationStrings {
     @Override
     public boolean supports(Class<?> clazz) {
         return clazz.isAssignableFrom(SendTransactionDto.class) ||
-               clazz.isAssignableFrom(ReadTransactionDto.class);
+               clazz.isAssignableFrom(ReadTransactionDto.class) ||
+               clazz.isAssignableFrom(ReadUserTransactionsDto.class);
     }
 
     @Override
@@ -33,6 +37,10 @@ class TransactionValidator implements Validator, TransactionValidationStrings {
             ReadTransactionDto dto = (ReadTransactionDto) obj;
 
             validateReadTransactionById(dto, errors);
+        } else if (obj instanceof ReadUserTransactionsDto) {
+            ReadUserTransactionsDto dto = (ReadUserTransactionsDto) obj;
+
+            validateReadUserTransactions(dto, errors);
         }
 
         ((TransactionDto) obj).setErrors(errors.getAllErrors());
@@ -98,6 +106,36 @@ class TransactionValidator implements Validator, TransactionValidationStrings {
         dto.setErrors(errors.getAllErrors());
     }
 
+    void validateGetAllUserTransactions(List<Transaction> transactions,
+                                        ReadUserTransactionsDto dto, Errors errors) {
+
+        if (transactions.isEmpty()) {
+            errors.reject(C_USER_HAS_GOT_NO_TRANSACTIONS, M_USER_HAS_GOT_NO_TRANSACTIONS);
+        }
+
+        dto.setErrors(errors.getAllErrors());
+    }
+
+    void validateGetAllUserSentTransactions(List<Transaction> transactions,
+                                            ReadUserTransactionsDto dto, Errors errors) {
+
+        if (transactions.isEmpty()) {
+            errors.reject(C_USER_HAS_GOT_NO_SENT_TRANSACTIONS, M_USER_HAS_GOT_NO_SENT_TRANSACTIONS);
+        }
+
+        dto.setErrors(errors.getAllErrors());
+    }
+
+    void validateGetAllUserReceivedTransactions(List<Transaction> transactions,
+                                                ReadUserTransactionsDto dto, Errors errors) {
+
+        if (transactions.isEmpty()) {
+            errors.reject(C_USER_HAS_GOT_NO_RECEIVED_TRANSACTIONS, M_USER_HAS_GOT_NO_RECEIVED_TRANSACTIONS);
+        }
+
+        dto.setErrors(errors.getAllErrors());
+    }
+
     private void validateReadTransactionById(ReadTransactionDto dto, Errors errors) {
 
         if (repository.findById(dto.getId()) == null) {
@@ -107,5 +145,10 @@ class TransactionValidator implements Validator, TransactionValidationStrings {
 
     private boolean isFieldLengthCorrect(String fieldToCheck, int minLength, int maxLength) {
         return fieldToCheck.length() < minLength || fieldToCheck.length() > maxLength;
+    }
+
+    private void validateReadUserTransactions(ReadUserTransactionsDto dto, Errors errors) {
+
+
     }
 }
