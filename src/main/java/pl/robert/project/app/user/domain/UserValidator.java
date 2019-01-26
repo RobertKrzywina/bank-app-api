@@ -58,6 +58,7 @@ class UserValidator implements Validator, UserValidationStrings {
     }
 
     private void validateCreateUser(CreateUserDto dto, Errors errors) {
+        trimCreateUserDto(dto);
 
         if (dto.getPesel() != null) {
 
@@ -106,6 +107,14 @@ class UserValidator implements Validator, UserValidationStrings {
         } else {
             errors.reject(C_PASSWORD_NULL, M_PASSWORD_NULL);
         }
+    }
+
+    private void trimCreateUserDto(CreateUserDto dto) {
+        dto.setPesel(dto.getPesel().trim());
+        dto.setFirstName(dto.getFirstName().trim());
+        dto.setLastName(dto.getLastName().trim());
+        dto.setPassword(dto.getPassword().trim());
+        dto.setRePassword(dto.getRePassword().trim());
     }
 
     void validateChangeUserPassword(ChangeUserPasswordDto dto, Errors errors) {

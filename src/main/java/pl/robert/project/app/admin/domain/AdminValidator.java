@@ -67,6 +67,8 @@ class AdminValidator implements Validator, AdminValidationStrings {
     }
 
     private void validateCreateAdmin(CreateAdminDto dto, Errors errors) {
+        trimCreateAdminDto(dto);
+
         if (dto.getName() != null) {
             
             if (isFieldLengthCorrect(dto.getName(), MIN_LENGTH_NAME, MAX_LENGTH_NAME)) {
@@ -114,6 +116,14 @@ class AdminValidator implements Validator, AdminValidationStrings {
         } else {
             errors.reject(C_ROLE_NAME_NULL, M_ROLE_NAME_NULL);
         }
+    }
+
+    private void trimCreateAdminDto(CreateAdminDto dto) {
+        dto.setName(dto.getName().trim());
+        dto.setLogin(dto.getLogin().trim());
+        dto.setPassword(dto.getPassword().trim());
+        dto.setRePassword(dto.getRePassword().trim());
+        dto.setRoleName(dto.getRoleName().trim());
     }
 
     private boolean isRoleCorrect(String roleName) {

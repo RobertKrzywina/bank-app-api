@@ -34,8 +34,8 @@ public class Contact {
     private List<ObjectError> errors = new ArrayList<>();
 
     public Contact(CreateUserDto dto) {
-        pesel = dto.getPesel();
-        email = dto.getEmail();
-        phoneNumber = dto.getPhoneNumber();
+        pesel = dto.getPesel().trim();
+        email = dto.getEmail().trim();
+        phoneNumber = dto.getPhoneNumber().trim();
     }
 }

@@ -46,11 +46,11 @@ public class Address {
     private List<ObjectError> errors = new ArrayList<>();
 
     public Address(CreateUserDto dto) {
-        pesel = dto.getPesel();
-        province = dto.getProvince();
-        city = dto.getCity();
-        zipCode = dto.getZipCode();
-        street = dto.getStreet();
-        houseNumber = dto.getHouseNumber();
+        pesel = dto.getPesel().trim();
+        province = dto.getProvince().trim();
+        city = dto.getCity().trim();
+        zipCode = dto.getZipCode().trim();
+        street = dto.getStreet().trim();
+        houseNumber = dto.getHouseNumber().trim();
     }
 }
