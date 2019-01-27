@@ -28,4 +28,12 @@ public class BankAccountFacade {
     public Double getAccountBalanceFromGivenAccountNumber(String bankAccountNumber) {
         return repository.findAccountBalanceByAccountNumber(bankAccountNumber);
     }
+
+    public void addMoneyToUser(Double money, String pesel) {
+        repository.addMoneyToUser(money, pesel);
+    }
+
+    public String findReceiverAccountNumberByPesel(String pesel) {
+        return repository.findByPesel(pesel).getAccountNumber();
+    }
 }

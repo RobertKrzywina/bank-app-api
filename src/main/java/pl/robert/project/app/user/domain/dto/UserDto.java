@@ -30,7 +30,7 @@ public abstract class UserDto {
     private String accountNumber;
 
     @JsonIgnore
-    private Double accountBalance;
+    private String accountBalance;
 
     @JsonIgnore
     private String decodedBCryptPassword;

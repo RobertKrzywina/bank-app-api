@@ -12,5 +12,5 @@ import org.springframework.stereotype.Component;
 public class SendTransactionDto extends TransactionDto {
 
     @JsonIgnore
-    private Double currentAccountBalance;
+    private String currentAccountBalance;
 }

@@ -18,6 +18,7 @@ interface UserValidationStrings {
     String C_RE_OLD_PASSWORD_NULL = "re_old_password.null";
     String C_NEW_PASSWORD_NULL = "new_password.null";
     String C_RE_NEW_PASSWORD_NULL = "re_new_password.null";
+    String C_MONEY_NULL = "money.null";
 
     String C_OLD_PASSWORD_NOT_MATCH = "old_password.not_match";
     String C_RE_OLD_PASSWORD_NOT_MATCH = "re_old_password.not_match";
@@ -34,6 +35,9 @@ interface UserValidationStrings {
 
     String C_RE_PASSWORD_NOT_MATCH_PASSWORD = "password.not_match";
 
+    String C_MONEY_LESS_THAN_ZERO = "money.less.than.zero";
+    String C_MONEY_NOT_NUMERIC_VALUE = "money.not_numeric_value";
+
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     String M_PESEL_NULL = "Enter your pesel";
@@ -44,6 +48,7 @@ interface UserValidationStrings {
     String M_RE_OLD_PASSWORD_NULL = "Re enter your old password";
     String M_NEW_PASSWORD_NULL = "Enter your new password";
     String M_RE_NEW_PASSWORD_NULL = "Re enter your new password";
+    String M_MONEY_NULL = "Enter some numeric value";
 
     String M_PESEL_LENGTH = "Pesel should have 11 numbers";
     String M_FIRST_NAME_LENGTH = "First name should have from 2 to 20 characters";
@@ -59,4 +64,6 @@ interface UserValidationStrings {
     String M_RE_OLD_PASSWORD_NOT_MATCH = "Old passwords are not identical";
     String M_RE_NEW_PASSWORD_NOT_MATCH = "New passwords are not identical";
 
+    String M_MONEY_LESS_THAN_ZERO = "Money can't be less than zero";
+    String M_MONEY_NOT_NUMERIC_VALUE = "Enter numeric value";
 }

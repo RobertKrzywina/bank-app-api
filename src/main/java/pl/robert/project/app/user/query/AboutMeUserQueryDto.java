@@ -19,5 +19,5 @@ public class AboutMeUserQueryDto {
     private String phoneNumber;
     private String password;
     private String accountNumber;
-    private Double accountBalance;
+    private String accountBalance;
 }

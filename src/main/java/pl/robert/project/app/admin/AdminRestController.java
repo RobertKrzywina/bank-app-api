@@ -18,6 +18,7 @@ import pl.robert.project.app.transaction.domain.TransactionFacade;
 import pl.robert.project.app.transaction.domain.dto.ReadTransactionDto;
 import pl.robert.project.app.transaction.query.ReadTransactionQueryDto;
 import pl.robert.project.app.user.domain.UserFacade;
+import pl.robert.project.app.user.domain.dto.AddMoneyUserDto;
 import pl.robert.project.app.user.domain.dto.ChangeUserPasswordDto;
 import pl.robert.project.app.user.domain.dto.ReadUserDto;
 import pl.robert.project.app.user.query.ReadUserQueryDto;
@@ -195,4 +196,42 @@ class AdminRestController {
 
         return ResponseEntity.status(200).body(dto.getNewPassword());
     }
+
+    @PreAuthorize("hasRole('HEAD-ADMIN')")
+    @PatchMapping("/user/add-money/{pesel}")
+    public ResponseEntity addMoneyToUser(@PathVariable("pesel") String pesel,
+                                         @RequestBody @Valid AddMoneyUserDto dto, BindingResult result) {
+        userFacade.addMoneyToUser(pesel, dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
+        }
+
+        return ResponseEntity.status(200).body(HttpStatus.OK);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

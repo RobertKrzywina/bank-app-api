@@ -37,10 +37,6 @@ class TransactionValidator implements Validator, TransactionValidationStrings {
             ReadTransactionDto dto = (ReadTransactionDto) obj;
 
             validateReadTransactionById(dto, errors);
-        } else if (obj instanceof ReadUserTransactionsDto) {
-            ReadUserTransactionsDto dto = (ReadUserTransactionsDto) obj;
-
-            validateReadUserTransactions(dto, errors);
         }
 
         ((TransactionDto) obj).setErrors(errors.getAllErrors());
@@ -70,7 +66,11 @@ class TransactionValidator implements Validator, TransactionValidationStrings {
 
         if (dto.getAmount() != null) {
 
-            if (dto.getAmount() > bankAccountFacade.getAccountBalanceFromGivenAccountNumber(dto.getSenderBankAccountNumber())) {
+            if (!dto.getAmount().trim().chars().allMatch(Character::isDigit)) {
+                errors.reject(C_MONEY_NOT_NUMERIC_VALUE, M_MONEY_NOT_NUMERIC_VALUE);
+            }
+
+            if (Double.parseDouble(dto.getAmount()) > bankAccountFacade.getAccountBalanceFromGivenAccountNumber(dto.getSenderBankAccountNumber())) {
                 errors.reject(C_BANK_ACCOUNT_BALANCE_NOT_ENOUGHT_MONEY, M_BANK_ACCOUNT_BALANCE_NOT_ENOUGHT_MONEY);
             }
 
@@ -136,6 +136,12 @@ class TransactionValidator implements Validator, TransactionValidationStrings {
         dto.setErrors(errors.getAllErrors());
     }
 
+    void modifyTransaction(SendTransactionDto dto) {
+        dto.setTitle(TITLE);
+        dto.setDescription(DESCRIPTION);
+        dto.setSenderBankAccountNumber(SENDER_BANK_ACCOUNT_NUMBER);
+    }
+
     private void validateReadTransactionById(ReadTransactionDto dto, Errors errors) {
 
         if (repository.findById(dto.getId()) == null) {
@@ -145,10 +151,5 @@ class TransactionValidator implements Validator, TransactionValidationStrings {
 
     private boolean isFieldLengthCorrect(String fieldToCheck, int minLength, int maxLength) {
         return fieldToCheck.length() < minLength || fieldToCheck.length() > maxLength;
-    }
-
-    private void validateReadUserTransactions(ReadUserTransactionsDto dto, Errors errors) {
-
-
     }
 }

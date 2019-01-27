@@ -17,7 +17,7 @@ class TransactionFactory {
                 .dateOfCompletion(LocalDateTime.now())
                 .title(dto.getTitle())
                 .description(dto.getDescription())
-                .amount(dto.getAmount())
+                .amount(Double.parseDouble(dto.getAmount()))
                 .senderBankAccountNumber(dto.getSenderBankAccountNumber())
                 .receiverBankAccountNumber(dto.getReceiverBankAccountNumber())
                 .build();

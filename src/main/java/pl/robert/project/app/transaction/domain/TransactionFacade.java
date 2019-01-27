@@ -56,7 +56,7 @@ public class TransactionFacade {
                             transaction.getDateOfCompletion(),
                             transaction.getTitle(),
                             transaction.getDescription(),
-                            transaction.getAmount(),
+                            transaction.getAmount().toString(),
                             transaction.getSenderBankAccountNumber(),
                             transaction.getReceiverBankAccountNumber()
                     ));
@@ -82,7 +82,7 @@ public class TransactionFacade {
                 readTransactionDto.setDateTime(transaction.getDateOfCompletion());
                 readTransactionDto.setTitle(transaction.getTitle());
                 readTransactionDto.setDescription(transaction.getDescription());
-                readTransactionDto.setAmount(transaction.getAmount());
+                readTransactionDto.setAmount(transaction.getAmount().toString());
                 readTransactionDto.setSenderBankAccountNumber(transaction.getSenderBankAccountNumber());
                 readTransactionDto.setReceiverBankAccountNumber(transaction.getReceiverBankAccountNumber());
 
@@ -109,7 +109,7 @@ public class TransactionFacade {
                             transaction.getDateOfCompletion(),
                             transaction.getTitle(),
                             transaction.getDescription(),
-                            transaction.getAmount(),
+                            transaction.getAmount().toString(),
                             transaction.getSenderBankAccountNumber(),
                             transaction.getReceiverBankAccountNumber()
                     ));
@@ -127,7 +127,7 @@ public class TransactionFacade {
                                                                              BindingResult result) {
         if (validator.supports(dto.getClass())) {
 
-            List<Transaction> transactions = repository.findAllByReceiverBankAccountNumber(bankAccountNumber);
+            List<Transaction> transactions = repository.findAllBySenderBankAccountNumber(bankAccountNumber);
             validator.validateGetAllUserSentTransactions(transactions, dto, result);
 
             if (!result.hasErrors()) {
@@ -138,7 +138,7 @@ public class TransactionFacade {
                             transaction.getDateOfCompletion(),
                             transaction.getTitle(),
                             transaction.getDescription(),
-                            transaction.getAmount(),
+                            transaction.getAmount().toString(),
                             transaction.getReceiverBankAccountNumber()
                     ));
                 }
@@ -155,7 +155,7 @@ public class TransactionFacade {
                                                                                      BindingResult result) {
         if (validator.supports(dto.getClass())) {
 
-            List<Transaction> transactions = repository.findAllBySenderBankAccountNumber(bankAccountNumber);
+            List<Transaction> transactions = repository.findAllByReceiverBankAccountNumber(bankAccountNumber);
             validator.validateGetAllUserReceivedTransactions(transactions, dto, result);
 
             if (!result.hasErrors()) {
@@ -166,7 +166,7 @@ public class TransactionFacade {
                             transaction.getDateOfCompletion(),
                             transaction.getTitle(),
                             transaction.getDescription(),
-                            transaction.getAmount(),
+                            transaction.getAmount().toString(),
                             transaction.getSenderBankAccountNumber()
                     ));
                 }
@@ -176,5 +176,15 @@ public class TransactionFacade {
         }
 
         return null;
+    }
+
+    public void addTransaction(String pesel, Double money, String receiverBankAccountNumber) {
+        validator.modifyTransaction(sendTransactionDto);
+
+        sendTransactionDto.setPesel(pesel);
+        sendTransactionDto.setAmount(money.toString());
+        sendTransactionDto.setReceiverBankAccountNumber(receiverBankAccountNumber);
+
+        repository.saveAndFlush(factory.create(sendTransactionDto));
     }
 }

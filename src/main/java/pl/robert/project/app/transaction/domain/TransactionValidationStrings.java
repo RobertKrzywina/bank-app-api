@@ -10,6 +10,12 @@ interface TransactionValidationStrings {
 
     ////////////////////////////////////////////////////////////////////////////////////////////
 
+    String TITLE = "Money from admin";
+    String DESCRIPTION = "Gift from head administrator";
+    String SENDER_BANK_ACCOUNT_NUMBER = "PL00 0000 0000 0000 0000 0000";
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
     String C_TITLE_NULL = "title.null";
     String C_DESCRIPTION_NULL = "description.null";
     String C_AMOUNT_NULL = "amount.null";
@@ -29,6 +35,8 @@ interface TransactionValidationStrings {
     String C_USER_HAS_GOT_NO_TRANSACTIONS = "no_transactions";
     String C_USER_HAS_GOT_NO_SENT_TRANSACTIONS = "no_sent_transactions";
     String C_USER_HAS_GOT_NO_RECEIVED_TRANSACTIONS = "no_received_transactions";
+
+    String C_MONEY_NOT_NUMERIC_VALUE = "money.not_numeric_value";
 
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -51,4 +59,6 @@ interface TransactionValidationStrings {
     String M_USER_HAS_GOT_NO_TRANSACTIONS = "No transactions";
     String M_USER_HAS_GOT_NO_SENT_TRANSACTIONS = "No sent transactions";
     String M_USER_HAS_GOT_NO_RECEIVED_TRANSACTIONS = "No received transactions";
+
+    String M_MONEY_NOT_NUMERIC_VALUE = "Enter numeric value";
 }

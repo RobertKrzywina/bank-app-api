@@ -5,10 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import pl.robert.project.app.transaction.domain.dto.ReadUserTransactionsDto;
-import pl.robert.project.app.user.domain.dto.ChangeUserPasswordDto;
-import pl.robert.project.app.user.domain.dto.CreateUserDto;
-import pl.robert.project.app.user.domain.dto.ReadUserDto;
-import pl.robert.project.app.user.domain.dto.UserDto;
+import pl.robert.project.app.user.domain.dto.*;
 
 @Component
 @AllArgsConstructor
@@ -20,7 +17,8 @@ class UserValidator implements Validator, UserValidationStrings {
     public boolean supports(Class<?> clazz) {
         return clazz.isAssignableFrom(CreateUserDto.class) ||
                clazz.isAssignableFrom(ReadUserDto.class) ||
-               clazz.isAssignableFrom(ChangeUserPasswordDto.class);
+               clazz.isAssignableFrom(ChangeUserPasswordDto.class) ||
+               clazz.isAssignableFrom(AddMoneyUserDto.class);
     }
 
     @Override
@@ -175,6 +173,33 @@ class UserValidator implements Validator, UserValidationStrings {
             } else {
                 errors.reject(C_RE_NEW_PASSWORD_NULL, M_RE_NEW_PASSWORD_NULL);
             }
+        }
+
+        dto.setErrors(errors.getAllErrors());
+    }
+
+    void validateAddMoneyToUser(AddMoneyUserDto dto, Errors errors) {
+
+        if (isPeselExists(dto.getPesel())) {
+
+            if (dto.getMoney() == null) {
+                errors.reject(C_MONEY_NULL, M_MONEY_NULL);
+
+            } else {
+
+                if (!dto.getMoney().trim().chars().allMatch(Character::isDigit)) {
+                    errors.reject(C_MONEY_NOT_NUMERIC_VALUE, M_MONEY_NOT_NUMERIC_VALUE);
+
+                } else {
+
+                    if (Double.parseDouble(dto.getMoney()) <= 0) {
+                        errors.reject(C_MONEY_LESS_THAN_ZERO, M_MONEY_LESS_THAN_ZERO);
+                    }
+                }
+            }
+
+        } else {
+            errors.reject(C_USER_NOT_EXISTS, M_USER_NOT_EXISTS);
         }
 
         dto.setErrors(errors.getAllErrors());

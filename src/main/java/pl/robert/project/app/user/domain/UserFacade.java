@@ -19,10 +19,7 @@ import pl.robert.project.app.transaction.domain.dto.SendTransactionDto;
 import pl.robert.project.app.transaction.query.ReadUserReceivedTransactionsQueryDto;
 import pl.robert.project.app.transaction.query.ReadUserSentTransactionsQueryDto;
 import pl.robert.project.app.transaction.query.ReadUserTransactionsQueryDto;
-import pl.robert.project.app.user.domain.dto.AboutMeUserDto;
-import pl.robert.project.app.user.domain.dto.ChangeUserPasswordDto;
-import pl.robert.project.app.user.domain.dto.CreateUserDto;
-import pl.robert.project.app.user.domain.dto.ReadUserDto;
+import pl.robert.project.app.user.domain.dto.*;
 import pl.robert.project.app.user.query.AboutMeUserQueryDto;
 import pl.robert.project.app.user.query.BaseUserQuery;
 import pl.robert.project.app.user.query.CreateUserQueryDto;
@@ -140,7 +137,7 @@ public class UserFacade {
                             user.getContact().getPhoneNumber(),
                             user.getDecodedBCryptPassword(),
                             user.getBankAccount().getAccountNumber(),
-                            user.getBankAccount().getAccountBalance()
+                            Double.toString(user.getBankAccount().getAccountBalance())
                     ));
                 }
 
@@ -194,7 +191,7 @@ public class UserFacade {
                 readDto.setEmail(user.getContact().getEmail());
                 readDto.setPhoneNumber(user.getContact().getPhoneNumber());
                 readDto.setAccountNumber(user.getBankAccount().getAccountNumber());
-                readDto.setAccountBalance(user.getBankAccount().getAccountBalance());
+                readDto.setAccountBalance(Double.toString(user.getBankAccount().getAccountBalance()));
 
                 return baseQuery.query(readDto);
             }
@@ -252,7 +249,7 @@ public class UserFacade {
             aboutMeDto.setPhoneNumber(user.getContact().getPhoneNumber());
             aboutMeDto.setPassword(user.getDecodedBCryptPassword());
             aboutMeDto.setAccountNumber(user.getBankAccount().getAccountNumber());
-            aboutMeDto.setAccountBalance(user.getBankAccount().getAccountBalance());
+            aboutMeDto.setAccountBalance(Double.toString(user.getBankAccount().getAccountBalance()));
 
             return baseQuery.query(aboutMeDto);
         }
@@ -265,14 +262,14 @@ public class UserFacade {
         User user = repository.findByPesel(auth.getName());
 
         if (user != null) {
-            dto.setCurrentAccountBalance(user.getBankAccount().getAccountBalance());
+            dto.setCurrentAccountBalance(String.valueOf(user.getBankAccount().getAccountBalance()));
             dto.setSenderBankAccountNumber(user.getBankAccount().getAccountNumber());
             dto.setPesel(user.getPesel());
             transactionFacade.sendTransaction(dto, result);
 
             if (dto.getErrors().isEmpty()) {
-                bankAccountFacade.getMoneyFromSenderUser(dto.getAmount(), dto.getSenderBankAccountNumber());
-                bankAccountFacade.addMoneyToReceivedUser(dto.getAmount(), dto.getReceiverBankAccountNumber());
+                bankAccountFacade.getMoneyFromSenderUser(Double.parseDouble(dto.getAmount()), dto.getSenderBankAccountNumber());
+                bankAccountFacade.addMoneyToReceivedUser(Double.parseDouble(dto.getAmount()), dto.getReceiverBankAccountNumber());
             }
         }
     }
@@ -317,5 +314,20 @@ public class UserFacade {
         }
 
         return null;
+    }
+
+    public void addMoneyToUser(String pesel, AddMoneyUserDto dto, BindingResult result) {
+        if (validator.supports(dto.getClass())) {
+
+            dto.setPesel(pesel);
+
+            validator.validateAddMoneyToUser(dto, result);
+
+            if (!result.hasErrors()) {
+                bankAccountFacade.addMoneyToUser(Double.parseDouble(dto.getMoney()), pesel);
+                transactionFacade.addTransaction(pesel, Double.parseDouble(dto.getMoney()),
+                                                 bankAccountFacade.findReceiverAccountNumberByPesel(pesel));
+            }
+        }
     }
 }

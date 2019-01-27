@@ -14,7 +14,7 @@ public class BaseTransactionQuery {
                 dto.getDateTime(),
                 dto.getTitle(),
                 dto.getDescription(),
-                dto.getAmount(),
+                dto.getAmount().toString(),
                 dto.getSenderBankAccountNumber(),
                 dto.getReceiverBankAccountNumber()
         );

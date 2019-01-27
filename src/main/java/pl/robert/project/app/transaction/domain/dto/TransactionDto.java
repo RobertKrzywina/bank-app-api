@@ -17,7 +17,7 @@ public abstract class TransactionDto {
     private long id;
     private String title;
     private String description;
-    private Double amount;
+    private String amount;
     private String receiverBankAccountNumber;
 
     @JsonIgnore

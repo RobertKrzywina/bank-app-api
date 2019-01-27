@@ -13,6 +13,7 @@ import pl.robert.project.app.transaction.query.ReadUserReceivedTransactionsQuery
 import pl.robert.project.app.transaction.query.ReadUserSentTransactionsQueryDto;
 import pl.robert.project.app.transaction.query.ReadUserTransactionsQueryDto;
 import pl.robert.project.app.user.domain.UserFacade;
+import pl.robert.project.app.user.domain.dto.ChangeUserPasswordDto;
 import pl.robert.project.app.user.query.AboutMeUserQueryDto;
 
 import javax.validation.Valid;
@@ -87,5 +88,17 @@ class UserRestController {
         }
 
         return ResponseEntity.status(200).body(HttpStatus.OK);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity changePassword(Authentication auth,
+                                         @RequestBody @Valid ChangeUserPasswordDto dto, BindingResult result) {
+        userFacade.changePassword(auth.getName(), dto, result);
+
+        if (!dto.getErrors().isEmpty()) {
+            return ResponseEntity.status(400).body(dto.getErrors());
+        }
+
+        return ResponseEntity.status(200).body(dto.getNewPassword());
     }
 }

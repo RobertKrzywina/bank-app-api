@@ -12,6 +12,6 @@ public class ReadUserSentTransactionsQueryDto {
     private LocalDateTime dateTime;
     private String title;
     private String description;
-    private Double amount;
+    private String amount;
     private String receiverBankAccountNumber;
 }
