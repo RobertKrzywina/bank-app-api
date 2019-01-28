@@ -1,4 +1,4 @@
-#Bank Account Rest API
+# Bank Account Rest API
 
 ## Table of contents
 * [General info](#general-info)
@@ -12,7 +12,7 @@ I used design pattern called 'Facade Pattern'.<br>
 Default running port is 8080.<br>
 In src/main/resources folder, you will have an application config and a sql script with some fake data.
 
-####Technologies:
+#### Technologies:
 Project is created with:
 * Java 8
 * Maven
@@ -28,12 +28,12 @@ Project is created with:
 
 Intellij for code editor and Postman for testing an API.
 
-####Application Programming Interface
+#### Application Programming Interface
 
 I used swagger to generate an API of this application. If you run an app, u can visit these links to see all API: 
 * [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 * [http://localhost:8080/v2/api-docs](http://localhost:8080/v2/api-docs)
 
-####Database structure
-![ScreenShot](/home/robert/IdeaProjects/project/database_structure.png)
+#### Database structure
+![ScreenShot](database_structure.png)
 
